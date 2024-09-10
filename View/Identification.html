@@ -1,27 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <title>Identification</title>
-    <script src="../Model/Identification.js" defer></script>
     <link rel="stylesheet" href="Identification.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="../Model/Identification.js" defer></script>
 </head>
 <body>
 <img src="../Image/LogoUPHF.png" alt="Logo de l'UPHF" width="200">
 
-<h3>
-  Entrez votre identifiant et votre mot de passe.
-</h3>
-<form action="../Model/Session.php" method="post">
-    <label for="Nom d'utilisateur">Nom :</label>
-    <input type="text" id="Nom d'utilisateur" name="Nom d'utilisateur" required><br><br>
+<h3>Entrez votre identifiant et votre mot de passe.</h3>
 
-    <label for="password">Prenom :</label>
-    <input type="password" id="password" name="password" required>
-    <label for="showPassword()"></label><input type="checkbox" id="showPassword()" onclick="showPassword()">
+<form action="../Model/Session.php" method="post">
+    <div class="passwordContainer">
+        <label for="username">Nom :</label>
+        <input type="text" id="username" name="Nom d'utilisateur" class="password" required><br><br>
+
+        <label for="password">Prenom :</label>
+        <input type="password" id="password" name="password" class="password" required>
+        <span class="eye" id="togglePassword">
+            <i class="fas fa-eye"></i> <!-- Icône d'œil initiale -->
+        </span>
+    </div>
 
     <input type="submit" value="Se connecter">
 </form>
-
 </body>
 </html>

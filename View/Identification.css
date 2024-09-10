@@ -1,22 +1,19 @@
-/* Label pour la case à cocher (ajout d'une icône d'œil) */
-label[for="showPassword()"] {
-    cursor: pointer;
-    font-size: 20px;
+
+
+.passwordContainer {
     position: relative;
-    top: -32px;
-    right: -240px;
+    width: 200px;
 }
 
-/* Icône d'œil qui change en fonction de l'état coché */
-label[for="showPassword()"]::before {
-    font-family: "Font Awesome 5 Free";
-    content: "\f06e";  /* Icône de l'œil ouvert */
-    font-weight: 900;
+input[type="password"], input[type="text"] {
+    width: 100%;
+    padding: 10px;
+}
+
+.eye {
     position: absolute;
-    font-size: 20px;
-}
-
-/* Lorsque la checkbox est cochée, l'œil devient barré */
-input[type="checkbox"]:checked + label[for="showPassword()"]::before {
-    content: "\f070";  /* Icône de l'œil barré */
+    top: 85%;
+    right: -10px;
+    transform: translateY(-50%);
+    border-radius: 50%; /* Forme circulaire */
 }
