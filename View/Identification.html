@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Identification</title>
+    <script src="../Model/Identification.js" defer></script>
+    <link rel="stylesheet" href="Identification.css">
+</head>
+<body>
+<img src="../Image/LogoUPHF.png" alt="Logo de l'UPHF" width="200">
+
+<h3>
+  Entrez votre identifiant et votre mot de passe.
+</h3>
+<form action="../Model/Session.php" method="post">
+    <label for="Nom d'utilisateur">Nom :</label>
+    <input type="text" id="Nom d'utilisateur" name="Nom d'utilisateur" required><br><br>
+
+    <label for="password">Prenom :</label>
+    <input type="password" id="password" name="password" required>
+    <label for="showPassword()"></label><input type="checkbox" id="showPassword()" onclick="showPassword()">
+
+    <input type="submit" value="Se connecter">
+</form>
+
+</body>
+</html>
