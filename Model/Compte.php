@@ -17,16 +17,31 @@ public function getMdp(){
 }
 public function setMdp($mdp){
     $caraSpec = array('!', '.', '€', '@');
+    $chiffre = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
     $sec = false;
+    $nbrCara = false;
+    $nbrChiffre = 0;
+    if(count($mdp) >= 8){
+        $nbrCara = true;
+    }
     foreach ($caraSpec as $cara) {
+        if(in_array($cara, $chiffre)){
+            $nbrChiffre++;
+        }
         if (str_contains($mdp, $cara) == false) {
             continue;
         }
         else{
             $sec = true;
-            break;
         }
     }
+    if($nbrCara == true && $nbrChiffre >= 4 && $sec == true){
+        $this->mdp = $mdp;
+    }
+    else{
+        echo "Il y a une condition qui n'est pas rempli, veuillez revérifier votre mot de passe.";
+    }
+
 }
 
 }
