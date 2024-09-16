@@ -1,4 +1,10 @@
+.form.formConnection {
+    justify-content: center;
+}
 
+.uphf{
+    text-align: right;
+}
 
 .passwordContainer {
     position: relative;
