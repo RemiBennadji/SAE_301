@@ -16,7 +16,17 @@ public function getMdp(){
     return $this->mdp;
 }
 public function setMdp($mdp){
-    $this->mdp = $mdp;
+    $caraSpec = array('!', '.', '€', '@');
+    $sec = false;
+    foreach ($caraSpec as $cara) {
+        if (str_contains($mdp, $cara) == false) {
+            continue;
+        }
+        else{
+            $sec = true;
+            break;
+        }
+    }
 }
 
 }
