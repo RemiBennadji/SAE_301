@@ -4,6 +4,8 @@ abstract class Compte
 {
 private $id;
 private $mdp;
+private $nom;
+private $prenom;
 
 public function __construct(){
     $this->id = "";
@@ -42,6 +44,7 @@ public function verifMdp($mdp)
     }
 
 }
+
 public function setMdp($mdp){
     if($this->verifMdp($mdp)){
         $this->mdp = $mdp;
@@ -49,5 +52,18 @@ public function setMdp($mdp){
     else{
         echo "Il y a une condition qui n'est pas rempli, veuillez revérifier votre mot de passe.";
     }
+}
+public function setNom($nom){
+    $this->nom = $nom;
+}
+public function setPrenom($prenom){
+    $this->prenom = $prenom;
+}
+public function getNom(){
+    return $this->nom;
+}
+
+public function getPrenom(){
+    return $this->prenom;
 }
 }
