@@ -6,7 +6,7 @@ private $id;
 private $mdp;
 
 public function __construct(){
-    $this->id = "None";
+    $this->id = "";
     $this->mdp = "";
 }
 public function getId(){
