@@ -10,6 +10,8 @@ private $prenom;
 public function __construct(){
     $this->id = "";
     $this->mdp = "";
+    $this->nom = "Antoine";
+    $this->prenom = "Marc";
 }
 public function getId(){
     return $this->id;
@@ -52,6 +54,11 @@ public function setMdp($mdp){
     else{
         echo "Il y a une condition qui n'est pas rempli, veuillez revérifier votre mot de passe.";
     }
+}
+
+public function genererIdentifiant(){
+    $identifiant = strtolower($this->prenom).'.'.strtolower($this->nom);
+    return $identifiant;
 }
 public function setNom($nom){
     $this->nom = $nom;
