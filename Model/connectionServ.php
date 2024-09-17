@@ -15,6 +15,7 @@ function recupererDonnees($conn, $sql)
         }
         return $tab;
     }
+    return null;
 }
 
 $tab = recupererDonnees($connection, $sql1);
