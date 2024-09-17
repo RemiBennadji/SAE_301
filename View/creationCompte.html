@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
+
 <head>
     <meta charset="UTF-8">
     <title>Création d'un compte</title>
 </head>
 <body>
 <h1>Création d'un compte</h1>
-<form>
-    <select name="Type">
+<form action="../Model/creationCompte.php" method="post">
+    <select name="type">
         <option value="secretariat">Secrétariat</option>
         <option value="etudiant">Étudiant</option>
         <option value="prof">Professeur</option>

@@ -10,8 +10,6 @@ private $prenom;
 public function __construct(){
     $this->id = "";
     $this->mdp = "";
-    $this->nom = "Antoine";
-    $this->prenom = "Marc";
 }
 public function getId(){
     return $this->id;
