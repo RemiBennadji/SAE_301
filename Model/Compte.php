@@ -24,20 +24,23 @@ public function verifMdp($mdp)
     $sec = false;
     $nbrCara = false;
     $nbrChiffre = 0;
-    if (count($mdp) >= 8) {
+    if (strlen($mdp) >= 8) {
         $nbrCara = true;
     }
-    foreach ($caraSpec as $cara) {
-        if (in_array($cara, $chiffre)) {
+    for ($i = 0; $i < strlen($mdp); $i++) {
+        $char = $mdp[$i];
+
+        // Vérification des chiffres
+        if (is_numeric($char)) {
             $nbrChiffre++;
         }
-        if (str_contains($mdp, $cara) == false) {
-            continue;
-        } else {
+
+        // Vérification des caractères spéciaux
+        if (in_array($char, $caraSpec)) {
             $sec = true;
         }
     }
-    if ($nbrCara == true && $nbrChiffre >= 1 && $sec == true) {
+    if ($nbrCara && $nbrChiffre >= 1 && $sec) {
         return true;
     } else {
         return false;

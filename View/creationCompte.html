@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Création d'un compte</title>
+    <link href="creationCompteStyle.css" rel="stylesheet">
 </head>
 <body>
 <h1>Création d'un compte</h1>
@@ -19,6 +20,12 @@
     <input type="text" id="nom" name="nom"><br>
     <label for="prenom">Prenom</label><br>
     <input type="text" id="prenom" name="prenom"><br>
+    <label for="pwd"> Définir un mot de passe </label><br>
+    <h4>Le mot de passe doit contenir minimum 8 caractères, 1 chiffre et un caractère spécial</h4>
+    <div class="input-container">
+        <input type="password" class="input" id="pwd" name="pwd" placeholder=" " required>
+        <label for="pwd" class="placeholder">Mot de passe</label>
+    </div>
     <input type="submit">
 </form>
 </body>
