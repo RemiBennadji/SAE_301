@@ -1,27 +1,26 @@
 <?php
+//requête SQL
+$sql1 = "SELECT * FROM seance";//idseance typeseance salle code join collège(nom complet prof, matière)
 
-// Arguments de connetion + requête SQL
-$connection = pg_connect ("host=iutinfo-sgbd.uphf.fr dbname=edt user=iutinfoXXX password=XXXXXXX");
-$sql1 = "SELECT * FROM heures";
+// Arguments de connetion
+try {
+    $connection = new PDO ("pgsql:host=iutinfo-sgbd.uphf.fr; dbname=edt user=iutinfo340 password=jWBfxD1E");
+    $connection -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-function recupererDonnees($conn, $sql)
-{
-    if ($conn) {
-        $tab = array();
-        $resu = pg_query($conn, $sql);
-        for ($i = 0; $i < pg_num_rows($resu); $i++){
-            $row = pg_fetch_row($resu);
-            $tab[] = $row[0];
+    echo "connecté.<br>";
+
+    $test = $connection -> prepare($sql1);
+    $test -> execute();
+    $test1= $test -> fetchAll(PDO::FETCH_ASSOC);
+    foreach($test1 as $row){
+        foreach($row as $key => $value){
+            echo $key.": ".$value."<br>";
         }
-        return $tab;
+        echo "<br>";
     }
-    return null;
+
+} catch ( Exception $e ) {
+    echo $e->getMessage();
 }
 
-$tab = recupererDonnees($connection, $sql1);
-
-// Affichage des éléments du tableau
-for ($j = 0; $j < count($tab); $j++)
-    echo $tab[$j]."\n";
-?>
 
