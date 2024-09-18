@@ -10,21 +10,22 @@
 <body>
 <img src="../Image/LogoUPHF.png" class="logoUPHF" alt="Logo de l'UPHF" width="200">
 
-<h3>Entrez votre identifiant et votre mot de passe.</h3>
+<h1 class="titreID">Service Centrale d'Authentification (CAS)</h1>
 
 <form class="formConnection" action="../Model/Identification.php" method="post">
     <div class="passwordContainer">
+        <h3 class="titreForm">Entrez votre identifiant et votre mot de passe</h3>
         <label for="id">Identifiant :</label>
-        <input type="text" id="id" name="id" class="password" required><br><br>
+        <input type="text" id="id" name="id" class="password" placeholder="Identifiant :*" required><br><br>
 
         <label for="password">Mot de passe :</label>
-        <input type="password" id="password" name="password" class="password" required>
+        <input type="password" id="password" name="password" class="password" placeholder="Mot de passe :*" required>
         <span class="eye" id="togglePassword">
             <i class="fas fa-eye"></i> <!-- Icône d'œil initiale -->
         </span>
+        <input class="button" type="submit" value="Se connecter">
     </div>
     <br>
-    <input class="button" type="submit" value="Se connecter">
 </form>
 </body>
 </html>

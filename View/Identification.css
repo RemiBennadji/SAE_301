@@ -1,25 +1,54 @@
-.form.formConnection {
+img {
+    display: block;
+    margin-left: 35%;
+    width: 30%;
+}
+.titreForm{
+    text-align: center;
+}
+
+.formConnection {
+    /*display: flex;*/
+    /*justify-content: center;*/
+    /*align-items: center;*/
+    /*height: 50vh;*/
+    position: absolute;
+    top: 30%;
+    left: 25%;
+    width: 425px;
+    border: 2px;
+    padding-top: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+    color: rgb(27, 133, 165);
+    background: aliceblue;
+    border-radius: 15px;
 
 }
 
-.uphf{
-    text-align: right;
+.button{
+    margin-left: 100vh;
 }
-
-.passwordContainer {
-    position: relative;
-    width: 200px;
-}
-
 input[type="password"], input[type="text"] {
-    width: 100%;
+    /*width: 100%;*/
+    /*padding: 10px;*/
+    display: block;
+    border: 1px solid rgb(27, 133, 165);
+    width: 90%;
     padding: 10px;
+    margin: 10px auto;
+}
+
+.titreID{
+    text-align: center;
+    color: rgb(27, 133, 165);
+    font-family: Serif;
 }
 
 .eye {
     position: absolute;
-    top: 85%;
-    right: -10px;
+    top: 78%;
+    left: 88%;
     transform: translateY(-50%);
     border-radius: 50%; /* Forme circulaire */
 }
