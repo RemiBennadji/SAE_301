@@ -2,10 +2,8 @@
 
 class Etudiant extends Compte
 {
-    public function __construct($nom, $prenom)
+    public function __construct()
     {
         parent::__construct();
-        $this->nom=$nom;
-        $this->prenom=$prenom;
     }
 }

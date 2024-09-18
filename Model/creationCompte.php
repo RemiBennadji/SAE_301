@@ -16,21 +16,23 @@ print_r($_POST);  // Affiche toutes les données POST reçues
 echo "</pre>";
 
 if($type == "secretariat"){
-    $pers = new Secretariat($nom, $prenom);
+    $pers = new Secretariat();
 }elseif ($type == "etudiant"){
-    $pers = new Etudiant($nom, $prenom);
+    $pers = new Etudiant();
 }elseif ($type == "professeur"){
-    $pers = new Professeur($nom, $prenom);
+    $pers = new Professeur();
 }elseif ($type == "administrateur"){
-    $pers = new Administrateur($nom, $prenom);
+    $pers = new Administrateur();
 }
-
+$pers->setNom($nom);
+$pers->setPrenom($prenom);
 $id = $pers->genererIdentifiant();
 echo "L'identifiant généré : ".$id."<br>";
-?>
 
-<form>
-    <label for="pwd"> Définir un mot de passe </label><br>
-    <h4>Le mot de passe doit contenir minimum 8 caractères, 1 chiffre et un caractère spécial</h4>
-    <input type="text" id="pwd" name="pwd"><br>
-</form>
+$pwd = $_POST["pwd"];
+if($pers->verifMdp($pwd)){
+    $pers->setMdp($pwd);
+    echo "Mot de passe défini avec succès.";
+} else {
+    echo "Le mot de passe ne respecte pas les critères.";
+}
