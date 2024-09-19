@@ -16,18 +16,28 @@ img {
     top: 30%;
     left: 25%;
     width: 425px;
+    height: 425px;
     border: 2px;
     padding-top: 15px;
     padding-left: 15px;
     padding-right: 15px;
     color: rgb(27, 133, 165);
-    background: aliceblue;
-    border-radius: 15px;
+    background: #f5f9fb;
+    /*border-radius: 15px;*/
 
 }
 
 .button{
-    margin-left: 100vh;
+    border: none;
+    position: absolute;
+    top: 65%;
+    margin-left: 33%;
+    background-color: #C8A14E;
+    width: 150px;
+    height: 40px;
+    border-radius: 18px;
+    font-size: 18px;
+    color: white;
 }
 input[type="password"], input[type="text"] {
     /*width: 100%;*/
@@ -42,13 +52,25 @@ input[type="password"], input[type="text"] {
 .titreID{
     text-align: center;
     color: rgb(27, 133, 165);
-    font-family: Serif;
+    font-family: Arial;
 }
 
 .eye {
     position: absolute;
-    top: 78%;
+    top: 53%;
     left: 88%;
     transform: translateY(-50%);
     border-radius: 50%; /* Forme circulaire */
+}
+
+.messageconfidentiel{
+    position: absolute;
+    bottom: 7%;
+}
+
+.carreLiens{
+    flex: 0.2 1 50%;
+    background-color: #0081a1 !important;
+    background-repeat: no-repeat;
+    background-position-y: bottom;
 }
