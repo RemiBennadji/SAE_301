@@ -1,31 +1,27 @@
 <?php
-//requête SQL
-$sql1 = "SELECT * FROM seance";//idseance typeseance salle code join collège(nom complet prof, matière)
 
-/*
-SELECT idseance, typeseance, salle, collegue.prenom, collegue.nom
-FROM seance
-JOIN collegue ON seance.collegue = collegue.id
-*/
+// Requête(s) SQL
 
-/*
-SELECT idseance, typeseance, salle, collegue.prenom, collegue.nom, enseignement.long
-FROM seance
-JOIN collegue ON seance.collegue = collegue.id
-JOIN enseignement ON enseignement.code = matiere
-*/
+// Cette requête contient l'id, le type de séance, la salle associé, le nom du proffeseur, et l'intitulé de la matière
+$infoSeance =
+    "SELECT idseance, typeseance, duree, salle, collegue.prenom, collegue.nom, enseignement.court
+    FROM seance
+    JOIN collegue ON seance.collegue = collegue.id
+    JOIN enseignement ON seance.code = enseignement.code
+    ";
 
-// Arguments de connetion
 try {
+    // Connection à la Base de données
     $connection = new PDO ("pgsql:host=iutinfo-sgbd.uphf.fr; dbname=edt user=iutinfo340 password=jWBfxD1E");
     $connection -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    //echo "connecté.<br>";
-
-    $test = $connection -> prepare($sql1);
+    $test = $connection -> prepare($infoSeance);
     $test -> execute();
-    $test1= $test -> fetchAll(PDO::FETCH_ASSOC);
-    foreach($test1 as $row){
+
+    // Récuprer les valeurs de la requête
+    $tabEntier = $test -> fetchAll(PDO::FETCH_ASSOC);
+
+    // Afficher les valeurs pour chaque ligne
+    foreach($tabEntier as $row){
         foreach($row as $key => $value){
             echo $key.": ".$value."<br>";
         }
