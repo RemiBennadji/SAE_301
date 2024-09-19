@@ -1,0 +1,34 @@
+body{
+    margin: 20px;
+}
+
+table, caption, th, td {
+    border: 2px solid grey;
+    border-collapse: collapse;
+}
+
+col{
+    width: 350px;
+}
+
+caption, th, td {
+    padding: 8px;
+}
+
+caption {
+    background-color: lightgrey;
+}
+
+th {
+    background-color: ghostwhite;
+}
+
+td {
+    background-color: lightblue;
+}
+
+@media screen and (min-width: 80rem) {
+    .container {
+        margin: 3em 2em;
+    }
+}
