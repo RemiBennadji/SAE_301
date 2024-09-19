@@ -10,7 +10,7 @@ echo "test";
 $type = $_POST["type"];
 $nom = $_POST["nom"];
 $prenom = $_POST["prenom"];
-
+$errorMessage = "";
 echo "<pre>";
 print_r($_POST);  // Affiche toutes les données POST reçues
 echo "</pre>";
@@ -34,5 +34,21 @@ if($pers->verifMdp($pwd)){
     $pers->setMdp($pwd);
     echo "Mot de passe défini avec succès.";
 } else {
-    echo "Le mot de passe ne respecte pas les critères.";
+    $errorMessage = "Le mot de passe ne respecte pas les critères.";
 }
+if ($errorMessage !== "" || $_SERVER["REQUEST_METHOD"] !== "POST") {
+
+    if ($errorMessage !== "") {
+        echo "<div style='color: red;'>$errorMessage</div>";
+    }
+}?>
+    <head>
+        <link href="../View/creationCompteStyle.css" rel="stylesheet">
+    </head>
+    <form method="post" action="">
+        <div class="input-container">
+            <input type="text" class="input" id="pwd" name="pwd" placeholder=" ">
+            <label for="pwd" class="placeholder">Mot de passe</label>
+        </div>
+        <input type="submit" value="Soumettre">
+    </form>
