@@ -39,3 +39,52 @@ input:focus ~ label {
     top: -8px;
     background-color: white;
 }
+
+input[type="submit"] {
+    background-color: cornflowerblue;   /* Couleur de fond du bouton */
+    color: white;                 /* Couleur du texte */
+    padding: 8px 15px;          /* Espacement interne du bouton */
+    border: none;                /* Retirer la bordure */
+    border-radius: 3px;          /* Coins arrondis */
+    font-size: 15px;             /* Taille de la police */
+    font-weight: bold;           /* Texte en gras */
+    cursor: pointer;             /* Curseur en forme de main au survol */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Transition fluide pour les effets */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Légère ombre pour donner de la profondeur */
+}
+
+/* Effet au survol (hover) */
+input[type="submit"]:hover {
+    background-color: lightslategrey; /* Changement de couleur au survol */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Augmenter l'ombre pour l'effet de profondeur */
+}
+
+select {
+    background-color: white;   /* Couleur de fond */
+    color: black;              /* Couleur du texte */
+    padding: 10px;               /* Espacement interne */
+    border: 1px solid cornflowerblue;
+    border-radius: 3px;          /* Coins arrondis */
+    font-size: 15px;             /* Taille de la police */
+    cursor: pointer;             /* Curseur en forme de main */
+    transition: background-color 0.3s ease, border-color 0.3s ease; /* Transition douce pour les changements */
+}
+
+/* Effet au survol (hover) */
+select:hover {
+    background-color: #e0f2f1; /* Légère variation de couleur au survol */
+    border-color: cornflowerblue;     /* Renforcement de la couleur de la bordure */
+}
+
+/* Effet au focus (quand on clique sur le select) */
+select:focus {
+    border-color: #0077cc;    /* Couleur de bordure bleue pour l'accentuation */
+    outline: none;            /* Retirer le contour par défaut */
+}
+
+/* Modifier la flèche du select */
+select {
+    -webkit-appearance: none;  /* Supprime l'apparence par défaut sur Webkit (Chrome, Safari) */
+    -moz-appearance: none;     /* Supprime l'apparence par défaut sur Firefox */
+    appearance: none;          /* Supprime l'apparence par défaut */
+}
