@@ -28,7 +28,6 @@ try {
     foreach($test1 as $row){
         foreach($row as $key => $value){
             echo $key.": ".$value."<br>";
-            echo $key.": ".$value."<br>";
         }
         echo "<br>";
     }
