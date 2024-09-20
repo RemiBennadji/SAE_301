@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+    <title>Création d'un compte</title>
+    <link href="creationCompteStyle.css" rel="stylesheet">
+</head>
+<body>
+<h1>Création d'un compte</h1>
+<form action="../Model/creationCompte.php" method="post">
+    <div class="new-select">
+    <select name="type">
+        <option value="secretariat">Secrétariat</option>
+        <option value="etudiant">Étudiant</option>
+        <option value="prof">Professeur</option>
+        <option value="admin">Administrateur</option>
+    </select><br>
+    </div>
+    <div class="input-container">
+    <input type="text" class="input" id="nom" name="nom" placeholder=" ">
+        <label for="nom" class="placeholder">Nom</label><br>
+    </div>
+    <div class="input-container">
+    <input type="text" class="input" id="prenom" name="prenom" placeholder=" ">
+        <label for="prenom" class="placeholder">Prenom</label>
+    </div>
+    <label for="pwd"> Définir un mot de passe </label><br>
+    <h4>Le mot de passe doit contenir minimum 8 caractères, 1 chiffre et un caractère spécial</h4>
+    <div class="input-container">
+        <input type="text" class="input" id="pwd" name="pwd" placeholder=" ">
+        <label for="pwd" class="placeholder">Mot de passe</label>
+    </div>
+    <input type="submit" value="Inscrire">
+</form>
+</body>
+</html>
