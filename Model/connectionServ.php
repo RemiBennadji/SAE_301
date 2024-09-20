@@ -20,6 +20,7 @@ try {
     // Récuprer les valeurs de la requête
     $tabEntier = $test -> fetchAll(PDO::FETCH_ASSOC);
 
+    /*
     // Afficher les valeurs pour chaque ligne
     foreach($tabEntier as $row){
         foreach($row as $key => $value){
@@ -27,6 +28,7 @@ try {
         }
         echo "<br>";
     }
+    */
 
 } catch ( Exception $e ) {
     echo $e->getMessage();

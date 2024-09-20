@@ -4,12 +4,7 @@
     <caption>EDT de la semaine 00</caption>
 
     <colgroup>
-        <col>
-        <col>
-        <col>
-        <col>
-        <col>
-        <col>
+        <col><col><col><col><col><col>
     </colgroup>
 
     <tr> <th>Horraire</th>  <th>Lundi</th> <th>Mardi</th> <th>Mercredi</th> <th>Jeudi</th> <th>Vendredi</th></tr>
