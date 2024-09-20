@@ -3,6 +3,8 @@
     left: 1%;
     top: 1%;
     width: 8%;
+    border-radius: 5px;
+
 }
 
 body {
@@ -84,7 +86,7 @@ nav {
 
 /* Animation du burger */
 .burger.toggle span:nth-child(1) {
-    transform: rotate(45deg) translate(5px, 5px);
+    transform: rotate(45deg) translate(50px, 50px);
 }
 
 .burger.toggle span:nth-child(2) {
