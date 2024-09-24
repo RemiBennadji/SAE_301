@@ -17,7 +17,7 @@ function AfficherCoursClasseHeure($heure, $classe){
     JOIN enseignement ON seance.code = enseignement.code
     JOIN schedule ON seance.nomgroupe = schedule.nomgroupe
     WHERE horaire = ? AND schedule.nomgroupe=?
-    LIMIT 1";
+    LIMIT 1"; // Il manque juste le fait est de prendre le cours associé à un élève
 
     // Connexion
     $connexion = new PDO ("pgsql:host=iutinfo-sgbd.uphf.fr; dbname=edt user=iutinfo340 password=jWBfxD1E");
@@ -41,5 +41,6 @@ function AfficherCoursClasseHeure($heure, $classe){
 }
 
 // Test
-AfficherCoursClasseHeure('2025-01-09 08:00:00', 'TDA');
+
+// AfficherCoursClasseHeure('2025-01-09 08:00:00', 'TDA');
 AfficherCoursClasseSemaine('2025-01-09 ', 'TDA');
