@@ -2,6 +2,7 @@ body{
     justify-content: center;
     align-items: center;
     text-align: center;
+    font-family: Arial;
 }
 
 
@@ -86,7 +87,6 @@ input[type="password"], input[type="text"] {
 .titreID{
     text-align: center;
     color: rgb(27, 133, 165);
-    font-family: Arial;
 }
 
 .messageconfidentiel{
@@ -132,14 +132,14 @@ input[type="password"], input[type="text"] {
     top: 10px;
     left: 20px;
     font-size: 15px;
-    padding: 0px 5px;
+    padding-left: 5px;
     transition: 0.3s;
     pointer-events: none;
 }
 input:not(:placeholder-shown) ~ label,
 input:focus ~ label {
     top: -8px;
-    background-color: white;
+    background-color: #f5f9fb;
 }
 
 
@@ -173,7 +173,7 @@ input[type="password"], input[type="text"] {
 .eye {
     position: absolute;
     top: 455px;
-    left: 58%;
+    left: 59%;
     transform: translateY(-50%);
     border-radius: 50%; /* Forme circulaire */
 }
