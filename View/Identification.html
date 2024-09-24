@@ -4,36 +4,41 @@
     <meta charset="UTF-8">
     <title>Identification</title>
     <link href="Identification.css" rel="stylesheet">
-    <link class="eye" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link class="eye" rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="../Model/Identification.js" defer></script>
 </head>
 <body>
-<img src="../Image/logouphf2.png" class="logoUPHF" alt="Logo de l'UPHF" width="200">
-
+<img src="../Image/logouphf2.png" class="logoUPHF" alt="Logo de l'UPHF">
+<br><br>
 <h1 class="titreID">Service Centrale d'Authentification (CAS)</h1>
+<br><br>
+<div class="form-center">
+    <form class="formConnection" action="../Model/Identification.php" method="post">
+        <div class="passwordContainer">
+            <h3 class="titreForm">Entrez votre identifiant et votre mot de passe</h3><br>
+            <div class="input-container">
+                <input type="text" id="idcompte" name="id" class="compte" placeholder=" " required><br><br>
+                <label for="idcompte" class="placeholderActif">Identifiant :*</label>
+            </div>
 
-<form class="formConnection" action="../Model/Identification.php" method="post">
-    <div class="passwordContainer">
-        <h3 class="titreForm">Entrez votre identifiant et votre mot de passe</h3><br>
-        <div class="input-container">
-            <input type="text" id="idcompte" name="id" class="compte" placeholder=" " required><br><br>
-            <label for="idcompte" class="placeholderActif">Identifiant :*</label>
-        </div>
+            <div class="input-container">
+                <input type="text" id="idpsw" name="idpsw" class="password" placeholder=" " required><br><br>
+                <label for="idpsw" class="placeholderActif">Mot de passe :*</label>
 
-        <div class="input-container">
-            <input type="text" id="idpsw" name="idpsw" class="password" placeholder=" " required><br><br>
-            <label for="idpsw" class="placeholderActif">Mot de passe :*</label>
-        </div>
+            </div>
 
-        <span class="eye" id="togglePassword">
+            <span class="eye" id="togglePassword">
             <i class="fas fa-eye"></i> <!-- Icône d'œil initiale -->
         </span>
-        <input class="button" type="submit" value="Se connecter">
-        <p class="messageconfidentiel"><b>Vos identifiants sont strictement confidentiels et ne doivent en aucun
-            cas être transmis à une tierce personne.</b></p>
-    </div>
-    <br>
-</form>
+            <input class="buttonSeConnecter" type="submit" value="Se connecter">
+            <br><br><br><b>Vos identifiants sont strictement confidentiels et ne doivent en aucun
+            cas être transmis à une tierce personne.</b>
+        </div>
+        <br>
+    </form>
+</div>
+<br><br><br>
 <form class="mdpForgotten" action="../Model/IdentificationMDPOublie.php" method="post">
     <input class="buttonMDRForgotten" type="submit" value="Mot de passe oublié">
 </form>
