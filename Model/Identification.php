@@ -19,7 +19,7 @@ try {
 
     if ($result) {
         $role = $result['role'];
-        if ($role == "admin") {
+        if ($role == "administrateur") {
             header("location:../View/menuPrincipalAdmin.html");
         }
         else if ($role == "etudiant") {

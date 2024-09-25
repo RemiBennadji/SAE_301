@@ -8,7 +8,36 @@
     <link href="creationCompteStyle.css" rel="stylesheet">
 </head>
 <body>
+<img src="../Image/logouphf2.png" class="logoUPHF" alt="Logo de l'UPHF">
 <h1>Création d'un compte</h1>
+<header>
+    <nav>
+        <div class="burger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <ul class="menu">
+            <li><a href="../View/menuPrincipalAdmin.html">Accueil</a></li>
+            <li><a href="#">Emploie du temps</a></li>
+            <li><a href="#">Messagerie</a></li>
+            <li><a href="../View/creationCompte.html">Gestion de compte</a></li>
+            <li><a href="../View/Identification.html">Deconnexion</a></li>
+        </ul>
+    </nav>
+</header>
+<script>
+    const burger = document.querySelector('.burger');
+    const menu = document.querySelector('.menu');
+
+    burger.addEventListener('click', () => {
+        menu.classList.toggle('active');
+        burger.classList.toggle('toggle');
+    });
+</script>
+<br><br>
+
+
 <form action="../Model/creationCompte.php" method="post">
     <div class="new-select">
     <select name="type">
