@@ -57,8 +57,8 @@ img {
 }
 
 .buttonSeConnecter{
-    border: none;
-
+    /*border: none;*/
+    border-color: #C8A14E;
     /*position: absolute;*/
     /*top: 65%;*/
     /*margin-left: 30%;*/
@@ -69,6 +69,13 @@ img {
     font-size: 18px;
     color: white;
 }
+
+.buttonSeConnecter:hover{
+    border-color: #C8A14E;
+    background-color: #f5f9fb;
+    color: #C8A14E;
+}
+
 input[type="password"], input[type="text"] {
     /*width: 100%;*/
     /*padding: 10px;*/
@@ -105,7 +112,7 @@ input[type="password"], input[type="text"] {
     justify-content: center;
     align-items: center;
     text-align: center;
-    border: none;
+    border-color: #0081a1;
     /*position: absolute;*/
     /*top: 80%;*/
     /*margin-left: 44%;*/
@@ -116,7 +123,11 @@ input[type="password"], input[type="text"] {
     font-size: 18px;
     color: white;
 }
-
+.buttonMDRForgotten:hover{
+    color: #0081a1;
+    background-color: white;
+    border-color: #0081a1;
+}
 
 
 /* Animation placeholder */
