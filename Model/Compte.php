@@ -47,7 +47,7 @@ abstract class Compte
 
     public function verifMdp($mdp)
     {
-        $caraSpec = array('!', '.', '€', '@');
+        $caraSpec = array('!', '.', '€', '@','*');
         $chiffre = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
         $sec = false;
         $nbrCara = false;
