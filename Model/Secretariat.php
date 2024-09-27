@@ -6,5 +6,4 @@ class Secretariat extends Compte
     {
         parent::__construct();
     }
-
 }

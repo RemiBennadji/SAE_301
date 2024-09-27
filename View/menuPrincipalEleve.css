@@ -2,7 +2,7 @@
     position: absolute;
     left: 1%;
     top: 1%;
-    width: 8%;
+    width: 150px;
     border-radius: 5px;
 
 }
@@ -60,6 +60,7 @@ header {
     justify-content: flex-end;
     padding: 20px;
     background-color: rgb(27, 133, 165);
+    height: 75px;
 }
 
 nav {

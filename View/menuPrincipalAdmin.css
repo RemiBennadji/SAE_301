@@ -2,7 +2,10 @@
     position: absolute;
     left: 1%;
     top: 1%;
-    width: 8%;
+
+    width: 150px;
+    border-radius: 5px;
+
 }
 
 body {
@@ -58,6 +61,7 @@ header {
     justify-content: flex-end;
     padding: 20px;
     background-color: rgb(27, 133, 165);
+    height: 75px;
 }
 
 nav {
@@ -84,7 +88,7 @@ nav {
 
 /* Animation du burger */
 .burger.toggle span:nth-child(1) {
-    transform: rotate(45deg) translate(5px, 5px);
+    transform: rotate(45deg) translate(10px, 10px);
 }
 
 .burger.toggle span:nth-child(2) {
@@ -127,7 +131,7 @@ nav {
 }
 
 /* Media queries pour mobile */
-@media (min-width: 768px) {
+@media (min-width: 900px) {
     .burger {
         display: none;
     }

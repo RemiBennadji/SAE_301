@@ -1,5 +1,6 @@
 document.getElementById('togglePassword').addEventListener('click', function () {
-    var password = document.getElementById("password");
+
+    var password = document.getElementById("idpsw");
 
     // Bascule entre les types "password" et "text"
     if (password.type === "password") {

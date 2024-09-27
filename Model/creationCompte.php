@@ -1,5 +1,7 @@
 <?php
 
+echo "test";
+
 require_once "Compte.php";
 require_once "Administrateur.php";
 require_once "Etudiant.php";
@@ -10,6 +12,7 @@ $type = $_POST["type"];
 $nom = $_POST["nom"];
 $prenom = $_POST["prenom"];
 $errorMessage = "";
+
 
 if($type == "secretariat"){
     $pers = new Secretariat();
@@ -24,14 +27,16 @@ if($type == "secretariat"){
     $pers = new Administrateur();
     $pers->setRole('administrateur');
 }
+$pers->setNom($nom);
+$pers->setPrenom($prenom);
+$id = $pers->genererIdentifiant();
+echo "L'identifiant généré : ".$id."<br>";
+
 
 $pwd = $_POST["pwd"];
 if($pers->verifMdp($pwd)){
     $pers->setMdp($pwd);
-    $pers->setNom($nom);
-    $pers->setPrenom($prenom);
-    $id = $pers->genererIdentifiant();
-    echo "L'identifiant généré : ".$id."<br>";
+
     $pers->insererDonnees();
     echo "Mot de passe défini avec succès.";
 
@@ -39,4 +44,3 @@ if($pers->verifMdp($pwd)){
     echo "Le mot de passe ne respecte pas les critères.";
     echo '<a href="../View/creationCompte.html">Réessayer</a>';
 }
-?>
