@@ -1,34 +1,74 @@
-body{
-    margin: 20px;
-}
-
-table, caption, th, td {
-    border: 2px solid grey;
-    border-collapse: collapse;
-}
-
-col{
-    width: 350px;
-}
-
-caption, th, td {
-    padding: 8px;
-}
-
-caption {
-    background-color: lightgrey;
-}
-
-th {
-    background-color: ghostwhite;
-}
-
-td {
-    background-color: lightblue;
-}
-
 @media screen and (min-width: 80rem) {
     .container {
         margin: 3em 2em;
     }
+}
+
+.changerSemaine{
+    text-align: center;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
+}
+
+th {
+    background-color: #007bff;
+    color: white;
+    text-transform: uppercase;
+}
+
+td {
+    background-color: #f9f9f9;
+}
+
+tr:nth-child(even) td {
+    background-color: #f2f2f2;
+}
+
+tr:hover td {
+    background-color: #e2e2ff;
+}
+
+td.empty {
+    background-color: #ffffff;
+}
+
+td.filled {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+    text-transform: capitalize;
+}
+
+td.filled:hover {
+    background-color: #0056b3;
+}
+
+caption {
+    caption-side: top;
+    font-size: 1.5em;
+    margin-bottom: 10px;
 }
