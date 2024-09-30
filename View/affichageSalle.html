@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>affichageSalle</title>
+    <link href="affichageSalle.css" rel="stylesheet">
+</head>
+<body>
+<img src="../Image/logouphf2.png" class="logoUPHF" alt="Logo de l'UPHF">
+<header>
+    <nav>
+        <div class="burger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <ul class="menu">
+            <li><a href="../View/menuPrincipalAdmin.html">Accueil</a></li>
+            <li><a href="../View/afficherEdt.php">Emploie du temps</a></li>
+            <li><a href="#">Messagerie</a></li>
+            <li><a href="../View/creationCompte.html">Créer un compte</a></li>
+            <li><a href="../View/Identification.html">Deconnexion</a></li>
+        </ul>
+    </nav>
+</header>
+<script>
+    const burger = document.querySelector('.burger');
+    const menu = document.querySelector('.menu');
+
+    burger.addEventListener('click', () => {
+        menu.classList.toggle('active');
+        burger.classList.toggle('toggle');
+    });
+</script>
+<br><br><br><br><br>
+<form action="affichageSalle.php" method="POST">
+    <label for="idJour">Choisir le jour :</label><br><br>
+    <input class="jour" type="date" id="idJour"><br><br><br>
+
+    <label for="idHeure">Choisir l'heure :</label><br><br>
+    <input class="heure" type="time" id="idHeure"><br><br><br>
+
+    <input class="buttonSeConfirmer" type="submit" value="Confirmer">
+
+</form>
+<br><br>
+
+</body>
+</html>
