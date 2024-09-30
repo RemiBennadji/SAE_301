@@ -17,10 +17,10 @@ if($type == "secretariat"){
 }elseif ($type == "etudiant"){
     $pers = new Etudiant();
     $pers->setRole('etudiant');
-}elseif ($type == "professeur"){
+}elseif ($type == "prof"){
     $pers = new Professeur();
     $pers->setRole('professeur');
-}elseif ($type == "administrateur"){
+}elseif ($type == "admin"){
     $pers = new Administrateur();
     $pers->setRole('administrateur');
 }

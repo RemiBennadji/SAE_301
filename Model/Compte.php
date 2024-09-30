@@ -1,4 +1,5 @@
 <?php
+include "../Model/ConnectionBDD.php";
 
 abstract class Compte
 {
@@ -27,14 +28,10 @@ abstract class Compte
 
     public function insererDonnees()
     {
-        $host = "iutinfo-sgbd.uphf.fr";
-        $username = "iutinfo301";
-        $password = "YAH+rfI3";
-        $dbname = "iutinfo301";
         $req = "INSERT INTO infoutilisateur VALUES('$this->identifiant', '$this->nom','$this->prenom' ,'$this->role', '$this->mdp')";
+
         try {
-            $conn = new PDO("pgsql:host=$host;dbname=$dbname", $username, $password);
-            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $conn = getConnectionBDDEDTIdentification();
 
             $insert = $conn->prepare($req);
             $insert->execute();
@@ -85,16 +82,11 @@ abstract class Compte
 
     public function genererIdentifiant()
     {
-        $host = "iutinfo-sgbd.uphf.fr";
-        $username = "iutinfo301";
-        $password = "YAH+rfI3";
-        $dbname = "iutinfo301";
         $uniqueId = 0;
         $allId = array();
         $req = "SELECT identifiant FROM infoutilisateur";
         try {
-            $conn = new PDO("pgsql:host=$host;dbname=$dbname", $username, $password);
-            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $conn = getConnectionBDDEDTIdentification();
 
             $identifiants = $conn->query($req);
             while ($row = $identifiants->fetch()) {

@@ -1,4 +1,5 @@
 <?php
+include "../Model/ConnectionBDD.php";
 
 // Requête(s) SQL
 
@@ -12,8 +13,7 @@ $infoSeance =
 
 try {
     // Connection à la Base de données
-    $connection = new PDO ("pgsql:host=iutinfo-sgbd.uphf.fr; dbname=edt user=iutinfo340 password=jWBfxD1E");
-    $connection -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $connection = getConnectionBDDEDTIdentification();
     $test = $connection -> prepare($infoSeance);
     $test -> execute();
 

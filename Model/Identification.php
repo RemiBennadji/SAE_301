@@ -1,4 +1,5 @@
 <?php
+include "../Model/ConnectionBDD.php";
 
 $ID = $_POST["id"];
 echo "id = ".$ID."<br>";
@@ -8,8 +9,7 @@ $sql1 ="select role from infoutilisateur where identifiant=:ID and mdp=:PWD";
 
 
 try {
-    $connection = new PDO ("pgsql:host=iutinfo-sgbd.uphf.fr; dbname=iutinfo301 user=iutinfo301 password=YAH+rfI3");
-    $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $connection = getConnectionBDDEDTIdentification();
 
     $result = $connection->prepare($sql1);
     $result->bindParam(':ID', $ID);
