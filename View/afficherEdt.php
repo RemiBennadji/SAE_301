@@ -4,6 +4,18 @@
 </head>
 
 <?php
+
+include "../Model/ConnectionBDD.php";
+
+// Exemple + Test
+$dateActuel = '2025-01-06';
+$classeActuel = 'TDC';
+
+/*
+echo 'La semaine d avant : '.decrementerSemaine($dateActuel)."<br>";
+echo 'La semaine actuel : '.$dateActuel."<br>";
+echo 'La semaine d apres : '.incrementerSemaine($dateActuel)."<br>";**/
+
 function AfficherEdtSemaine($dateDebut, $classe){
     // Conversion de la date de début en timestamp
     $timestamp = strtotime($dateDebut);
@@ -62,8 +74,8 @@ function RecupererCours($jour, $horaire, $classe){
     LIMIT 1";
 
     // Connexion à la base de données
-    $connexion = new PDO("pgsql:host=iutinfo-sgbd.uphf.fr; dbname=edt user=iutinfo308 password=uQoCRXbn");
-    $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $connexion = getConnectionBDD();
+
 
     // Préparation de la requête avec les paramètres
     $req = $connexion->prepare($sql);
@@ -84,13 +96,49 @@ function RecupererCours($jour, $horaire, $classe){
     }
 }
 
-echo('<img src="https://upload.wikimedia.org/wikipedia/commons/b/bd/UPHF_logo.svg" alt="Logo UPHF" width=30% height=30%"/>');
+function incrementerSemaine($ancienneDate){
+    // Formatage des dates et incrémentation d'une semaine
+    $timestamp = strtotime($ancienneDate);
+    $lundiActuel = date("Y-m-d", $timestamp);
+    $nouveauLundi = strtotime("+7 day", strtotime($lundiActuel));
+    return date("Y-m-d", $nouveauLundi);
+}
 
-echo ('<h3> EDT </h3> <div class="changerSemaine"> <button type="button"><</button>
-    EDT du XX
-    <button type="button">></button>
+function decrementerSemaine($ancienneDate){
+    // Formatage des dates et décrementation d'une semaine
+    $timestamp = strtotime($ancienneDate);
+    $lundiActuel = date("Y-m-d", $timestamp);
+    $nouveauLundi = strtotime("-7 day", strtotime($lundiActuel));
+    return date("Y-m-d", $nouveauLundi);
+}
+
+echo('<img src="https://upload.wikimedia.org/wikipedia/commons/b/bd/UPHF_logo.svg" alt="Logo UPHF" width=20% height=20%"/>');
+
+echo ('<h3> EDT </h3> <div class="changerSemaine"> 
+    <form action="afficherEdt.php" method="post">
+        <button type="submit" name="precedent"><</button>
+    <label>Semaine du'.' '.$dateActuel.'</label>
+    <button type="submit" name="suivant">></button>
+</form>
 </div>');
 
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Si le bouton semaine précédent a était pressé
+    if(isset($_POST["precedent"])){
+        $dateActuel = decrementerSemaine($dateActuel);
+        // Faire en sorte que la dateActuel change vraiment et non temporairement
+        AfficherEdtSemaine($dateActuel, $classeActuel);
+    }
 
-// Test pour afficher l'emploi du temps de la semaine du 9 janvier 2025 pour la classe "TDA"
-AfficherEdtSemaine('2025-01-09', 'TDA');
+    // Si le bouton semaine précédent a était pressé
+    if(isset($_POST["suivant"])){
+        echo $dateActuel;
+        $dateActuel = incrementerSemaine($dateActuel);
+        // Faire en sorte que la dateActuel change vraiment et non temporairement
+        AfficherEdtSemaine($dateActuel, $classeActuel);
+    }
+}
+// Si acuun bouton pressé, on affiche l'EDT courant
+else{
+    AfficherEdtSemaine($dateActuel, $classeActuel);
+}
