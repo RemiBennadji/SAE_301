@@ -46,8 +46,8 @@ img {
     /*padding-top: 15px;*/
     /*padding-left: 15px;*/
     /*padding-right: 15px;*/
-    color: rgb(27, 133, 165);
-    background: #f5f9fb;
+    color: rgb(27, 165, 50);
+    background: #ecffe8;
     /*border-radius: 15px;*/
 
 }
@@ -68,19 +68,21 @@ img {
     border-radius: 18px;
     font-size: 18px;
     color: white;
+    border-style: solid;
 }
 
 .buttonSeConnecter:hover{
     border-color: #C8A14E;
     background-color: #f5f9fb;
     color: #C8A14E;
+    border-style: solid;
 }
 
 input[type="password"], input[type="text"] {
     /*width: 100%;*/
     /*padding: 10px;*/
     display: block;
-    border: 1px solid rgb(27, 133, 165);
+    border: 1px solid rgb(27, 165, 50);
     width: 90%;
     padding: 10px;
     margin: 10px auto;
@@ -93,7 +95,7 @@ input[type="password"], input[type="text"] {
 
 .titreID{
     text-align: center;
-    color: rgb(27, 133, 165);
+    color: rgb(27, 165, 50);
 }
 
 .messageconfidentiel{
@@ -112,21 +114,23 @@ input[type="password"], input[type="text"] {
     justify-content: center;
     align-items: center;
     text-align: center;
-    border-color: #0081a1;
+    border-color: rgb(27, 165, 50);
     /*position: absolute;*/
     /*top: 80%;*/
     /*margin-left: 44%;*/
-    background-color: rgb(27, 133, 165);
+    background-color: rgb(27, 165, 50);
     width: 200px;
     height: 40px;
     border-radius: 18px;
     font-size: 18px;
     color: white;
+    border-style: solid;
 }
 .buttonMDRForgotten:hover{
-    color: #0081a1;
+    color: rgb(27, 165, 50);
     background-color: white;
-    border-color: #0081a1;
+    border-color: rgb(27, 165, 50);
+    border-style: solid;
 }
 
 
@@ -170,7 +174,7 @@ input[type="password"], input[type="text"] {
     /*width: 100%;*/
     /*padding: 10px;*/
     display: block;
-    border: 1px solid rgb(27, 133, 165);
+    border: 1px solid rgb(27, 165, 50);
     width: 90%;
     padding: 10px;
     margin: 10px auto;
