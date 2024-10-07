@@ -40,7 +40,7 @@ img {
     /*top: 30%;*/
     /*left: 38%;*/
     width: 425px;
-    height: 425px;
+    height: 450px;
     /*margin-top: 30%;*/
     /*border: 2px;*/
     /*padding-top: 15px;*/
@@ -183,8 +183,8 @@ input[type="password"], input[type="text"] {
 
 .eye {
     position: absolute;
-    top: 455px;
-    left: 59%;
+    top: 460px;
+    left: 60%;
     transform: translateY(-50%);
     border-radius: 50%; /* Forme circulaire */
 }

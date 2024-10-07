@@ -62,7 +62,7 @@ function RecupererCours($jour, $horaire, $classe){
     LIMIT 1";
 
     // Connexion à la base de données
-    $connexion = new PDO("pgsql:host=iutinfo-sgbd.uphf.fr; dbname=edt user=iutinfo340 password=jWBfxD1E");
+    $connexion = new PDO("pgsql:host=iutinfo-sgbd.uphf.fr; dbname=edt user=iutinfo308 password=uQoCRXbn");
     $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // Préparation de la requête avec les paramètres
