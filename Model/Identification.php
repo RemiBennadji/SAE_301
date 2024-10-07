@@ -19,6 +19,14 @@ try {
 
     if ($result) {
         $role = $result['role'];
+
+        session_start();
+        $_SESSION['role'] = $role;
+        $_SESSION['ID'] = $ID;
+
+        setcookie("role", $role, time() + (60 * 15), "/");
+        setcookie("ID", $ID, time() + (60 * 15), "/");
+
         if ($role == "administrateur") {
             header("location:../View/menuPrincipalAdmin.html");
         }
