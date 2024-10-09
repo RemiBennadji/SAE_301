@@ -1,10 +1,13 @@
 <?php
-$jour = $_GET["jour"];
-$heure = $_GET["heure"];
+$jour = $_POST["idJour"];
+$heure = $_POST["idHeure"];
+$timestamp = strtotime($jour);
+
+// On s'assure que la date est bien au format YYYY-MM-DD (ex : lundi)
+$date = date("Y-m-d", $timestamp).' '.$heure.':00';
 
 //$sql11 ="select role from infoutilisateur where identifiant=:ID and mdp=:PWD";
-$sql1 ="select nosalle from listesalles";
-$sql2 ="select ";
+$sql1 ="select distinct salle from schedule where horaire = '$date'";
 
 try {
     $connection = new PDO ("pgsql:host=iutinfo-sgbd.uphf.fr; dbname=edt user=iutinfo301 password=YAH+rfI3");
@@ -12,33 +15,11 @@ try {
 
     $resultSalles = $connection->prepare($sql1);
     $resultSalles->execute();
-    $listeSalles =$resultSalles->fetch(PDO::FETCH_ASSOC);
-
-
-    $resultSallesPrises = $connection->prepare($sql2);
-    $resultSallesPrises->execute();
-    $listeSallesPrises =$resultSallesPrises->fetch(PDO::FETCH_ASSOC);
-
-    echo "$listeSalles";
+    $listeSalles =$resultSalles->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($listeSalles as $salle) {
+        echo $salle['salle'].'<br>';
+    }
 
 } catch (PDOException $e) {
     echo $e->getMessage();
-}
-
-
-
-//try {
-//    $connection = new PDO ("pgsql:host=iutinfo-sgbd.uphf.fr; dbname=edt user=iutinfo301 password=YAH+rfI3");
-//    $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-//
-//    $resultSallesPrises = $connection->prepare($sql2);
-//    $resultSallesPrises->execute();
-//    $listeSallesPrises =$resultSallesPrises->fetch(PDO::FETCH_ASSOC);
-//
-//} catch (PDOException $e) {
-//    echo $e->getMessage();
-//}
-
-foreach ($listeSalles as $salle) {
-    if (in_array($salle, $ListeSallesPrises)) {
 }
