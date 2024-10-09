@@ -1,13 +1,23 @@
+<?php
+session_start();
+
+// Vérification si le rôle est défini, sinon rediriger vers la page de connexion
+if (!isset($_SESSION['role'])) {
+    header("Location: ../View/Identification.html"); // Redirection si pas de rôle
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>MenuPrincipalEleve</title>
-    <link href="menuPrincipalEleve.css" rel="stylesheet">
+    <title>Menu Principal Admin</title>
+    <link href="menuPrincipalAdmin.css" rel="stylesheet">
 </head>
-
 <body>
-<img src="../Image/logouphf2.png" class="logoUPHF">
+<img src="../Image/logouphf2.png" class="logoUPHF" alt="Logo UPHF">
+
 <header>
     <nav>
         <div class="burger">
@@ -16,10 +26,10 @@
             <span></span>
         </div>
         <ul class="menu">
-            <li><a href="../View/menuPrincipalEleve.html">Accueil</a></li>
-            <li><a href="../View/afficherEdt.php">Emploie du temps</a></li>
+            <li><a href="afficherEdt.html">Emploi du temps</a></li>
             <li><a href="#">Messagerie</a></li>
-            <li><a href="../View/Identification.html">Deconnexion</a></li>
+            <li><a href="../View/creationCompte.html" id="creationCompte" style="display: none">Créer un compte</a></li>
+            <li><a href="../Model/Deconnexion.php">Déconnexion</a></li>
         </ul>
     </nav>
 </header>
@@ -28,13 +38,13 @@
     const burger = document.querySelector('.burger');
     const menu = document.querySelector('.menu');
 
-    burger.addEventListener('click', () => {
-        menu.classList.toggle('active');
-        burger.classList.toggle('toggle');
+    burger.addEventListener("click", () => {
+        menu.classList.toggle("active");
+        burger.classList.toggle("toggle");
     });
 </script>
-<br><br>
 
+<br><br>
 
 <div class="container">
     <div class="red-box">
@@ -57,6 +67,11 @@
         <a href="change_password.html">Changer de mot de passe</a>
     </div>
 </div>
+
+<script src="../Model/MenuPrincipal.js"></script>
+
+<script>afficherElement("<?php echo $_SESSION['role']; ?>");</script>
+
 
 </body>
 </html>

@@ -27,14 +27,9 @@ try {
         setcookie("role", $role, time() + (60 * 15), "/");
         setcookie("ID", $ID, time() + (60 * 15), "/");
 
-        if ($role == "administrateur") {
-            header("location:../View/menuPrincipalAdmin.html");
-        }
-        else if ($role == "etudiant") {
-            header("location:../View/menuPrincipalEleve.html");
-        }
-        else if ($role == "professeur") {
-            header("location:../View/menuPrincipalProf.html");
+        if (isset($role)) {
+            header("location:../View/MenuPrincipal.php");
+            exit();
         }
     }
 
