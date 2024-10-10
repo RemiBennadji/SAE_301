@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>affichageSalle</title>
-    <link href="affichageSalle.css" rel="stylesheet">
+    <link href="../CSS/affichageSalle.css" rel="stylesheet">
 </head>
 <body>
-<img src="../Image/logouphf2.png" class="logoUPHF" alt="Logo de l'UPHF">
+<img src="../../Ressource/logouphf2.png" class="logoUPHF" alt="Logo de l'UPHF">
 <header>
     <nav>
         <div class="burger">
@@ -16,10 +16,10 @@
         </div>
         <ul class="menu">
             <li><a href="../View/menuPrincipalAdmin.html">Accueil</a></li>
-            <li><a href="../View/afficherEdt.php">Emploie du temps</a></li>
+            <li><a href="afficherEdt.html">Emploie du temps</a></li>
             <li><a href="#">Messagerie</a></li>
-            <li><a href="../View/creationCompte.html">Créer un compte</a></li>
-            <li><a href="../View/Identification.html">Deconnexion</a></li>
+            <li><a href="creationCompte.html">Créer un compte</a></li>
+            <li><a href="Identification.html">Deconnexion</a></li>
         </ul>
     </nav>
 </header>
@@ -33,7 +33,7 @@
     });
 </script>
 <br><br><br><br><br>
-<form action="affichageSalle.php" method="POST">
+<form action="../../Contoller/affichageSalle.php" method="POST">
     <label for="idJour">Choisir le jour :</label><br><br>
     <input class="jour" type="date" id="idJour"><br><br><br>
 

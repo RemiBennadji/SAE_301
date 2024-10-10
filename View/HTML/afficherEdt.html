@@ -1,6 +1,6 @@
 <head>
     <title>EDT</title>
-    <link rel="stylesheet" type="text/css" href="edt.css">
+    <link rel="stylesheet" type="text/css" href="../CSS/edt.css">
 </head>
 
 <?php
@@ -10,6 +10,12 @@ function AfficherEdtSemaine($dateDebut, $classe){
 
     // On s'assure que la date est bien au format YYYY-MM-DD (ex : lundi)
     $lundi = date("Y-m-d", $timestamp);
+
+    session_start();//Test
+    echo $_SESSION['role']."\n";
+    echo $_SESSION['ID']."\n";
+    echo $_COOKIE['role']."\n";
+    echo $_COOKIE['ID']."\n";
 
     // Tableau HTML pour afficher l'emploi du temps
     echo "<table>";

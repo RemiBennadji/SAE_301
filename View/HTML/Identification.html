@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Identification</title>
-    <link href="Identification.css" rel="stylesheet">
+    <link href="../CSS/Identification.css" rel="stylesheet">
     <link class="eye" rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <img src="../Image/logouphf2.png" class="logoUPHF" alt="Logo de l'UPHF">
+    <img src="../../Ressource/logouphf2.png" class="logoUPHF" alt="Logo de l'UPHF">
     <br><br>
     <h1 class="titreID">SAE - Emploi du temps</h1>
     <br><br>
     <div class="form-center">
-        <form class="formConnection" action="../Model/Identification.php" method="post">
+        <form class="formConnection" action="../../Contoller/Identification.php" method="post">
             <div class="passwordContainer">
                 <h3 class="titreForm">Entrez votre identifiant et votre mot de passe</h3><br>
                 <div class="input-container">
@@ -38,9 +38,9 @@
         </form>
     </div>
     <br><br><br>
-    <form class="mdpForgotten" action="../View/mdpOublie.html" method="post">
+    <form class="mdpForgotten" action="mdpOublie.html" method="post">
         <input class="buttonMDRForgotten" type="submit" value="Mot de passe oublié">
     </form>
-    <script src="../Model/Identification.js" defer></script>
+    <script src="../../Model/JavaScript/Identification.js" defer></script>
 </body>
 </html>
