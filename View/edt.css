@@ -48,10 +48,6 @@ tr:nth-child(even) td {
     background-color: #f2f2f2;
 }
 
-tr:hover td {
-    background-color: #e2e2ff;
-}
-
 td.empty {
     background-color: #ffffff;
 }
@@ -63,9 +59,6 @@ td.filled {
     text-transform: capitalize;
 }
 
-td.filled:hover {
-    background-color: #0056b3;
-}
 
 caption {
     caption-side: top;
@@ -73,74 +66,73 @@ caption {
     margin-bottom: 10px;
 }
 
-
 /* Anglais */
 .cours-anglais-cm {
-    background-color: #003366; /* Bleu foncé */
+    background-color: #0000ff;
     color: white;
 }
 .cours-anglais-td {
-    background-color: #336699; /* Bleu normal */
+    background-color: #336699;
     color: white;
 }
 .cours-anglais-tp {
-    background-color: #99ccff; /* Bleu clair */
+    background-color: #99ccff;
     color: black;
 }
 
 /* Informatique */
 .cours-informatique-cm {
-    background-color: #660000; /* Rouge foncé */
+    background-color: #004d00;
     color: white;
 }
 .cours-informatique-td {
-    background-color: #cc3333; /* Rouge normal */
+    background-color: #339933;
     color: white;
 }
 .cours-informatique-tp {
-    background-color: #ff9999; /* Rouge clair */
+    background-color: #99cc99;
     color: black;
 }
 
 /* Mathématiques */
 .cours-mathematiques-cm {
-    background-color: #004d00; /* Vert foncé */
+    background-color: #ff0000;
     color: white;
 }
 .cours-mathematiques-td {
-    background-color: #339933; /* Vert normal */
+    background-color: #cc3333;
     color: white;
 }
 .cours-mathematiques-tp {
-    background-color: #99cc99; /* Vert clair */
+    background-color: #ff9999;
     color: black;
 }
 
 /* Communication */
 .cours-communication-cm {
-    background-color: #663300; /* Marron foncé */
+    background-color: #663300;
     color: white;
 }
 .cours-communication-td {
-    background-color: #cc6600; /* Marron normal */
+    background-color: #cc6600;
     color: white;
 }
 .cours-communication-tp {
-    background-color: #ffcc99; /* Marron clair */
+    background-color: #ffcc99;
     color: black;
 }
 
 /* Éco/Gestion */
 .cours-eco-gestion-cm {
-    background-color: #4d004d; /* Violet foncé */
+    background-color: #4d004d;
     color: white;
 }
 .cours-eco-gestion-td {
-    background-color: #993399; /* Violet normal */
+    background-color: #993399;
     color: white;
 }
 .cours-eco-gestion-tp {
-    background-color: #e699e6; /* Violet clair */
+    background-color: #e699e6;
     color: black;
 }
 
