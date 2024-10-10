@@ -7,7 +7,7 @@
 include "../Model/ConnectionBDD.php";
 
 // Exemple + Test
-$dateActuel = '2025-01-06';  // Date par défaut
+$dateActuel = ' 2025-01-06';  // Date par défaut
 $classeActuel = 'TPC1';       // Groupe par défaut (TPC1 en 1ère année)
 
 // Fonction pour afficher l'emploi du temps de la semaine
@@ -65,41 +65,42 @@ function AfficherEdtSemaine($dateDebut, $classe) {
 
 // Fonction pour récupérer un cours pour un jour et une heure donnés
 function RecupererCours($jour, $horaire, $classe) {
-    // Concaténer la date et l'heure
-    $dateTime = $jour . ' ' . $horaire . ':00'; // Format YYYY-MM-DD HH:MM:SS
-
-    // Requête SQL ajustée pour la version 20 dans la table schedule
+    $dateTime = $jour . ' ' . $horaire . ':00';
     $sql = "
-   SELECT DISTINCT seance.idseance, seance.typeseance, duree, schedule.salle, collegue.prenom, collegue.nom, enseignement.court as matiere, horaire as date, schedule.nomgroupe
-   FROM seance
-   JOIN collegue ON seance.collegue = collegue.id
-   JOIN enseignement ON seance.code = enseignement.code
-   JOIN schedule ON seance.nomgroupe = schedule.nomgroupe
-   WHERE horaire = ?
-     AND schedule.version = 20  -- Filtrer pour la 20ème version dans 'schedule'
-     AND (
-        schedule.nomgroupe = ?  -- Inclure les TD et TP pour le groupe
-        OR schedule.nomgroupe = 'CM'  -- Inclure tous les CM
-        OR schedule.nomgroupe LIKE 'TD%'  -- Inclure les TD du groupe C
-     )
-   LIMIT 1";
+       SELECT DISTINCT seance.idseance, seance.typeseance, duree, schedule.salle, collegue.prenom, collegue.nom, enseignement.court as matiere, enseignement.discipline, horaire as date, schedule.nomgroupe
+       FROM seance
+       JOIN collegue ON seance.collegue = collegue.id
+       JOIN enseignement ON seance.code = enseignement.code
+       JOIN schedule ON seance.nomgroupe = schedule.nomgroupe
+       WHERE horaire = ?
+         AND schedule.version = 20
+         AND (
+            schedule.nomgroupe = ?
+            OR schedule.nomgroupe = 'CM'
+            OR schedule.nomgroupe LIKE 'TD%'
+         )
+       LIMIT 1";
 
-    // Connexion à la base de données
     $connexion = getConnectionBDD();
-
-    // Préparation de la requête avec les paramètres
     $req = $connexion->prepare($sql);
     $req->execute([$dateTime, $classe]);
 
-    // Récupération du résultat
     $cours = $req->fetch(PDO::FETCH_ASSOC);
 
-    // Si un cours est trouvé, on retourne les informations formatées
     if ($cours) {
-        return $cours['typeseance'] . "<br>" .
+        // Génération de la classe CSS basée sur la discipline et le type de séance
+        $discipline = strtolower($cours['discipline']); // ex: 'informatique'
+        $typeSeance = strtolower($cours['typeseance']); // ex: 'TD'
+
+        // Générer une classe CSS
+        $classeCSS = "cours-" . $discipline . "-" . $typeSeance;
+
+        return "<div class='$classeCSS'>" .
+            $cours['typeseance'] . "<br>" .
             $cours['matiere'] . "<br>" .
             $cours['prenom'][0] . ". " . $cours['nom'] . "<br>" .
-            "Salle " . $cours['salle'];
+            "Salle " . $cours['salle'] .
+            "</div>";
     } else {
         return null;
     }

@@ -73,3 +73,74 @@ caption {
     margin-bottom: 10px;
 }
 
+
+/* Anglais */
+.cours-anglais-cm {
+    background-color: #003366; /* Bleu foncé */
+    color: white;
+}
+.cours-anglais-td {
+    background-color: #336699; /* Bleu normal */
+    color: white;
+}
+.cours-anglais-tp {
+    background-color: #99ccff; /* Bleu clair */
+    color: black;
+}
+
+/* Informatique */
+.cours-informatique-cm {
+    background-color: #660000; /* Rouge foncé */
+    color: white;
+}
+.cours-informatique-td {
+    background-color: #cc3333; /* Rouge normal */
+    color: white;
+}
+.cours-informatique-tp {
+    background-color: #ff9999; /* Rouge clair */
+    color: black;
+}
+
+/* Mathématiques */
+.cours-mathematiques-cm {
+    background-color: #004d00; /* Vert foncé */
+    color: white;
+}
+.cours-mathematiques-td {
+    background-color: #339933; /* Vert normal */
+    color: white;
+}
+.cours-mathematiques-tp {
+    background-color: #99cc99; /* Vert clair */
+    color: black;
+}
+
+/* Communication */
+.cours-communication-cm {
+    background-color: #663300; /* Marron foncé */
+    color: white;
+}
+.cours-communication-td {
+    background-color: #cc6600; /* Marron normal */
+    color: white;
+}
+.cours-communication-tp {
+    background-color: #ffcc99; /* Marron clair */
+    color: black;
+}
+
+/* Éco/Gestion */
+.cours-eco-gestion-cm {
+    background-color: #4d004d; /* Violet foncé */
+    color: white;
+}
+.cours-eco-gestion-td {
+    background-color: #993399; /* Violet normal */
+    color: white;
+}
+.cours-eco-gestion-tp {
+    background-color: #e699e6; /* Violet clair */
+    color: black;
+}
+
