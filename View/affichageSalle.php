@@ -6,36 +6,24 @@ $horaire = array('8:00', '9:30', '11:00', '12:30', '14:00', '15:30', '17:00');
 // On s'assure que la date est bien au format YYYY-MM-DD (ex : lundi)
 $date = date("Y-m-d", $timestamp).' '.$heure.':00';
 
-for($i=0; $i < count($horaire); $i++) {
-    if($horaire[$i]!=0){
-        if($horaire[$i]==$heure){
-            $heureInf = $horaire[$i-1];
-            $dateInf = date("Y-m-d", $timestamp).' '.$heureInf.':00';
-        }
-    }
-}
+//for($i=0; $i < count($horaire); $i++) {
+//    if($horaire[$i]!=0){
+//        if($horaire[$i]==$heure){
+//            $heureInf = $horaire[$i-1];
+//            $dateInf = date("Y-m-d", $timestamp).' '.$heureInf.':00';
+//        }
+//    }
+//}
 
 
 
 $sql1 ="select distinct salle from schedule where horaire = '$date'";
 $sql2 ="select distinct nosalle from listesalles";
-//$sql3 ="select duration, salle from schedule where horaire = '$dateInf' and duration = '0 years 0 mons 0 days 3 hours 0 mins 0.0 secs'";
-
 $sallesAll = array();
 
 try {
     $connection = new PDO ("pgsql:host=iutinfo-sgbd.uphf.fr; dbname=edt user=iutinfo301 password=YAH+rfI3");
     $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-
-//    echo 'liste salles vides'.'<br>';
-//    $cours = $connection->prepare($sql3);
-//    $cours->execute();
-//    $coursLong = $cours->fetchAll(PDO::FETCH_ASSOC);
-//    foreach ($coursLong as $cours3) {
-//        $coursInf[] = $cours3["salle"];
-//    }
-
 
     $resultSalles = $connection->prepare($sql1);
     $resultSalles->execute();
