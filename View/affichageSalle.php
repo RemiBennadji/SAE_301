@@ -19,9 +19,10 @@ for($i=0; $i < count($horaire); $i++) {
 
 $sql1 ="select distinct salle from schedule where horaire = '$date'";
 $sql2 ="select distinct nosalle from listesalles";
-$sql3 ="select distinct duration from schedule where horaire = '$dateInf'";
+//$sql3 ="select duration, salle from schedule where horaire = '$dateInf' and duration = '0 years 0 mons 0 days 3 hours 0 mins 0.0 secs'";
 
 $sallesVides = array();
+$coursInf = array();
 
 try {
     $connection = new PDO ("pgsql:host=iutinfo-sgbd.uphf.fr; dbname=edt user=iutinfo301 password=YAH+rfI3");
@@ -34,13 +35,20 @@ try {
         $sallesVides[] = $nosalle["nosalle"];
     }
 
-    echo 'liste salles vides'.'<br>';
+//    echo 'liste salles vides'.'<br>';
+//    $cours = $connection->prepare($sql3);
+//    $cours->execute();
+//    $coursLong = $cours->fetchAll(PDO::FETCH_ASSOC);
+//    foreach ($coursLong as $cours3) {
+//        $coursInf[] = $cours3["salle"];
+//    }
+
 
     $resultSalles = $connection->prepare($sql1);
     $resultSalles->execute();
     $listeSalles =$resultSalles->fetchAll(PDO::FETCH_ASSOC);
     foreach ($listeSalles as $salle) {
-        if(in_array($salle['salle'], $sallesVides)) {
+        if((in_array($salle['salle'], $sallesVides)) and !in_array($salle['salle'], $coursInf)) {
             echo $salle['salle'].'<br>';
         }
     }
