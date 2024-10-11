@@ -1,6 +1,6 @@
 <head>
     <title>EDT</title>
-    <link rel="stylesheet" type="text/css" href="../CSS/edt.css">
+    <link rel="stylesheet" type="text/css" href="../View/CSS/edt.css">
 </head>
 
 <?php
