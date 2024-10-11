@@ -21,19 +21,12 @@ $sql1 ="select distinct salle from schedule where horaire = '$date'";
 $sql2 ="select distinct nosalle from listesalles";
 //$sql3 ="select duration, salle from schedule where horaire = '$dateInf' and duration = '0 years 0 mons 0 days 3 hours 0 mins 0.0 secs'";
 
-$sallesVides = array();
-$coursInf = array();
+$sallesAll = array();
 
 try {
     $connection = new PDO ("pgsql:host=iutinfo-sgbd.uphf.fr; dbname=edt user=iutinfo301 password=YAH+rfI3");
     $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $salles = $connection->prepare($sql2);
-    $salles->execute();
-    $sallesDispo = $salles->fetchAll(PDO::FETCH_ASSOC);
-    foreach ($sallesDispo as $nosalle) {
-        $sallesVides[] = $nosalle["nosalle"];
-    }
 
 //    echo 'liste salles vides'.'<br>';
 //    $cours = $connection->prepare($sql3);
@@ -48,8 +41,14 @@ try {
     $resultSalles->execute();
     $listeSalles =$resultSalles->fetchAll(PDO::FETCH_ASSOC);
     foreach ($listeSalles as $salle) {
-        if((in_array($salle['salle'], $sallesVides)) and !in_array($salle['salle'], $coursInf)) {
-            echo $salle['salle'].'<br>';
+        $sallesAll[] = $salle['salle'];
+    }
+    $salles = $connection->prepare($sql2);
+    $salles->execute();
+    $sallesDispo = $salles->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($sallesDispo as $nosalle) {
+        if(!in_array($nosalle['nosalle'], $sallesAll)){
+            echo $nosalle['nosalle'].'<br>';
         }
     }
 
