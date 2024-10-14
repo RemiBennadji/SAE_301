@@ -18,8 +18,7 @@ $sallesAll = array();
 
 //connexion BDD @Noah
 try {
-    $connection = new PDO ("pgsql:host=iutinfo-sgbd.uphf.fr; dbname=edt user=iutinfo301 password=YAH+rfI3");
-    $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $connection = getConnectionBDD();//Utilisation des informations de connexion entrer dans le fichier ConnexionBDD.php
 
     //execution de la requête 1 et ajoute les salles à la liste sallesAll @Noah
     $resultSalles = $connection->prepare($sql1);
