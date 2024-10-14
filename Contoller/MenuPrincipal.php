@@ -13,10 +13,10 @@ if (!isset($_SESSION['role'])) {
 <head>
     <meta charset="UTF-8">
     <title>Menu Principal Admin</title>
-    <link href="menuPrincipalAdmin.css" rel="stylesheet">
+    <link href="../View/CSS/menuPrincipalAdmin.css" rel="stylesheet">
 </head>
 <body>
-<img src="../Image/logouphf2.png" class="logoUPHF" alt="Logo UPHF">
+<img src="../Ressource/logouphf2.png" class="logoUPHF" alt="Logo UPHF">
 
 <header>
     <nav>
@@ -26,10 +26,10 @@ if (!isset($_SESSION['role'])) {
             <span></span>
         </div>
         <ul class="menu">
-            <li><a href="afficherEdt.html">Emploi du temps</a></li>
+            <li><a href="../View/afficherEdt.html">Emploi du temps</a></li>
             <li><a href="#">Messagerie</a></li>
             <li><a href="../View/creationCompte.html" id="creationCompte" style="display: none">Créer un compte</a></li>
-            <li><a href="../Model/Deconnexion.php">Déconnexion</a></li>
+            <li><a href="Deconnexion.php">Déconnexion</a></li>
         </ul>
     </nav>
 </header>
@@ -68,7 +68,7 @@ if (!isset($_SESSION['role'])) {
     </div>
 </div>
 
-<script src="../Model/MenuPrincipal.js"></script>
+<script src="../Model/JavaScript/MenuPrincipal.js"></script>
 
 <script>afficherElement("<?php echo $_SESSION['role']; ?>");</script>
 

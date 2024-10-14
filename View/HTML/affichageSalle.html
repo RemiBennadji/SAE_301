@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>affichageSalle</title>
-    <link href="affichageSalle.css" rel="stylesheet">
+    <link href="../CSS/affichageSalle.css" rel="stylesheet">
 </head>
 <body>
-<img src="../Image/logouphf2.png" class="logoUPHF" alt="Logo de l'UPHF">
+<img src="../../Ressource/logouphf2.png" class="logoUPHF" alt="Logo de l'UPHF">
 <header>
     <nav>
         <div class="burger">
@@ -15,11 +15,11 @@
             <span></span>
         </div>
         <ul class="menu">
-            <li><a href="../View/menuPrincipalAdmin.html" class="underline-animation">Accueil</a></li>
-            <li><a href="../View/afficherEdt.php" class="underline-animation">Emploie du temps</a></li>
-            <li><a href="#" class="underline-animation">Messagerie</a></li>
-            <li><a href="../View/creationCompte.html" class="underline-animation">Créer un compte</a></li>
-            <li><a href="../View/Identification.html" class="underline-animation">Deconnexion</a></li>
+            <li><a href="../View/menuPrincipalAdmin.html">Accueil</a></li>
+            <li><a href="../../Contoller/EDT.php">Emploie du temps</a></li>
+            <li><a href="#">Messagerie</a></li>
+            <li><a href="creationCompte.html">Créer un compte</a></li>
+            <li><a href="Identification.html">Deconnexion</a></li>
         </ul>
     </nav>
 </header>
@@ -33,19 +33,18 @@
     });
 </script>
 <br><br><br><br><br>
-<form action="affichageSalle.php" method="POST">
+<form action="../../Contoller/affichageSalle.php" method="POST">
     <label for="idJour">Choisir le jour :</label><br><br>
-    <input class="jour" type="date" id="idJour" name="idJour"><br><br><br>
+    <input class="jour" type="date" id="idJour"><br><br><br>
 
     <label for="idHeure">Choisir l'heure :</label><br><br>
-    <select name="idHeure" id="idHeure" class="idHeure">
+    <select name="horaire" id="idHeure" class="idHeure">
         <option value="8:00">8:00</option>
         <option value="9:30">9:30</option>
         <option value="11:00">11:00</option>
         <option value="12:30">12:30</option>
         <option value="14:00">14:00</option>
         <option value="15:30">15:30</option>
-        <option value="17:00">17:00</option>
     </select><br><br><br>
 
     <input class="buttonSeConfirmer" type="submit" value="Confirmer">
