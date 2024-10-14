@@ -12,5 +12,5 @@ echo $_SESSION['ID']."\n";
 echo $_COOKIE['role']."\n";
 echo $_COOKIE['ID']."\n";
 */
-header("location:../View/Identification.html");
+header("location:../View/HTML/Identification.html");
 ?>

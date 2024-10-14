@@ -3,7 +3,7 @@ session_start();
 
 // Vérification si le rôle est défini, sinon rediriger vers la page de connexion
 if (!isset($_SESSION['role'])) {
-    header("Location: ../View/Identification.html"); // Redirection si pas de rôle
+    header("Location: ../View/HTML/Identification.html"); // Redirection si pas de rôle
     exit();
 }
 ?>
@@ -26,10 +26,10 @@ if (!isset($_SESSION['role'])) {
             <span></span>
         </div>
         <ul class="menu">
-            <li><a href="../View/afficherEdt.html">Emploi du temps</a></li>
+            <li><a href="../Controller/EDT.php">Emploi du temps</a></li>
             <li><a href="#">Messagerie</a></li>
-            <li><a href="../View/creationCompte.html" id="creationCompte" style="display: none">Créer un compte</a></li>
-            <li><a href="Deconnexion.php">Déconnexion</a></li>
+            <li><a href="../View/HTML/creationCompte.html" id="creationCompte" style="display: none">Créer un compte</a></li>
+            <li><a href="../Controller/Deconnexion.php">Déconnexion</a></li>
         </ul>
     </nav>
 </header>
