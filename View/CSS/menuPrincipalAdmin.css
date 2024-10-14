@@ -145,3 +145,26 @@ nav {
         margin: 0 15px;
     }
 }
+
+.underline-animation {
+    display: inline-block;
+    position: relative;
+    font-size: 24px;
+    color: #333;
+    cursor: pointer;
+}
+
+.underline-animation::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #C8A14E; /* Couleur du soulignement */
+    transition: width 0.3s ease-in-out;
+}
+
+.underline-animation:hover::after {
+    width: 100%;
+}
