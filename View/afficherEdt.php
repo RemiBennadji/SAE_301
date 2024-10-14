@@ -7,7 +7,7 @@
 include "../Model/ConnectionBDD.php";
 
 // Exemple + Test
-$dateActuel = ' 2025-01-06';  // Date par défaut
+$dateActuel = ' 2025-01-13';  // Date par défaut
 $classeActuel = 'TPC1';       // Groupe par défaut (TPC1 en 1ère année)
 
 // Fonction pour afficher l'emploi du temps de la semaine
