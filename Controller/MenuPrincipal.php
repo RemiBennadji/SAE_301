@@ -34,7 +34,7 @@ if (!isset($_SESSION['role'])) {
     </nav>
 </header>
 
-<script>
+<script><!-- script pour que les liens href soi responsive -->
     const burger = document.querySelector('.burger');
     const menu = document.querySelector('.menu');
 
@@ -46,7 +46,7 @@ if (!isset($_SESSION['role'])) {
 
 <br><br>
 
-<div class="container">
+<div class="container"><!-- container avec les inputs de l'identient, password et button submit -->
     <div class="red-box">
         <form>
             <h2>Inscription</h2>

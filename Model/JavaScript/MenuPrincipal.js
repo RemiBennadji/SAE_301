@@ -8,7 +8,7 @@ function professeur(){}
 
 function secretariat(){}
 
-function afficherElement(role){
+function afficherElement(role){//Fonction qui verifie le rôle de l'utilisateur
     if(role === "administrateur"){
         admin();
     }
