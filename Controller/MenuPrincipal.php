@@ -9,7 +9,7 @@ if (!isset($_SESSION['role'])) {
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <title>Menu Principal Admin</title>
