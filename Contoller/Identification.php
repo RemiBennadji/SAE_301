@@ -1,5 +1,5 @@
 <?php
-include "../Model/ConnectionBDD.php";
+include "../Contoller/ConnectionBDD.php";
 
 $ID = $_POST["id"];
 echo "id = ".$ID."<br>";
