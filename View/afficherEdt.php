@@ -7,7 +7,7 @@
 include "../Model/ConnectionBDD.php";
 
 // Exemple + Test
-$dateActuel = ' 2025-01-13';  // Date par défaut
+$dateActuel = ' 2025-01-06';  // Date par défaut
 $classeActuel = 'TPC1';       // Groupe par défaut (TPC1 en 1ère année)
 
 // Fonction pour afficher l'emploi du temps de la semaine
@@ -63,6 +63,15 @@ function AfficherEdtSemaine($dateDebut, $classe) {
     echo "</table>";
 }
 
+// Fonction pour retirer les accents et convertir en équivalents non accentués
+function supprimerAccents($str) {
+    return str_replace(
+        ['é', 'è', 'ê', 'ë', 'à', 'â', 'ä', 'ù', 'û', 'ü', 'î', 'ï', 'ô', 'ö', 'ç', 'É', 'È', 'Ê', 'Ë', 'À', 'Â', 'Ä', 'Ù', 'Û', 'Ü', 'Î', 'Ï', 'Ô', 'Ö', 'Ç'],
+        ['e', 'e', 'e', 'e', 'a', 'a', 'a', 'u', 'u', 'u', 'i', 'i', 'o', 'o', 'c', 'e', 'e', 'e', 'e', 'a', 'a', 'a', 'u', 'u', 'u', 'i', 'i', 'o', 'o', 'c'],
+        $str
+    );
+}
+
 // Fonction pour récupérer un cours pour un jour et une heure donnés
 function RecupererCours($jour, $horaire, $classe) {
     $dateTime = $jour . ' ' . $horaire . ':00';
@@ -89,7 +98,13 @@ function RecupererCours($jour, $horaire, $classe) {
 
     if ($cours) {
         // Génération de la classe CSS basée sur la discipline et le type de séance
-        $discipline = strtolower($cours['discipline']); // ex: 'informatique'
+        $discipline = strtolower($cours['discipline']); // ex: 'Éco/Gestion'
+
+        // Suppression des accents et des caractères non valides
+        $discipline = supprimerAccents($discipline);
+        $discipline = preg_replace('/[^a-z0-9]+/', '-', $discipline); // Remplacer les caractères non alphanumériques par des tirets
+        $discipline = trim($discipline, '-'); // Supprimer les tirets en début et fin de chaîne
+
         $typeSeance = strtolower($cours['typeseance']); // ex: 'TD'
 
         // Générer une classe CSS
