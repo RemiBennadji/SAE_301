@@ -72,6 +72,8 @@ if (!isset($_SESSION['role'])) {
 
 <script>afficherElement("<?php echo $_SESSION['role']; ?>");</script>
 
-
+<footer class="footer">
+    <p>&copy; 2024 - SAE Emploi du temps. Rémi | Dorian | Matthéo | Bastien.</p>
+</footer>
 </body>
 </html>

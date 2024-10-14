@@ -33,25 +33,32 @@
     });
 </script>
 <br><br><br><br><br>
+<div class="big-container">
+<div class="sub-container">
 <form action="../../Controller/affichageSalle.php" method="POST">
-    <label for="idJour">Choisir le jour :</label><br><br>
+    <h1><u>Voir la disponibilité des salles</u></h1><br><br><br>
+    <label class="textContainer" for="idJour"><B>Choisir le jour :</B></label><br><br>
     <input class="idJour" type="date" id="idJour" name="idJour"><br><br><br>
 
-    <label for="idHeure">Choisir l'heure :</label><br><br>
+    <label class="textContainer" for="idHeure"><B>Choisir l'heure :</B></label><br><br>
     <select name="idHeure" id="idHeure" class="idHeure">
-        <option value="8:00">8:00</option>
-        <option value="9:30">9:30</option>
-        <option value="11:00">11:00</option>
-        <option value="12:30">12:30</option>
-        <option value="14:00">14:00</option>
-        <option value="15:30">15:30</option>
-        <option value="17:00">17:00</option>
+        <option class="textContainer" value="8:00">8:00</option>
+        <option class="textContainer" value="9:30">9:30</option>
+        <option class="textContainer" value="11:00">11:00</option>
+        <option class="textContainer" value="12:30">12:30</option>
+        <option class="textContainer" value="14:00">14:00</option>
+        <option class="textContainer" value="15:30">15:30</option>
+        <option class="textContainer" value="17:00">17:00</option>
     </select><br><br><br>
 
     <input class="buttonSeConfirmer" type="submit" value="Confirmer">
 
 </form>
+</div>
+</div>
 <br><br>
-
+<footer class="footer">
+    <p>&copy; 2024 - SAE Emploi du temps. Rémi | Dorian | Matthéo | Bastien.</p>
+</footer>
 </body>
 </html>
