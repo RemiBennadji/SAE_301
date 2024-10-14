@@ -36,7 +36,7 @@ if($pers->verifMdp($pwd)){
     echo "Mot de passe défini avec succès.";
 } else {
     echo "Le mot de passe ne respecte pas les critères.";
-    echo '<a href="../../View/creationCompte.html">Réessayer</a>';
+    echo '<a href="../../View/HTML/creationCompte.html">Réessayer</a>';
 }
 if ($errorMessage !== "" || $_SERVER["REQUEST_METHOD"] !== "POST") {
 
