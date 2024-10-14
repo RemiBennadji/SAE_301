@@ -26,10 +26,10 @@ if (!isset($_SESSION['role'])) {
             <span></span>
         </div>
         <ul class="menu">
-            <li><a href="../View/afficherEdt.html">Emploi du temps</a></li>
+            <li><a href="../Controller/EDT.php">Emploi du temps</a></li>
             <li><a href="#">Messagerie</a></li>
-            <li><a href="../View/creationCompte.html" id="creationCompte" style="display: none">Créer un compte</a></li>
-            <li><a href="Deconnexion.php">Déconnexion</a></li>
+            <li><a href="../View/HTML/creationCompte.html" id="creationCompte" style="display: none">Créer un compte</a></li>
+            <li><a href="../Controller/Deconnexion.php">Déconnexion</a></li>
         </ul>
     </nav>
 </header>

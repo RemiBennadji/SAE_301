@@ -1,5 +1,5 @@
 <?php
-include "../Contoller/ConnectionBDD.php";
+include "../Controller/ConnectionBDD.php";
 
 $ID = $_POST["id"];
 echo "id = ".$ID."<br>";
@@ -28,7 +28,7 @@ try {
         setcookie("ID", $ID, time() + (60 * 15), "/");
 
         if (isset($role)) {
-            header("location:../Contoller/MenuPrincipal.php");
+            header("location:../Controller/MenuPrincipal.php");
             exit();
         }
     }
