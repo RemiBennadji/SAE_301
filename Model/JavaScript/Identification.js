@@ -12,3 +12,21 @@ document.getElementById('togglePassword').addEventListener('click', function () 
         this.innerHTML = '<i class="fas fa-eye"></i>';
     }
 });
+
+/*
+document.getElementById("submitID").addEventListener('click', function(){
+    const IdCompte = document.getElementById('idcompte');
+    const MDP = document.getElementById('idpsw');
+    const formInscription = document.getElementById('formID');
+
+    function AlerteBox(event){
+        event.preventDefault();
+        let errorMessage = '';
+        if (errorMessage.value.trim()!==''){
+            alert(errorMessage)
+        } else {
+            header("location:../Controller/identification.php")
+        }
+    }
+});
+ */
