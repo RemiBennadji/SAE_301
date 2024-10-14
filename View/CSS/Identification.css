@@ -236,8 +236,8 @@ input[type="password"], input[type="text"] {
 
 .eye {
     position: absolute;
-    top: 383px;
-    left: 59%;
+    top: 23%;
+    right: 8%;
     transform: translateY(-50%);
     border-radius: 50%; /* Forme circulaire */
 }
