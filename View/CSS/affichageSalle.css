@@ -144,6 +144,8 @@ nav {
 }
 
 .big-container{
+    position: absolute;
+    top: 33%;
     display: flex;
     width: 100%;
     justify-content: center;
