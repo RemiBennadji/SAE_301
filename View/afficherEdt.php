@@ -7,11 +7,12 @@
 include "../Model/ConnectionBDD.php";
 
 // Exemple + Test
-$dateActuel = ' 2025-01-13';  // Date par défaut
+$dateActuel = ' 2024-10-14';  // Date par défaut
 $classeActuel = 'TPC1';       // Groupe par défaut (TPC1 en 1ère année)
+$anneeActuel = 1;            // Année par défaut (1ère année)
 
 // Fonction pour afficher l'emploi du temps de la semaine
-function AfficherEdtSemaine($dateDebut, $classe) {
+function AfficherEdtSemaine($dateDebut, $classe, $annee) {
     // Conversion de la date de début en timestamp
     $timestamp = strtotime($dateDebut);
 
@@ -49,7 +50,7 @@ function AfficherEdtSemaine($dateDebut, $classe) {
             $jour = date("Y-m-d", $jourTimestamp);
 
             // Récupération du cours pour cette date et cette heure
-            $cours = RecupererCours($jour, $horaire, $classe);
+            $cours = RecupererCours($jour, $horaire, $classe, $annee);
 
             // Affichage du cours (ou vide si pas de cours)
             if ($cours) {
@@ -66,29 +67,38 @@ function AfficherEdtSemaine($dateDebut, $classe) {
 // Fonction pour retirer les accents et convertir en équivalents non accentués
 function supprimerAccents($str) {
     return str_replace(
-        ['é', 'è', 'ê', 'ë', 'à', 'â', 'ä', 'ù', 'û', 'ü', 'î', 'ï', 'ô', 'ö', 'ç', 'É', 'È', 'Ê', 'Ë', 'À', 'Â', 'Ä', 'Ù', 'Û', 'Ü', 'Î', 'Ï', 'Ô', 'Ö', 'Ç'],
+        ['é', 'è', 'ê', 'ë', 'à', 'â', 'ä', 'ù', 'û', 'ü', 'î', 'ï', 'ô', 'ö', 'ç', 'É', 'È', 'Ê', 'Ë', 'À', ' ', 'Ä', 'Ù', 'Û', 'Ü', 'Î', 'Ï', 'Ô', 'Ö', 'Ç'],
         ['e', 'e', 'e', 'e', 'a', 'a', 'a', 'u', 'u', 'u', 'i', 'i', 'o', 'o', 'c', 'e', 'e', 'e', 'e', 'a', 'a', 'a', 'u', 'u', 'u', 'i', 'i', 'o', 'o', 'c'],
         $str
     );
 }
 
 // Fonction pour récupérer un cours pour un jour et une heure donnés
-function RecupererCours($jour, $horaire, $classe) {
+function RecupererCours($jour, $horaire, $classe, $annee) {
     $dateTime = $jour . ' ' . $horaire . ':00';
+
+    // Déterminer les semestres à inclure selon l'année de l'étudiant
+    $semestres = ($annee == 1) ? [1, 2] : (($annee == 2) ? [3, 4] : [5, 6]);
+
+    // Transformation du tableau de semestres en chaîne de caractères pour l'injection SQL
+    $semestresString = implode(",", $semestres);
+
     $sql = "
-       SELECT DISTINCT seance.idseance, seance.typeseance, duree, schedule.salle, collegue.prenom, collegue.nom, enseignement.court as matiere, enseignement.discipline, horaire as date, schedule.nomgroupe
-       FROM seance
-       JOIN collegue ON seance.collegue = collegue.id
-       JOIN enseignement ON seance.code = enseignement.code
-       JOIN schedule ON seance.nomgroupe = schedule.nomgroupe
-       WHERE horaire = ?
-         AND schedule.version = 20
-         AND (
-            schedule.nomgroupe = ?
-            OR schedule.nomgroupe = 'CM'
-            OR schedule.nomgroupe LIKE 'TD%'
-         )
-       LIMIT 1";
+     SELECT DISTINCT seance.idseance, seance.typeseance, duree, schedule.salle, collegue.prenom, collegue.nom, enseignement.court as matiere, enseignement.discipline, horaire as date, schedule.nomgroupe
+     FROM seance
+     JOIN collegue ON seance.collegue = collegue.id
+     JOIN enseignement ON seance.code = enseignement.code
+     JOIN schedule ON seance.nomgroupe = schedule.nomgroupe
+     JOIN ressourcegroupe rg ON schedule.nomgroupe = rg.nomgroupe
+     WHERE horaire = ?
+       AND schedule.version = 20
+       AND (
+          schedule.nomgroupe = ?
+          OR schedule.nomgroupe = 'CM'
+          OR schedule.nomgroupe LIKE 'TD%'
+       )
+       AND rg.semestre IN ($semestresString)  -- Contrainte pour les semestres en fonction de l'année
+     LIMIT 1";
 
     $connexion = getConnectionBDD();
     $req = $connexion->prepare($sql);
@@ -155,15 +165,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 // Affichage du titre et du formulaire de changement de semaine
-echo ('<div class="changerSemaine"> 
-    <form action="afficherEdt.php" method="post">
-        <button type="submit" name="precedent"><</button>
-        <label>Semaine du ' . date("d/m/Y", strtotime($dateActuel)) . '</label>
-        <input type="hidden" name="dateActuel" value="'. $dateActuel .'">
-        <button type="submit" name="suivant">></button>
-    </form>
+echo ('<div class="changerSemaine">
+   <form action="afficherEdt.php" method="post">
+       <button type="submit" name="precedent"><</button>
+       <label>Semaine du ' . date("d/m/Y", strtotime($dateActuel)) . '</label>
+       <input type="hidden" name="dateActuel" value="'. $dateActuel .'">
+       <button type="submit" name="suivant">></button>
+   </form>
 </div>');
 
 // Affichage de l'emploi du temps pour la semaine choisie
-AfficherEdtSemaine($dateActuel, $classeActuel);
+AfficherEdtSemaine($dateActuel, $classeActuel, $anneeActuel);
 ?>
