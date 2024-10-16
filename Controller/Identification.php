@@ -17,18 +17,27 @@ try {
     $result->bindParam(':ID', $ID);
     $result->bindParam(':PWD', $PWD);
     $result->execute();
-    $result =$result->fetch(PDO::FETCH_ASSOC);
+    $result = $result->fetch(PDO::FETCH_ASSOC);
 
-    $result2 =$connection->prepare($sql2);
+    $result2 = $connection->prepare($sql2);
     $result2->execute();
-    $result2 =$result2->fetchall(PDO::FETCH_ASSOC);
+    $result2 = $result2->fetchall(PDO::FETCH_ASSOC);
 
     if (!empty($result2)) {
-        foreach ($result2 as $row) {
-            echo "Identifiant: " . $row['identifiant'] . ", Mot de Passe: " . $row['motdepasse'] . "<br>";
+        $tmp = 0;
+        while ($tmp < count($result2)) {
+            echo "test".'<br>';
+            foreach ($result2 as $row) {
+                echo "Identifiant: " . $row['identifiant'] . ", Mot de Passe: " . $row['motdepasse'].'<br>';
+                if ($row['identifiant'] == $ID and $row['motDePasse'] == $PWD) {
+                    echo 'identifiant trouver';
+                }
+            }
+            $tmp++;
         }
-    } else {
-        echo "Aucun résultat trouvé.";
+
+    }else {
+        echo "Aucun identifiant trouvé.";
     }
 
     if ($result) {//si le role est bien recupérer alors on démarre la session et cookies
@@ -41,7 +50,7 @@ try {
         setcookie("role", $role, time() + (60 * 15), "/");//Début cookie
         setcookie("ID", $ID, time() + (60 * 15), "/");
 
-        if (isset($role)) {//si le role n'est pas vite alors on lance MenuPrincipal.php
+        if (isset($role)) {//si le role n'est pas vide alors on lance MenuPrincipal.php
             header("location:../Controller/MenuPrincipal.php");
             exit();
         }

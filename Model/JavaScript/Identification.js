@@ -13,6 +13,24 @@ document.getElementById('togglePassword').addEventListener('click', function () 
     }
 });
 
+// const idcompte = document.getElementById('idcompte');
+// const idpsw = document.getElementById('idpsw');
+// const labelIdentifiant = document.getElementById('labelIdentifiant')
+// const labelPsw = document.getElementById('labelPsw')
+// const yeux = document.getElementById('passwordSymbole')
+//
+// document.getElementById('formID').addEventListener('submit', function (event){
+//     event.preventDefault()
+//     idcompte.style.background = '#f2a19b'
+//     idcompte.borderWidth = '50px'
+//     idcompte.style.border = 'RED'
+//     labelIdentifiant.style.color = 'RED'
+//     idpsw.style.background = '#f2a19b'
+//     idpsw.style.border = 'RED'
+//     labelPsw.style.color = 'RED'
+//     yeux.style.color = 'BLACK'
+// });
+
 /*
 document.getElementById("submitID").addEventListener('click', function(){
     const IdCompte = document.getElementById('idcompte');
