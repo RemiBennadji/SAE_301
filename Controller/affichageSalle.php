@@ -1,4 +1,6 @@
 <?php
+
+include "ConnectionBDD.php";
 //récupération des données du formulaire @Noah
 $jour = $_POST["idJour"];
 $heure = $_POST["idHeure"];
@@ -32,10 +34,15 @@ try {
     $salles = $connection->prepare($sql2);
     $salles->execute();
     $sallesDispo = $salles->fetchAll(PDO::FETCH_ASSOC);
+    $sallesLibres = array();
     foreach ($sallesDispo as $nosalle) {
         if(!in_array($nosalle['nosalle'], $sallesAll)){
-            echo $nosalle['nosalle'].'<br>';
+            $sallesLibres[] = $nosalle['nosalle'];
+//            echo $nosalle['nosalle'].'<br>';
         }
+    }
+    foreach ($sallesLibres as $n) {
+        echo $n.'<br>';
     }
 
 } catch (PDOException $e) {
