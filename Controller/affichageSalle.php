@@ -41,11 +41,72 @@ try {
 //            echo $nosalle['nosalle'].'<br>';
         }
     }
-    foreach ($sallesLibres as $n) {
-        echo $n.'<br>';
-    }
+//    foreach ($sallesLibres as $n) {
+//        echo $n.'<br>';
+//    }
 
 } catch (PDOException $e) {
     echo $e->getMessage();
 }
 ?>
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Menu Principal Admin</title>
+    <link href="../View/CSS/affichageSallePhp.css" rel="stylesheet">
+</head>
+<body>
+<a href="MenuPrincipal.php"><img src="../Ressource/logouphf2.png" class="logoUPHF" alt="Logo UPHF"></a>
+
+<header>
+    <nav>
+        <div class="burger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <ul class="menu">
+            <li><a class="underline-animation" href="MenuPrincipal.php">Accueil</a></li>
+            <li><a class="underline-animation" href="../Controller/EDT.php">Emploi du temps</a></li>
+            <li><a class="underline-animation" href="#">Messagerie</a></li>
+            <li><a class="underline-animation" href="../View/HTML/creationCompte.html" id="creationCompte" style="display: none">Créer un compte</a></li>
+            <li><a class="underline-animation" href="../Controller/Deconnexion.php">Déconnexion</a></li>
+        </ul>
+    </nav>
+</header>
+
+<script><!-- script pour que les liens href soi responsive -->
+    const burger = document.querySelector('.burger');
+    const menu = document.querySelector('.menu');
+
+    burger.addEventListener("click", () => {
+        menu.classList.toggle("active");
+        burger.classList.toggle("toggle");
+    });
+</script>
+
+<br>
+
+<div class="big-container">
+    <div class="sub-container"><br>
+        <h2>Les salles libres sont : </h2><br><br>
+        <ul class="salles-libre">
+
+            <?php
+            foreach ($sallesLibres as $n) {
+                echo '<li>' . htmlspecialchars($n) . '</li>'; // Utiliser htmlspecialchars pour éviter les problèmes de sécurité
+            }
+            ?>
+        </ul>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <p>&copy; 2024 - SAE Emploi du temps. Rémi | Dorian | Matthéo | Bastien.</p>
+</footer>
+</body>
+</html>
