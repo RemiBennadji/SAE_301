@@ -24,37 +24,28 @@ try {
     $result2 = $result2->fetchall(PDO::FETCH_ASSOC);
 
     if (!empty($result2)) {
-        $tmp = 0;
-        while ($tmp < count($result2)) {
-            echo "test".'<br>';
-            foreach ($result2 as $row) {
-                echo "Identifiant: " . $row['identifiant'] . ", Mot de Passe: " . $row['motdepasse'].'<br>';
-                if ($row['identifiant'] == $ID and $row['motDePasse'] == $PWD) {
-                    echo 'identifiant trouver';
+        $i = 0;
+        for ($i = 0; $i < count($result2); $i++ ) {
+            if ($result2[$i]['identifiant'] == $ID and $result2[$i]['motdepasse'] == $PWD) {
+                if ($result) {//si le role est bien recupérer alors on démarre la session et cookies
+                    $role = $result['role'];
+
+                    session_start();//Début session
+                    $_SESSION['role'] = $role;
+                    $_SESSION['ID'] = $ID;
+
+                    setcookie("role", $role, time() + (60 * 15), "/");//Début cookie
+                    setcookie("ID", $ID, time() + (60 * 15), "/");
+
+                    if (isset($role)) {//si le role n'est pas vide alors on lance MenuPrincipal.php
+                        header("location:../Controller/MenuPrincipal.php");
+                        exit();
+                    }
                 }
             }
-            $tmp++;
-        }
-
-    }else {
-        echo "Aucun identifiant trouvé.";
-    }
-
-    if ($result) {//si le role est bien recupérer alors on démarre la session et cookies
-        $role = $result['role'];
-
-        session_start();//Début session
-        $_SESSION['role'] = $role;
-        $_SESSION['ID'] = $ID;
-
-        setcookie("role", $role, time() + (60 * 15), "/");//Début cookie
-        setcookie("ID", $ID, time() + (60 * 15), "/");
-
-        if (isset($role)) {//si le role n'est pas vide alors on lance MenuPrincipal.php
-            header("location:../Controller/MenuPrincipal.php");
-            exit();
         }
     }
+    echo 'fail';
 
 } catch (PDOException $e) {
     echo $e->getMessage();
