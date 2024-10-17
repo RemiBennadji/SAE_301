@@ -1,0 +1,242 @@
+.logoUPHF {
+    position: absolute;
+    left: 1%;
+    top: 1%;
+    width: 150px;
+    border-radius: 5px;
+
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+header {
+    display: flex;
+    justify-content: flex-end;
+    padding: 20px;
+    background-color: rgb(27, 165, 50);
+    height: 75px;
+}
+
+nav {
+    position: relative;
+}
+
+/* Burger icon */
+.burger {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 24px;
+    width: 30px;
+}
+
+.burger span {
+    background-color: #fff;
+    height: 3px;
+    width: 100%;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+/* Animation du burger */
+.burger.toggle span:nth-child(1) {
+    transform: rotate(45deg) translate(10px, 10px);
+}
+
+.burger.toggle span:nth-child(2) {
+    opacity: 0;
+}
+
+.burger.toggle span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* Menu */
+.menu {
+    position: absolute;
+    top: 1%;
+    right: 1%;
+    list-style: none;
+    background-color: rgb(27, 165, 50);
+    padding: 10px;
+    display: none;
+    flex-direction: column;
+}
+
+.menu.active {
+    display: flex;
+    top: 200%;
+}
+
+.menu li {
+    margin: 10px 0;
+}
+
+.menu li a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 18px;
+}
+
+.menu li a:hover {
+    color: #f39c12;
+}
+
+/* Media queries pour mobile */
+@media (min-width: 900px) {
+    .burger {
+        display: none;
+    }
+
+    .menu {
+        display: flex;
+        flex-direction: row;
+        position: static;
+    }
+
+    .menu li {
+        margin: 0 15px;
+    }
+}
+
+.underline-animation {
+    display: inline-block;
+    position: relative;
+    font-size: 24px;
+    color: #333;
+    cursor: pointer;
+}
+
+.underline-animation::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #C8A14E; /* Couleur du soulignement */
+    transition: width 0.3s ease-in-out;
+}
+
+.underline-animation:hover::after {
+    width: 100%;
+}
+
+.buttonSeConfirmer{
+    /*border: none;*/
+    border-color: #C8A14E;
+    /*position: absolute;*/
+    /*top: 65%;*/
+    /*margin-left: 30%;*/
+    background-color: #C8A14E;
+    width: 150px;
+    height: 40px;
+    border-radius: 18px;
+    font-size: 18px;
+    color: white;
+    border-style: solid;
+}
+
+.buttonSeConfirmer:hover{
+    border-color: #C8A14E;
+    background-color: #f5f9fb;
+    color: #C8A14E;
+    border-style: solid;
+}
+
+.textContainer{
+    font-size: 22px;
+}
+
+.idHeure{
+    font-size: 22px;
+    color: #6dd656;
+}
+
+.idJour{
+    font-size: 22px;
+    color: #6dd656;
+}
+
+/* Style du footer */
+.footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.footer p {
+    margin: 0;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+}
+
+.big-container {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    border-radius: 20px;
+    width: 100%;
+}
+
+.sub-container {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 100%;
+    height: 100%;
+    padding: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: #ecffe8;
+    color: rgb(27, 165, 50);
+}
+
+.salles-libre {
+    list-style-type: none; /* Supprime les puces de la liste */
+    padding: 0; /* Supprime le padding par défaut */
+    width: 50%;
+}
+
+.salles-libre li {
+    /*background-color: #e0f7fa;*/
+    /*margin: 10px 0; !* Ajoute de l'espace entre les éléments *!*/
+    /*padding: 10px;*/
+    /*border-radius: 4px;*/
+    /*transition: background-color 0.3s; !* Effet de transition *!*/
+
+    background-color: #e0f7fa;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    width: 100%;
+    text-align: center;
+}
+
+.salles-libre li:hover {
+    background-color: #b2ebf2; /* Change la couleur au survol */
+}
+
+h2 {
+    text-align: center;
+    color: #00796b;
+    width: 100%;
+}
