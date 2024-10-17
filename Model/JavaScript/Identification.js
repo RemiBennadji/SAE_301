@@ -13,20 +13,35 @@ document.getElementById('togglePassword').addEventListener('click', function () 
     }
 });
 
-/*
-document.getElementById("submitID").addEventListener('click', function(){
-    const IdCompte = document.getElementById('idcompte');
-    const MDP = document.getElementById('idpsw');
-    const formInscription = document.getElementById('formID');
+const idcompte = document.getElementById('idcompte');
+const idpsw = document.getElementById('idpsw');
+const labelIdentifiant = document.getElementById('labelIdentifiant')
+const labelPsw = document.getElementById('labelPsw')
+const yeux = document.getElementById('passwordSymbole')
 
-    function AlerteBox(event){
-        event.preventDefault();
-        let errorMessage = '';
-        if (errorMessage.value.trim()!==''){
-            alert(errorMessage)
-        } else {
-            header("location:../Controller/identification.php")
-        }
-    }
+document.getElementById('formID').addEventListener('submit', function (event) {
+    event.preventDefault(); // Empêche l'envoi normal du formulaire
+
+    const formData = new FormData(this);
+
+    fetch('../../Controller/Identification.php', {method: 'POST'/*POST = cacher info URL*/, body: formData})//envoie donnée au serveur et return réponse
+        .then(response => response.text())// enregistre la reponse du serveur
+        .then(data => {//si il y a une reponse
+            if (data === 'fail') {
+                // Change le style en cas d'échec
+                idcompte.style.background = '#f2a19b';
+                idcompte.style.border = '2px solid red';
+                labelIdentifiant.style.color = 'red';
+
+                idpsw.style.background = '#f2a19b';
+                idpsw.style.border = '2px solid red';
+                labelPsw.style.color = 'red';
+                yeux.style.color = 'black';
+            } else {
+                // Redirige l'utilisateur s'il est authentifié
+                window.location.href = '../../Controller/MenuPrincipal.php';
+            }
+        })
+        .catch(error => console.error('Erreur:', error));
 });
- */
+

@@ -17,35 +17,35 @@ try {
     $result->bindParam(':ID', $ID);
     $result->bindParam(':PWD', $PWD);
     $result->execute();
-    $result =$result->fetch(PDO::FETCH_ASSOC);
+    $result = $result->fetch(PDO::FETCH_ASSOC);
 
-    $result2 =$connection->prepare($sql2);
+    $result2 = $connection->prepare($sql2);
     $result2->execute();
-    $result2 =$result2->fetchall(PDO::FETCH_ASSOC);
+    $result2 = $result2->fetchall(PDO::FETCH_ASSOC);
 
     if (!empty($result2)) {
-        foreach ($result2 as $row) {
-            echo "Identifiant: " . $row['identifiant'] . ", Mot de Passe: " . $row['motdepasse'] . "<br>";
+        $i = 0;
+        for ($i = 0; $i < count($result2); $i++ ) {
+            if ($result2[$i]['identifiant'] == $ID and $result2[$i]['motdepasse'] == $PWD) {
+                if ($result) {//si le role est bien recupérer alors on démarre la session et cookies
+                    $role = $result['role'];
+
+                    session_start();//Début session
+                    $_SESSION['role'] = $role;
+                    $_SESSION['ID'] = $ID;
+
+                    setcookie("role", $role, time() + (60 * 15), "/");//Début cookie
+                    setcookie("ID", $ID, time() + (60 * 15), "/");
+
+                    if (isset($role)) {//si le role n'est pas vide alors on lance MenuPrincipal.php
+                        header("location:../Controller/MenuPrincipal.php");
+                        exit();
+                    }
+                }
+            }
         }
-    } else {
-        echo "Aucun résultat trouvé.";
     }
-
-    if ($result) {//si le role est bien recupérer alors on démarre la session et cookies
-        $role = $result['role'];
-
-        session_start();//Début session
-        $_SESSION['role'] = $role;
-        $_SESSION['ID'] = $ID;
-
-        setcookie("role", $role, time() + (60 * 15), "/");//Début cookie
-        setcookie("ID", $ID, time() + (60 * 15), "/");
-
-        if (isset($role)) {//si le role n'est pas vite alors on lance MenuPrincipal.php
-            header("location:../Controller/MenuPrincipal.php");
-            exit();
-        }
-    }
+    echo 'fail';
 
 } catch (PDOException $e) {
     echo $e->getMessage();

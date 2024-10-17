@@ -219,20 +219,6 @@ input:focus ~ label {
     font-size: 18px;
     color: white;
 }
-input[type="password"], input[type="text"] {
-    /*width: 100%;*/
-    /*padding: 10px;*/
-    display: block;
-    border: 1px solid rgb(27, 165, 50);
-    width: 90%;
-    padding: 10px;
-    margin: 10px auto;
-    background: white;
-    border-radius: 2px;
-    outline: none;
-    color: #1d1c1c;
-    /*border: 1px solid cornflowerblue;*/
-}
 
 .eye {
     position: absolute;
