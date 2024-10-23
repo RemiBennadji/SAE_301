@@ -1,25 +1,38 @@
 <head>
     <title>EDT</title>
-    <link rel="stylesheet" type="text/css" href="../View/CSS/edt.css">
+    <link rel="stylesheet" type="text/css" href="edt.css">
 </head>
 
 <?php
-function AfficherEdtSemaine($dateDebut, $classe){
+include "../Model/ConnectionBDD.php";
+
+// Exemple + Test
+$dateActuel = ' 2024-10-14';  // Date par défaut
+$classeActuel = 'TPC1';       // Groupe par défaut (TPC1 en 1ère année)
+$anneeActuel = 1;            // Année par défaut (1ère année)
+
+// Fonction pour afficher l'emploi du temps de la semaine
+function AfficherEdtSemaine($dateDebut, $classe, $annee) {
     // Conversion de la date de début en timestamp
     $timestamp = strtotime($dateDebut);
 
     // On s'assure que la date est bien au format YYYY-MM-DD (ex : lundi)
     $lundi = date("Y-m-d", $timestamp);
 
-    session_start();//Test
-    echo $_SESSION['role']."\n";
-    echo $_SESSION['ID']."\n";
-    echo $_COOKIE['role']."\n";
-    echo $_COOKIE['ID']."\n";
+    // Titre de la semaine
+    echo "<h3>Emploi du Temps - Semaine du " . date("d/m/Y", strtotime($lundi)) . "</h3>";
 
     // Tableau HTML pour afficher l'emploi du temps
     echo "<table>";
-    echo "<tr><th>Heure</th><th>Lundi</th><th>Mardi</th><th>Mercredi</th><th>Jeudi</th><th>Vendredi</th></tr>";
+    echo "<tr><th>Heure</th>";
+
+    // Liste des jours de la semaine et affichage des titres avec numéro de jour
+    $joursSemaine = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi'];
+    for ($i = 0; $i < 5; $i++) {
+        $jourTimestamp = strtotime("+$i day", strtotime($lundi));
+        echo "<th>" . $joursSemaine[$i] . " " . date("d/m", $jourTimestamp) . "</th>";
+    }
+    echo "</tr>";
 
     // Liste des horaires pour chaque jour
     $listeHorraire = ['08:00', '09:30', '11:00', '12:30', '14:00', '15:30', '17:00'];
@@ -27,8 +40,8 @@ function AfficherEdtSemaine($dateDebut, $classe){
     // Boucle sur chaque horaire
     foreach ($listeHorraire as $horaire) {
         echo "<tr>";
-        // Affichage de l'heure dans la première colonne
-        echo "<td>$horaire</td>";
+        // Affichage de l'heure dans la première colonne, pour ne pas avoir de confusion d'horaire
+        echo "<td style='vertical-align: top;'>$horaire</td>";
 
         // Boucle pour chaque jour de la semaine (lundi à vendredi)
         for ($i = 0; $i < 5; $i++) {
@@ -37,7 +50,7 @@ function AfficherEdtSemaine($dateDebut, $classe){
             $jour = date("Y-m-d", $jourTimestamp);
 
             // Récupération du cours pour cette date et cette heure
-            $cours = RecupererCours($jour, $horaire, $classe);
+            $cours = RecupererCours($jour, $horaire, $classe, $annee);
 
             // Affichage du cours (ou vide si pas de cours)
             if ($cours) {
@@ -48,55 +61,119 @@ function AfficherEdtSemaine($dateDebut, $classe){
         }
         echo "</tr>";
     }
-
     echo "</table>";
 }
 
+// Fonction pour retirer les accents et convertir en équivalents non accentués
+function supprimerAccents($str) {
+    return str_replace(
+        ['é', 'è', 'ê', 'ë', 'à', 'â', 'ä', 'ù', 'û', 'ü', 'î', 'ï', 'ô', 'ö', 'ç', 'É', 'È', 'Ê', 'Ë', 'À', ' ', 'Ä', 'Ù', 'Û', 'Ü', 'Î', 'Ï', 'Ô', 'Ö', 'Ç'],
+        ['e', 'e', 'e', 'e', 'a', 'a', 'a', 'u', 'u', 'u', 'i', 'i', 'o', 'o', 'c', 'e', 'e', 'e', 'e', 'a', 'a', 'a', 'u', 'u', 'u', 'i', 'i', 'o', 'o', 'c'],
+        $str
+    );
+}
+
 // Fonction pour récupérer un cours pour un jour et une heure donnés
-function RecupererCours($jour, $horaire, $classe){
-    // Concaténer la date et l'heure
-    $dateTime = $jour . ' ' . $horaire . ':00'; // Format YYYY-MM-DD HH:MM:SS
+function RecupererCours($jour, $horaire, $classe, $annee) {
+    $dateTime = $jour . ' ' . $horaire . ':00';
 
-    // Requête SQL avec l'ancienne structure, incluant plus d'informations
+    // Déterminer les semestres à inclure selon l'année de l'étudiant
+    $semestres = ($annee == 1) ? [1, 2] : (($annee == 2) ? [3, 4] : [5, 6]);
+
+    // Transformation du tableau de semestres en chaîne de caractères pour l'injection SQL
+    $semestresString = implode(",", $semestres);
+
     $sql = "
-    SELECT DISTINCT seance.idseance, seance.typeseance, duree, schedule.salle, collegue.prenom, collegue.nom, enseignement.court as matiere, horaire as date, schedule.nomgroupe
-    FROM seance
-    JOIN collegue ON seance.collegue = collegue.id
-    JOIN enseignement ON seance.code = enseignement.code
-    JOIN schedule ON seance.nomgroupe = schedule.nomgroupe
-    WHERE horaire = ? AND schedule.nomgroupe = ?
-    LIMIT 1";
+     SELECT DISTINCT seance.idseance, seance.typeseance, duree, schedule.salle, collegue.prenom, collegue.nom, enseignement.court as matiere, enseignement.discipline, horaire as date, schedule.nomgroupe
+     FROM seance
+     JOIN collegue ON seance.collegue = collegue.id
+     JOIN enseignement ON seance.code = enseignement.code
+     JOIN schedule ON seance.nomgroupe = schedule.nomgroupe
+     JOIN ressourcegroupe rg ON schedule.nomgroupe = rg.nomgroupe
+     WHERE horaire = ?
+       AND schedule.version = 20
+       AND (
+          schedule.nomgroupe = ?
+          OR schedule.nomgroupe = 'CM'
+          OR schedule.nomgroupe LIKE 'TD%'
+       )
+       AND rg.semestre IN ($semestresString)  -- Contrainte pour les semestres en fonction de l'année
+     LIMIT 1";
 
-    // Connexion à la base de données
-    $connexion = new PDO("pgsql:host=iutinfo-sgbd.uphf.fr; dbname=edt user=iutinfo308 password=uQoCRXbn");
-    $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    // Préparation de la requête avec les paramètres
+    $connexion = getConnectionBDD();
     $req = $connexion->prepare($sql);
     $req->execute([$dateTime, $classe]);
 
-    // Récupération du résultat
     $cours = $req->fetch(PDO::FETCH_ASSOC);
 
-    // Si un cours est trouvé, on retourne les informations formatées sur plusieurs lignes
     if ($cours) {
-        return $cours['typeseance'] . "<br>" .
+        // Génération de la classe CSS basée sur la discipline et le type de séance
+        $discipline = strtolower($cours['discipline']); // ex: 'Éco/Gestion'
+
+        // Suppression des accents et des caractères non valides
+        $discipline = supprimerAccents($discipline);
+        $discipline = preg_replace('/[^a-z0-9]+/', '-', $discipline); // Remplacer les caractères non alphanumériques par des tirets
+        $discipline = trim($discipline, '-'); // Supprimer les tirets en début et fin de chaîne
+
+        $typeSeance = strtolower($cours['typeseance']); // ex: 'TD'
+
+        // Générer une classe CSS
+        $classeCSS = "cours-" . $discipline . "-" . $typeSeance;
+
+        return "<div class='$classeCSS'>" .
+            $cours['typeseance'] . "<br>" .
             $cours['matiere'] . "<br>" .
-            $cours['prenom'] . " " . $cours['nom'] . "<br>" .
-            "Salle " . $cours['salle'];
+            $cours['prenom'][0] . ". " . $cours['nom'] . "<br>" .
+            "Salle " . $cours['salle'] .
+            "</div>";
     } else {
-        // Si aucun cours, on retourne null
         return null;
     }
 }
 
-echo('<img src="https://upload.wikimedia.org/wikipedia/commons/b/bd/UPHF_logo.svg" alt="Logo UPHF" width=30% height=30%"/>');
+// Fonction pour incrémenter une semaine
+function incrementerSemaine($ancienneDate) {
+    $timestamp = strtotime($ancienneDate);
+    $nouveauLundi = strtotime("+7 day", $timestamp);
+    return date("Y-m-d", $nouveauLundi);
+}
 
-echo ('<h3> EDT </h3> <div class="changerSemaine"> <button type="button"><</button>
-    EDT du XX
-    <button type="button">></button>
+// Fonction pour décrémenter une semaine
+function decrementerSemaine($ancienneDate) {
+    $timestamp = strtotime($ancienneDate);
+    $nouveauLundi = strtotime("-7 day", $timestamp);
+    return date("Y-m-d", $nouveauLundi);
+}
+
+// Affichage du logo
+echo('<img src="https://upload.wikimedia.org/wikipedia/commons/b/bd/UPHF_logo.svg" alt="Logo UPHF" width=10% height=10%"/>');
+
+// Gestion des requêtes POST (navigation entre les semaines)
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Récupération de la date actuelle envoyée par le formulaire
+    $dateActuel = isset($_POST["dateActuel"]) ? $_POST["dateActuel"] : $dateActuel;
+
+    // Si le bouton semaine précédente est pressé
+    if (isset($_POST["precedent"])) {
+        $dateActuel = decrementerSemaine($dateActuel);
+    }
+
+    // Si le bouton semaine suivante est pressé
+    if (isset($_POST["suivant"])) {
+        $dateActuel = incrementerSemaine($dateActuel);
+    }
+}
+
+// Affichage du titre et du formulaire de changement de semaine
+echo ('<div class="changerSemaine">
+   <form action="afficherEdt.php" method="post">
+       <button type="submit" name="precedent"><</button>
+       <label>Semaine du ' . date("d/m/Y", strtotime($dateActuel)) . '</label>
+       <input type="hidden" name="dateActuel" value="'. $dateActuel .'">
+       <button type="submit" name="suivant">></button>
+   </form>
 </div>');
 
-
-// Test pour afficher l'emploi du temps de la semaine du 9 janvier 2025 pour la classe "TDA"
-AfficherEdtSemaine('2025-01-09', 'TDA');
+// Affichage de l'emploi du temps pour la semaine choisie
+AfficherEdtSemaine($dateActuel, $classeActuel, $anneeActuel);
+?>
