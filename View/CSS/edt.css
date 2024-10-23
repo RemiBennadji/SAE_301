@@ -35,7 +35,7 @@ th, td {
 }
 
 th {
-    background-color: rgb(27, 133, 165);
+    background-color: #007bff;
     color: white;
     text-transform: uppercase;
 }
@@ -46,6 +46,10 @@ td {
 
 tr:nth-child(even) td {
     background-color: #f2f2f2;
+}
+
+tr:hover td {
+    background-color: #e2e2ff;
 }
 
 td.empty {
@@ -59,103 +63,13 @@ td.filled {
     text-transform: capitalize;
 }
 
+td.filled:hover {
+    background-color: #0056b3;
+}
 
 caption {
     caption-side: top;
     font-size: 1.5em;
     margin-bottom: 10px;
-}
-
-/* Anglais */
-.cours-anglais-cm {
-    background-color: #0000ff;
-    color: white;
-}
-.cours-anglais-td {
-    background-color: #336699;
-    color: white;
-}
-.cours-anglais-tp {
-    background-color: #99ccff;
-    color: black;
-}
-
-/* Informatique */
-.cours-informatique-cm {
-    background-color: #004d00;
-    color: white;
-}
-.cours-informatique-td {
-    background-color: #339933;
-    color: white;
-}
-.cours-informatique-tp {
-    background-color: #99cc99;
-    color: black;
-}
-
-/* Mathématiques */
-.cours-mathematiques-cm {
-    background-color: #ff0000;
-    color: white;
-}
-.cours-mathematiques-td {
-    background-color: #cc3333;
-    color: white;
-}
-.cours-mathematiques-tp {
-    background-color: #ff9999;
-    color: black;
-}
-
-/* Communication */
-.cours-communication-cm {
-    background-color: #663300;
-    color: white;
-}
-.cours-communication-td {
-    background-color: #cc6600;
-    color: white;
-}
-.cours-communication-tp {
-    background-color: #ffcc99;
-    color: black;
-}
-
-/* Éco/Gestion */
-.cours-eco-gestion-cm {
-    background-color: #4d004d;
-    color: white;
-}
-.cours-eco-gestion-td {
-    background-color: #993399;
-    color: white;
-}
-.cours-eco-gestion-tp {
-    background-color: #e699e6;
-    color: black;
-}
-
-.underline-animation {
-    display: inline-block;
-    position: relative;
-    font-size: 24px;
-    color: #333;
-    cursor: pointer;
-}
-
-.underline-animation::after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 2px;
-    bottom: 0;
-    left: 0;
-    background-color: #C8A14E; /* Couleur du soulignement */
-    transition: width 0.3s ease-in-out;
-}
-
-.underline-animation:hover::after {
-    width: 100%;
 }
 
