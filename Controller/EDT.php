@@ -83,7 +83,7 @@ function RecupererCours($jour, $horaire, $classe, $annee) {
     // Transformation du tableau de semestres en chaîne de caractères pour l'injection SQL
     $semestresString = implode(",", $semestres);
 
-    $sql = "
+    $sql = "    
      SELECT DISTINCT seance.idseance, seance.typeseance, duree, schedule.salle, collegue.prenom, collegue.nom, enseignement.court as matiere, enseignement.discipline, horaire as date, schedule.nomgroupe
      FROM seance
      JOIN collegue ON seance.collegue = collegue.id
@@ -166,7 +166,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 // Affichage du titre et du formulaire de changement de semaine
 echo ('<div class="changerSemaine">
-   <form action="afficherEdt.php" method="post">
+   <form action="EDT.php" method="post">
        <button type="submit" name="precedent"><</button>
        <label>Semaine du ' . date("d/m/Y", strtotime($dateActuel)) . '</label>
        <input type="hidden" name="dateActuel" value="'. $dateActuel .'">
