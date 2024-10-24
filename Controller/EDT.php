@@ -1,10 +1,10 @@
 <head>
     <title>EDT</title>
-    <link rel="stylesheet" type="text/css" href="edt.css">
+    <link rel="stylesheet" type="text/css" href="../View/CSS/edt.css">
 </head>
 
 <?php
-include "../Model/ConnectionBDD.php";
+include "../Controller/ConnectionBDD.php";
 
 // Exemple + Test
 $dateActuel = ' 2024-10-14';  // Date par défaut
