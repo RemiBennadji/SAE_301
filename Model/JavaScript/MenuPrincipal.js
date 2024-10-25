@@ -7,7 +7,9 @@ function etudiant(){}
 
 function professeur(){}
 
-function secretariat(){}
+function secretariat(){
+    document.getElementById("afficheSalles").style.display="block";
+}
 
 function afficherElement(role){//Fonction qui verifie le rôle de l'utilisateur
     if(role === "administrateur"){
