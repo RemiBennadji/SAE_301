@@ -1,59 +1,26 @@
 <head>
     <title>EDT</title>
-    <link rel="stylesheet" type="text/css" href="../View/CSS/CSSBasique.css">
+    <link rel="stylesheet" type="text/css" href="../View/CSS/edt.css">
 </head>
-<a href="MenuPrincipal.php"><img src="../Ressource/logouphf2.png" class="logoUPHF" alt="Logo UPHF"></a>
 
-<header>
-    <nav>
-        <div class="burger">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-        <ul class="menu">
-            <li><a class="underline-animation" href="../Controller/EDT.php">Emploi du temps</a></li>
-            <li><a class="underline-animation" href="#">Messagerie</a></li>
-            <li><a class="underline-animation" href="../View/HTML/creationCompte.html" id="creationCompte" style="display: none">Créer un compte</a></li>
-            <li><a class="underline-animation" href="../Controller/Deconnexion.php">Déconnexion</a></li>
-        </ul>
-    </nav>
-</header>
-
-<script><!-- script pour que les liens href soi responsive -->
-    const burger = document.querySelector('.burger');
-    const menu = document.querySelector('.menu');
-
-    burger.addEventListener("click", () => {
-        menu.classList.toggle("active");
-        burger.classList.toggle("toggle");
-    });
-</script>
-
-<br><br><br>
 <?php
 include "../Controller/ConnectionBDD.php";
 
 // Exemple + Test
-$dateActuel = ' 2024-10-14';  // Date par défaut
+$dateActuel = ' 2024-10-21';  // Date par défaut
 $classeActuel = 'TPC1';       // Groupe par défaut (TPC1 en 1ère année)
 $anneeActuel = 1;            // Année par défaut (1ère année)
 
 // Fonction pour afficher l'emploi du temps de la semaine
 function AfficherEdtSemaine($dateDebut, $classe, $annee) {
-    // Conversion de la date de début en timestamp
     $timestamp = strtotime($dateDebut);
-
-    // On s'assure que la date est bien au format YYYY-MM-DD (ex : lundi)
     $lundi = date("Y-m-d", $timestamp);
 
-    // Titre de la semaine
+    echo "<h3>Emploi du Temps - Semaine du " . date("d/m/Y", strtotime($lundi)) . "</h3>";
 
-    // Tableau HTML pour afficher l'emploi du temps
     echo "<table>";
     echo "<tr><th>Heure</th>";
 
-    // Liste des jours de la semaine et affichage des titres avec numéro de jour
     $joursSemaine = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi'];
     for ($i = 0; $i < 5; $i++) {
         $jourTimestamp = strtotime("+$i day", strtotime($lundi));
@@ -61,27 +28,39 @@ function AfficherEdtSemaine($dateDebut, $classe, $annee) {
     }
     echo "</tr>";
 
-    // Liste des horaires pour chaque jour
     $listeHorraire = ['08:00', '09:30', '11:00', '12:30', '14:00', '15:30', '17:00'];
 
-    // Boucle sur chaque horaire
-    foreach ($listeHorraire as $horaire) {
-        echo "<tr>";
-        // Affichage de l'heure dans la première colonne, pour ne pas avoir de confusion d'horaire
-        echo "<td style='vertical-align: top;'>$horaire</td>";
+    // Tableau pour stocker les cellules à sauter
+    $cellulesSautees = array_fill(0, 5, 0);
 
-        // Boucle pour chaque jour de la semaine (lundi à vendredi)
-        for ($i = 0; $i < 5; $i++) {
-            // Calcul de la date du jour (du lundi au vendredi)
-            $jourTimestamp = strtotime("+$i day", strtotime($lundi));
+    // Boucle sur chaque horaire
+    for ($h = 0; $h < count($listeHorraire); $h++) {
+        echo "<tr>";
+        echo "<td style='vertical-align: top;'>{$listeHorraire[$h]}</td>";
+
+        // Boucle pour chaque jour
+        for ($j = 0; $j < 5; $j++) {
+            if ($cellulesSautees[$j] > 0) {
+                $cellulesSautees[$j]--;
+                continue;
+            }
+
+            $jourTimestamp = strtotime("+$j day", strtotime($lundi));
             $jour = date("Y-m-d", $jourTimestamp);
 
-            // Récupération du cours pour cette date et cette heure
-            $cours = RecupererCours($jour, $horaire, $classe, $annee);
+            $coursInfo = RecupererCours($jour, $listeHorraire[$h], $classe, $annee);
 
-            // Affichage du cours (ou vide si pas de cours)
-            if ($cours) {
-                echo "<td>$cours</td>";
+            if ($coursInfo) {
+                $cours = $coursInfo['contenu'];
+                $duree = $coursInfo['duree'];
+                $nombreCreneaux = ceil($duree / 90);
+
+                if ($nombreCreneaux > 1) {
+                    echo "<td rowspan='$nombreCreneaux'>$cours</td>";
+                    $cellulesSautees[$j] = $nombreCreneaux - 1;
+                } else {
+                    echo "<td>$cours</td>";
+                }
             } else {
                 echo "<td></td>";
             }
@@ -104,28 +83,27 @@ function supprimerAccents($str) {
 function RecupererCours($jour, $horaire, $classe, $annee) {
     $dateTime = $jour . ' ' . $horaire . ':00';
 
-    // Déterminer les semestres à inclure selon l'année de l'étudiant
     $semestres = ($annee == 1) ? [1, 2] : (($annee == 2) ? [3, 4] : [5, 6]);
-
-    // Transformation du tableau de semestres en chaîne de caractères pour l'injection SQL
     $semestresString = implode(",", $semestres);
 
-    $sql = "    
-     SELECT DISTINCT seance.idseance, seance.typeseance, duree, schedule.salle, collegue.prenom, collegue.nom, enseignement.court as matiere, enseignement.discipline, horaire as date, schedule.nomgroupe
-     FROM seance
-     JOIN collegue ON seance.collegue = collegue.id
-     JOIN enseignement ON seance.code = enseignement.code
-     JOIN schedule ON seance.nomgroupe = schedule.nomgroupe
-     JOIN ressourcegroupe rg ON schedule.nomgroupe = rg.nomgroupe
-     WHERE horaire = ?
-       AND schedule.version = 20
-       AND (
-          schedule.nomgroupe = ?
-          OR schedule.nomgroupe = 'CM'
-          OR schedule.nomgroupe LIKE 'TD%'
-       )
-       AND rg.semestre IN ($semestresString)  -- Contrainte pour les semestres en fonction de l'année
-     LIMIT 1";
+    $sql = "
+    SELECT DISTINCT seance.idseance, seance.typeseance, seance.duree, schedule.salle, 
+           collegue.prenom, collegue.nom, enseignement.court as matiere, 
+           enseignement.discipline, horaire as date, schedule.nomgroupe
+    FROM seance
+    JOIN collegue ON seance.collegue = collegue.id
+    JOIN enseignement ON seance.code = enseignement.code
+    JOIN schedule ON seance.nomgroupe = schedule.nomgroupe
+    JOIN ressourcegroupe rg ON schedule.nomgroupe = rg.nomgroupe
+    WHERE horaire = ?
+      AND schedule.version = 20
+      AND (
+         schedule.nomgroupe = ?
+         OR schedule.nomgroupe = 'CM'
+         OR schedule.nomgroupe LIKE 'TD%'
+      )
+      AND rg.semestre IN ($semestresString)
+    LIMIT 1";
 
     $connexion = getConnectionBDD();
     $req = $connexion->prepare($sql);
@@ -134,28 +112,50 @@ function RecupererCours($jour, $horaire, $classe, $annee) {
     $cours = $req->fetch(PDO::FETCH_ASSOC);
 
     if ($cours) {
-        // Génération de la classe CSS basée sur la discipline et le type de séance
-        $discipline = strtolower($cours['discipline']); // ex: 'Éco/Gestion'
+        // Extraire la durée en minutes
+        $dureeStr = $cours['duree'];
 
-        // Suppression des accents et des caractères non valides
-        $discipline = supprimerAccents($discipline);
-        $discipline = preg_replace('/[^a-z0-9]+/', '-', $discipline); // Remplacer les caractères non alphanumériques par des tirets
-        $discipline = trim($discipline, '-'); // Supprimer les tirets en début et fin de chaîne
+        // Gérer les deux formats possibles de durée
+        if (strpos($dureeStr, 'years') !== false) {
+            // Format: "0 years 0 mons 0 days X hours Y mins 0.0 secs"
+            preg_match('/(\d+) hours (\d+) mins/', $dureeStr, $matches);
+            if (!empty($matches)) {
+                $dureeMinutes = (intval($matches[1]) * 60) + intval($matches[2]);
+            }
+        } else {
+            // Format: "HH:MM:SS"
+            $dureeParts = explode(':', $dureeStr);
+            if (count($dureeParts) == 3) {
+                $dureeMinutes = (intval($dureeParts[0]) * 60) + intval($dureeParts[1]);
+            }
+        }
 
-        $typeSeance = strtolower($cours['typeseance']); // ex: 'TD'
+        // Si aucun format n'a été reconnu, utiliser la durée par défaut
+        if (!isset($dureeMinutes)) {
+            $dureeMinutes = 90;
+        }
 
-        // Générer une classe CSS
+        $discipline = strtolower(supprimerAccents($cours['discipline']));
+        $discipline = preg_replace('/[^a-z0-9]+/', '-', $discipline);
+        $discipline = trim($discipline, '-');
+
+        $typeSeance = strtolower($cours['typeseance']);
         $classeCSS = "cours-" . $discipline . "-" . $typeSeance;
 
-        return "<div class='$classeCSS'>" .
+        $contenuHTML = "<div class='$classeCSS'>" .
             $cours['typeseance'] . "<br>" .
             $cours['matiere'] . "<br>" .
             $cours['prenom'][0] . ". " . $cours['nom'] . "<br>" .
             "Salle " . $cours['salle'] .
             "</div>";
-    } else {
-        return null;
+
+        return [
+            'contenu' => $contenuHTML,
+            'duree' => $dureeMinutes
+        ];
     }
+
+    return null;
 }
 
 // Fonction pour incrémenter une semaine
@@ -171,6 +171,9 @@ function decrementerSemaine($ancienneDate) {
     $nouveauLundi = strtotime("-7 day", $timestamp);
     return date("Y-m-d", $nouveauLundi);
 }
+
+// Affichage du logo
+echo('<img src="https://upload.wikimedia.org/wikipedia/commons/b/bd/UPHF_logo.svg" alt="Logo UPHF" width=10% height=10%"/>');
 
 // Gestion des requêtes POST (navigation entre les semaines)
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -197,10 +200,6 @@ echo ('<div class="changerSemaine">
        <button type="submit" name="suivant">></button>
    </form>
 </div>');
-
-echo ('<footer class="footer">
-    <p>&copy; 2024 - SAE Emploi du temps. Rémi | Dorian | Matthéo | Bastien.</p>
-</footer>');
 
 // Affichage de l'emploi du temps pour la semaine choisie
 AfficherEdtSemaine($dateActuel, $classeActuel, $anneeActuel);
