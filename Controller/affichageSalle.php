@@ -5,15 +5,30 @@ include "ConnectionBDD.php";
 $jour = $_POST["idJour"];
 $heure = $_POST["idHeure"];
 
+if($heure == '9:30'){
+    $heureInf = '8:00';
+}elseif ($heure == '11:00'){
+    $heureInf = '9:30';
+}elseif ($heure == '14:00'){
+    $heureInf = '12:30';
+}elseif ($heure == '15:30'){
+    $heureInf = '14:00';
+}elseif ($heure == '17:00'){
+    $heureInf = '15:30';
+}
 //convertion de la date au format timestamp @Noah
 $timestamp = strtotime($jour);
 $date = date("Y-m-d", $timestamp).' '.$heure.':00';
+$sateInf = date("Y-m-d", $timestamp).' '.$heureInf.':00';
 
 //requête permettant d'accéder aux salles utilisées à l'horaire saisi @Noah
 $sql1 ="select distinct salle from schedule where horaire =:DATE";
 
 //requête qui permet d'avoir toutes les salles @Noah
 $sql2 ="select distinct nosalle from listesalles";
+
+
+$sql3 ="select salle from schedule where horaire =:HEURE and duration='0 years 0 mons 0 days 3 hours 0 mins 0.0 secs'";
 
 //liste qui va stocker les salles utilisées @Noah
 $sallesAll = array();
@@ -39,12 +54,20 @@ try {
     foreach ($sallesDispo as $nosalle) {
         if(!in_array($nosalle['nosalle'], $sallesAll)){
             $sallesLibres[] = $nosalle['nosalle'];
-//            echo $nosalle['nosalle'].'<br>';
         }
     }
-//    foreach ($sallesLibres as $n) {
-//        echo $n.'<br>';
-//    }
+
+    $sallesInf = $connection->prepare($sql3);
+    $sallesInf->bindParam(':HEURE', $dateInf);
+    $sallesInf->execute();
+    $salleInf = $sallesInf->fetchAll(PDO::FETCH_ASSOC);
+    $trueSalle = array();
+    foreach ($sallesInf as $nosalle) {
+        echo $nosalle;
+        if(in_array($nosalle['nosalle'], $sallesLibres)){
+            $trueSalle[] = $nosalle['nosalle'];
+        }
+    }
 
 } catch (PDOException $e) {
     echo $e->getMessage();
@@ -95,7 +118,7 @@ try {
         <ul class="salles-libre">
 
             <?php
-            foreach ($sallesLibres as $n) {
+            foreach ($trueSalle as $n) {
                 echo '<li>' . htmlspecialchars($n) . '</li>'; // Utiliser htmlspecialchars pour éviter les problèmes de sécurité
             }
             ?>
