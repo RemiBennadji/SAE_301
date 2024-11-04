@@ -10,7 +10,7 @@ $timestamp = strtotime($jour);
 $date = date("Y-m-d", $timestamp).' '.$heure.':00';
 
 //requête permettant d'accéder aux salles utilisées à l'horaire saisi @Noah
-$sql1 ="select distinct salle from schedule where horaire = '$date'";
+$sql1 ="select distinct salle from schedule where horaire =:DATE";
 
 //requête qui permet d'avoir toutes les salles @Noah
 $sql2 ="select distinct nosalle from listesalles";
@@ -24,6 +24,7 @@ try {
 
     //execution de la requête 1 et ajoute les salles à la liste sallesAll @Noah
     $resultSalles = $connection->prepare($sql1);
+    $resultSalles->bindParam(':DATE', $date);
     $resultSalles->execute();
     $listeSalles =$resultSalles->fetchAll(PDO::FETCH_ASSOC);
     foreach ($listeSalles as $salle) {
