@@ -69,7 +69,6 @@ try {
             <span></span>
         </div>
         <ul class="menu">
-            <li><a class="underline-animation" href="MenuPrincipal.php">Accueil</a></li>
             <li><a class="underline-animation" href="../Controller/EDT.php">Emploi du temps</a></li>
             <li><a class="underline-animation" href="#">Messagerie</a></li>
             <li><a class="underline-animation" href="../View/HTML/creationCompte.html" id="creationCompte" style="display: none">Créer un compte</a></li>

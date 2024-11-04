@@ -1,7 +1,32 @@
 <head>
     <title>EDT</title>
-    <link rel="stylesheet" type="text/css" href="../View/CSS/edt.css">
+    <link rel="stylesheet" type="text/css" href="../View/CSS/CSSBasique.css">
 </head>
+<a href="MenuPrincipal.php"><img src="../Ressource/logouphf2.png" class="logoUPHF" alt="Logo UPHF"></a>
+<header>
+    <nav>
+        <div class="burger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <ul class="menu">
+            <li><a class="underline-animation" href="../Controller/EDT.php">Emploi du temps</a></li>
+            <li><a class="underline-animation" href="#">Messagerie</a></li>
+            <li><a class="underline-animation" href="../View/HTML/creationCompte.html" id="creationCompte" style="display: none">Créer un compte</a></li>
+            <li><a class="underline-animation" href="../Controller/Deconnexion.php">Déconnexion</a></li>
+        </ul>
+    </nav>
+</header>
+<script><!-- script pour que les liens href soi responsive -->
+    const burger = document.querySelector('.burger');
+    const menu = document.querySelector('.menu');
+    burger.addEventListener("click", () => {
+        menu.classList.toggle("active");
+        burger.classList.toggle("toggle");
+    });
+</script>
+<br><br><br>
 
 <?php
 include "../Controller/ConnectionBDD.php";
@@ -16,7 +41,7 @@ function AfficherEdtSemaine($dateDebut, $classe, $annee) {
     $timestamp = strtotime($dateDebut);
     $lundi = date("Y-m-d", $timestamp);
 
-    echo "<h3>Emploi du Temps - Semaine du " . date("d/m/Y", strtotime($lundi)) . "</h3>";
+
 
     echo "<table>";
     echo "<tr><th>Heure</th>";
@@ -172,9 +197,6 @@ function decrementerSemaine($ancienneDate) {
     return date("Y-m-d", $nouveauLundi);
 }
 
-// Affichage du logo
-echo('<img src="https://upload.wikimedia.org/wikipedia/commons/b/bd/UPHF_logo.svg" alt="Logo UPHF" width=10% height=10%"/>');
-
 // Gestion des requêtes POST (navigation entre les semaines)
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Récupération de la date actuelle envoyée par le formulaire
@@ -200,6 +222,10 @@ echo ('<div class="changerSemaine">
        <button type="submit" name="suivant">></button>
    </form>
 </div>');
+
+echo ('<footer class="footer">
+    <p>&copy; 2024 - SAE Emploi du temps. Rémi | Dorian | Matthéo | Bastien.</p>
+</footer>');
 
 // Affichage de l'emploi du temps pour la semaine choisie
 AfficherEdtSemaine($dateActuel, $classeActuel, $anneeActuel);
