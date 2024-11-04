@@ -28,7 +28,7 @@ $sql1 ="select distinct salle from schedule where horaire =:DATE";
 $sql2 ="select distinct nosalle from listesalles";
 
 
-$sql3 ="select salle from schedule where horaire =:HEURE and duration='0 years 0 mons 0 days 3 hours 0 mins 0.0 secs'";
+$sql3 ="select distinct salle from schedule where horaire =:HEURE and duration='0 years 0 mons 0 days 3 hours 0 mins 0.0 secs'";
 
 //liste qui va stocker les salles utilisées @Noah
 $sallesAll = array();
@@ -64,8 +64,8 @@ try {
     $trueSalle = array();
     foreach ($sallesInf as $nosalle) {
         echo $nosalle;
-        if(in_array($nosalle['nosalle'], $sallesLibres)){
-            $trueSalle[] = $nosalle['nosalle'];
+        if(in_array($nosalle['salle'], $sallesLibres)){
+            $trueSalle[] = $nosalle['salle'];
         }
     }
 
