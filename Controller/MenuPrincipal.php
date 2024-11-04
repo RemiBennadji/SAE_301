@@ -13,7 +13,7 @@ if (!isset($_SESSION['role'])) {
 <head>
     <meta charset="UTF-8">
     <title>Menu Principal Admin</title>
-    <link href="../View/CSS/menuPrincipalAdmin.css" rel="stylesheet">
+    <link href="../View/CSS/CSSBasique.css" rel="stylesheet">
 </head>
 <body>
 <a href="MenuPrincipal.php"><img src="../Ressource/logouphf2.png" class="logoUPHF" alt="Logo UPHF"></a>
