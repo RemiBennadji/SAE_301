@@ -165,14 +165,35 @@ function RecupererCours($jour, $horaire, $classe, $annee) {
         $discipline = trim($discipline, '-');
 
         $typeSeance = strtolower($cours['typeseance']);
-        $classeCSS = "cours-" . $discipline . "-" . $typeSeance;
 
-        $contenuHTML = "<div class='$classeCSS'>" .
-            $cours['typeseance'] . "<br>" .
-            $cours['matiere'] . "<br>" .
-            $cours['prenom'][0] . ". " . $cours['nom'] . "<br>" .
-            "Salle " . $cours['salle'] .
-            "</div>";
+        // Si cours dure 3h, on utilise le CSS adapté
+        if ($dureeMinutes == 180){
+            $classeCSS = "cours-" . $discipline . "-" . $typeSeance.'-3';
+        }
+        // Sinon le CSS de base
+        else {
+            $classeCSS = "cours-" . $discipline . "-" . $typeSeance;
+        }
+
+        // Si la salle est en amphi, on affiche uniquement "Amphi"
+        if ($cours['salle']=='200'){
+            $contenuHTML = "<div class='$classeCSS'>" .
+                $cours['typeseance'] . "<br>" .
+                $cours['matiere'] . "<br>" .
+                $cours['prenom'][0] . ". " . $cours['nom'] . "<br>" .
+                "Amphi " .
+                "</div>";
+        }
+
+        // Sinon, on est dans la salle de TD, on affiche "Salle" et son nuémro
+        else{
+            $contenuHTML = "<div class='$classeCSS'>" .
+                $cours['typeseance'] . "<br>" .
+                $cours['matiere'] . "<br>" .
+                $cours['prenom'][0] . ". " . $cours['nom'] . "<br>" .
+                "Salle " . $cours['salle'] .
+                "</div>";
+        }
 
         return [
             'contenu' => $contenuHTML,
