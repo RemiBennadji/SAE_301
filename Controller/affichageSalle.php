@@ -76,17 +76,6 @@ try {
         }
     }
 
-//    $sallesInf = $connection->prepare($sql3);
-//    $sallesInf->bindParam(':HEURE', $dateInf);
-//    $sallesInf->execute();
-//    $salleInf = $sallesInf->fetchAll(PDO::FETCH_ASSOC);
-//    $trueSalle = array();
-//    foreach ($sallesLibres as $nosalle) {
-//        if(!in_array($nosalle['salle'], $salleInf)){
-//            $trueSalle[] = $nosalle['salle'];
-//        }
-//    }
-
 } catch (PDOException $e) {
     echo $e->getMessage();
 }
