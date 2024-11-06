@@ -80,6 +80,20 @@ abstract class Compte
         }
     }
 
+    public function genererMDP(){
+        $liste = array(
+            array(range('a', 'z')),
+            array(range('A', 'Z')),
+            array(implode('', range(0, 9))),
+            array('!', '#', '$','*', '+', '-', '.', '/', ':','?','_')
+        );
+        $mdp = "";
+        while (strlen($mdp) < 8) {
+            $mdp .= $liste[0][rand(0, strlen($liste[0])-1)].$liste[1][rand(0, strlen($liste[1])-1)].$liste[2][rand(0,strlen($liste[2])-1)].$liste[3][rand(0, strlen($liste[3])-1)];
+        }
+        return $mdp;
+    }
+
     public function genererIdentifiant()
     {
         $uniqueId = 0;
