@@ -35,6 +35,7 @@ if (isset($_FILES['fichier']) && $_FILES['fichier']['error'] === UPLOAD_ERR_OK) 
                             'nom_ressource' => $res[4], // Assurez-vous que l'index est correct
                             'email' => $res[5] // Assurez-vous que l'index est correct
                         ]);
+
                     } else {
                         echo "Le doublon existe déjà pour $nom $prenom.<br>";
                     }
