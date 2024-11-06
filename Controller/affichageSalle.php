@@ -5,6 +5,8 @@ include "ConnectionBDD.php";
 $jour = $_POST["idJour"];
 $heure = $_POST["idHeure"];
 
+$heureInf = "00:00";
+
 if($heure == '9:30'){
     $heureInf = '8:00';
 }elseif ($heure == '11:00'){
@@ -19,7 +21,7 @@ if($heure == '9:30'){
 //convertion de la date au format timestamp @Noah
 $timestamp = strtotime($jour);
 $date = date("Y-m-d", $timestamp).' '.$heure.':00';
-$sateInf = date("Y-m-d", $timestamp).' '.$heureInf.':00';
+$dateInf = date("Y-m-d", $timestamp).' '.$heureInf.':00';
 
 //requête permettant d'accéder aux salles utilisées à l'horaire saisi @Noah
 $sql1 ="select distinct salle from schedule where horaire =:DATE";
@@ -42,8 +44,19 @@ try {
     $resultSalles->bindParam(':DATE', $date);
     $resultSalles->execute();
     $listeSalles =$resultSalles->fetchAll(PDO::FETCH_ASSOC);
+
+    $sallesInf = $connection->prepare($sql3);
+    $sallesInf->bindParam(':HEURE', $dateInf);
+    $sallesInf->execute();
+    $salleInf = $sallesInf->fetchAll(PDO::FETCH_ASSOC);
+
     foreach ($listeSalles as $salle) {
         $sallesAll[] = $salle['salle'];
+    }
+
+    foreach ($salleInf as $salleIndispo){
+        echo $salleIndispo['salle'];
+        $sallesAll[] = $salleIndispo['salle'];
     }
 
     //execution de la requête 2 et affiche les salles grâce à une comparaison avec sallesAll @Noah
@@ -51,23 +64,28 @@ try {
     $salles->execute();
     $sallesDispo = $salles->fetchAll(PDO::FETCH_ASSOC);
     $sallesLibres = array();
-    foreach ($sallesDispo as $nosalle) {
-        if(!in_array($nosalle['nosalle'], $sallesAll)){
-            $sallesLibres[] = $nosalle['nosalle'];
-        }
-    }
 
     $sallesInf = $connection->prepare($sql3);
     $sallesInf->bindParam(':HEURE', $dateInf);
     $sallesInf->execute();
     $salleInf = $sallesInf->fetchAll(PDO::FETCH_ASSOC);
-    $trueSalle = array();
-    foreach ($sallesInf as $nosalle) {
-        echo $nosalle;
-        if(in_array($nosalle['salle'], $sallesLibres)){
-            $trueSalle[] = $nosalle['salle'];
+
+    foreach ($sallesDispo as $nosalle) {
+        if(!in_array($nosalle['nosalle'], $sallesAll)) {
+            $sallesLibres[] = $nosalle['nosalle'];
         }
     }
+
+//    $sallesInf = $connection->prepare($sql3);
+//    $sallesInf->bindParam(':HEURE', $dateInf);
+//    $sallesInf->execute();
+//    $salleInf = $sallesInf->fetchAll(PDO::FETCH_ASSOC);
+//    $trueSalle = array();
+//    foreach ($sallesLibres as $nosalle) {
+//        if(!in_array($nosalle['salle'], $salleInf)){
+//            $trueSalle[] = $nosalle['salle'];
+//        }
+//    }
 
 } catch (PDOException $e) {
     echo $e->getMessage();
@@ -118,7 +136,7 @@ try {
         <ul class="salles-libre">
 
             <?php
-            foreach ($trueSalle as $n) {
+            foreach ($sallesLibres as $n) {
                 echo '<li>' . htmlspecialchars($n) . '</li>'; // Utiliser htmlspecialchars pour éviter les problèmes de sécurité
             }
             ?>
