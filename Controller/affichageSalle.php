@@ -60,7 +60,6 @@ try {
 
     //récupère les salles utilisées pour 3h à l'heure d'avant @Noah
     foreach ($salleInf as $salleIndispo){
-        echo $salleIndispo['salle'];
         $sallesAll[] = $salleIndispo['salle'];
     }
 
