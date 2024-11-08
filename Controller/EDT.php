@@ -245,7 +245,7 @@ echo ('<div class="changerSemaine">
 </div>');
 
 echo ('<footer class="footer">
-    <p>&copy; 2024 - SAE Emploi du temps. Rémi | Dorian | Matthéo | Bastien.</p>
+    <p>&copy; 2024 - SAE Emploi du temps. Rémi | Dorian | Matthéo | Bastien | Noah.</p>
 </footer>');
 
 // Affichage de l'emploi du temps pour la semaine choisie
