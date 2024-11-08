@@ -94,9 +94,14 @@ abstract class Compte
         return $mdp;
     }
 
-    public function genererIdentifiant(){
+    public function genererIdentifiant()
+    {
         $identifiant = strtolower($this->prenom) . '.' . strtolower($this->nom);
-        return $identifiant;
+        $id = "";
+        foreach (str_split($identifiant) as $element) {
+            $id = ($element == " ") ? $id .= "-" : $id .= $element;
+        }
+        return $id;
     }
 
 
