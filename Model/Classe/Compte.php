@@ -19,7 +19,7 @@ abstract class Compte
         $this->nom=$nom;
         $this->prenom=$prenom;
         $this->identifiant= $this->genererIdentifiant();
-        $this->mdp = password_hash($this->genererMDP(), PASSWORD_DEFAULT);
+        $this->mdp = $this->genererMDP();
     }
 
     public function getMdp()
@@ -27,9 +27,27 @@ abstract class Compte
         return $this->mdp;
     }
 
+    public function changeMdp($identifiant, $mdp){
+        if ($this->verifMdp($mdp)){
+            $mdp = password_hash($mdp, PASSWORD_DEFAULT);
+            $change = "alter table infoutilisateur VALUES(:motdepasse, true) where(identifiant=:identifiant)";
+            try {
+                $conn = getConnectionBDDEDTIdentification();
+
+                $insertion = $conn->prepare($change);
+                $insertion->bindParam(":motdepasse", $mdp);
+                $insertion->bindParam(":identifiant", $identifiant);
+                $insertion->execute();
+
+            } catch (PDOException $e) {
+                echo $e->getMessage();
+            }
+        }
+    }
+
     public function insererDonnees()
     {
-        $req = "INSERT INTO infoutilisateur VALUES(:identifiant, :motdepasse, :role)";
+        $req = "INSERT INTO infoutilisateur VALUES(:identifiant, :motdepasse, :role, false)";
 
         try {
             $conn = getConnectionBDDEDTIdentification();
@@ -48,8 +66,7 @@ abstract class Compte
 
     public function verifMdp($mdp)
     {
-        $caraSpec = array('!', '.', '€', '@','*');
-        $chiffre = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
+        $caraSpec = array('!', '#', '$', '*', '+', '-', '.', '/', ':', '?', '_');
         $sec = false;
         $nbrCara = false;
         $nbrChiffre = 0;
