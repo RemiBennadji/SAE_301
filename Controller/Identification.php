@@ -1,6 +1,6 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+//error_reporting(E_ALL);
+//ini_set('display_errors', 1);
 
 include "../Controller/ConnectionBDD.php";
 
@@ -15,7 +15,7 @@ $PWD = $_POST["pwd"];
 
 //Requête SQL
 $sql1 ="SELECT role FROM infoutilisateur WHERE identifiant=:ID AND motdepasse=:PWD";
-$sql2 ="SELECT identifiant, motdepasse FROM infoutilisateur";
+$sql2 ="SELECT identifiant, motdepasse, changeMDP FROM infoutilisateur";
 
 //Connexion à la base de donnée + lancement des requêtes SQL
 try {
@@ -34,7 +34,10 @@ try {
     if (!empty($result2)) {
         $i = 0;
         for ($i = 0; $i < count($result2); $i++ ) {
-            if ($result2[$i]['identifiant'] == $ID and $result2[$i]['motdepasse'] == $PWD) {
+            if (($result2[$i]['identifiant'] == $ID) and ($result2[$i]['motdepasse'] == $PWD)) {
+                if($result2[$i]['changemdp'] == false){
+                    //TODO
+                }
                 if ($result) {//si le role est bien recupérer alors on démarre la session et cookies
                     $role = $result['role'];
 
