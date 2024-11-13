@@ -46,7 +46,7 @@ try {
                     setcookie("ID", $ID, time() + (60 * 15), "/");
 
                     if (isset($role)) {//si le role n'est pas vide alors on lance MenuPrincipal.php
-                        header("location:../Controller/MenuPrincipal.php");
+                        header("location:../Controller/EDT.php");
                         exit();
                     }
                 }
