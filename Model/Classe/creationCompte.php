@@ -1,5 +1,11 @@
 <?php
-include "../../Controller/ConnectionBDD.php";
+
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
+include_once "../../Controller/ConnectionBDD.php";
+include_once "Compte.php";
+include_once "Etudiant.php";
 
 if (isset($_FILES['fichier']) && $_FILES['fichier']['error'] === UPLOAD_ERR_OK) {
     $nomFichier = $_FILES['fichier']['name'];
@@ -17,24 +23,26 @@ if (isset($_FILES['fichier']) && $_FILES['fichier']['error'] === UPLOAD_ERR_OK) 
                 while (($res = fgetcsv($lecture, 1000, ";")) !== FALSE) {
                     $nom = $res[1];
                     $prenom = $res[2];
-                    echo $nom.'<br>';
                     // Vérification de l'existence de la ligne dans la BDD
                     $sql1 = $conn->prepare("SELECT COUNT(*) FROM etudiants WHERE nom = :nom AND prenom = :prenom");
                     $sql1->bindParam(':nom', $nom);
                     $sql1->bindParam(':prenom', $prenom);
                     $sql1->execute();
-
-                    if ($sql1->fetchColumn() == 0 && ($nom != "nom")) { // Pas de doublon
+                    echo 'lecture new ligne'.'<br>';
+                    if ($sql1->fetchColumn() == 0 && ($nom != "nom")) { // Test si la ligne existe deja dans la BDD et si le nom de la ligne n'est pas égal à nom
                         echo 'Insertion des valeurs.<br>';
                         $insertStmt = $conn->prepare("INSERT INTO etudiants (civilite, nom, prenom, semestre, nom_ressource, email) VALUES (:civilite, :nom, :prenom, :semestre, :nom_ressource, :email)");
                         $insertStmt->execute([
                             'civilite' => $res[0],
                             'nom' => $nom,
                             'prenom' => $prenom,
-                            'semestre' => $res[3], // Assurez-vous que l'index est correct
-                            'nom_ressource' => $res[4], // Assurez-vous que l'index est correct
-                            'email' => $res[5] // Assurez-vous que l'index est correct
+                            'semestre' => $res[3],
+                            'nom_ressource' => $res[4],
+                            'email' => $res[5]
                         ]);
+                        $etu = new Etudiant($nom, $prenom);
+                        $etu->insererDonnees();
+
                     } else {
                         echo "Le doublon existe déjà pour $nom $prenom.<br>";
                     }

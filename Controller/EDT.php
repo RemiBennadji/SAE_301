@@ -39,8 +39,8 @@ if (!isset($_SESSION['role'])) {
 }
 
 // Exemple + Test
-$dateActuel = ' 2024-10-21';  // Date par défaut
-$classeActuel = 'TPC1';       // Groupe par défaut (TPC1 en 1ère année)
+$dateActuel = ' 2024-12-09';  // Date par défaut
+$classeActuel = 'C1';       // Groupe par défaut (TPC1 en 1ère année)
 $anneeActuel = 1;            // Année par défaut (1ère année)
 
 // Fonction pour afficher l'emploi du temps de la semaine
@@ -117,25 +117,25 @@ function RecupererCours($jour, $horaire, $classe, $annee) {
 
     $semestres = ($annee == 1) ? [1, 2] : (($annee == 2) ? [3, 4] : [5, 6]);
     $semestresString = implode(",", $semestres);
-
     $sql = "
-    SELECT DISTINCT seance.idseance, seance.typeseance, seance.duree, schedule.salle, 
-           collegue.prenom, collegue.nom, enseignement.court as matiere, 
-           enseignement.discipline, horaire as date, schedule.nomgroupe
+    SELECT
+        seance.idseance, seance.typeseance, seance.duree, schedulesalle.salle,
+        collegue.prenom, collegue.nom,
+        enseignement.court as matiere,
+        enseignement.discipline, horaire as date, schedule.nomgroupe
     FROM seance
-    JOIN collegue ON seance.collegue = collegue.id
-    JOIN enseignement ON seance.code = enseignement.code
-    JOIN schedule ON seance.nomgroupe = schedule.nomgroupe
-    JOIN ressourcegroupe rg ON schedule.nomgroupe = rg.nomgroupe
+    LEFT JOIN collegue ON seance.collegue = collegue.id
+    JOIN enseignement USING (code, semestre)
+    JOIN schedule USING (code, typeseance, typeformation, nomgroupe, semestre, noseance)
+    JOIN ressourcegroupe rg USING (nomgroupe, typeformation, semestre)
+    JOIN schedulesalle USING (code, typeseance, typeformation, nomgroupe, semestre, noseance, version)
     WHERE horaire = ?
-      AND schedule.version = 20
-      AND (
-         schedule.nomgroupe = ?
-         OR schedule.nomgroupe = 'CM'
-         OR schedule.nomgroupe LIKE 'TD%'
-      )
-      AND rg.semestre IN ($semestresString)
-    LIMIT 1";
+    AND version = 38
+    AND nomressource = ?
+    AND semestre IN ($semestresString)
+    LIMIT 1
+";
+
 
     $connexion = getConnectionBDD();
     $req = $connexion->prepare($sql);
