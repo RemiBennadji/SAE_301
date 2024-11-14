@@ -37,6 +37,7 @@ try {
             if (($result2[$i]['identifiant'] == $ID) and ($result2[$i]['motdepasse'] == $PWD)) {
                 if($result2[$i]['changemdp'] == false){
                     //TODO
+                    header("location: ../View/HTML/ChangeMDP.php");
                 }
                 if ($result) {//si le role est bien recupérer alors on démarre la session et cookies
                     $role = $result['role'];
