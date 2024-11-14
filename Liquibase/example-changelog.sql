@@ -40,3 +40,14 @@ INSERT INTO infoutilisateur (id, identifiant, motdepasse, role) VALUES
     (2, 'iut.info','iutinfo1.','administrateur');
 
 --rollback DELETE FROM infoutilisateur WHERE id = 2 AND identifiant = 'iut.info';
+
+--changeset mattheo labels:infoutilisateur update context:update-table
+--comment: create new table
+create table infoutilisateur(
+                                identifiant text primary key ,
+                                motdepasse text not null ,
+                                role text not null ,
+                                changeMDP boolean not null
+);
+
+--rollback DROP TABLE infoutilisateur;
