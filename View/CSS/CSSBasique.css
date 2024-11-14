@@ -17,7 +17,7 @@ body {
     box-sizing: border-box;
 }
 
- /* Début burger */
+/* Début burger */
 header {
     display: flex;
     justify-content: flex-end;
@@ -642,6 +642,22 @@ caption {
 }
 .cours-eco-gestion-tp-3 {
     background-color: #e699e6;
+    color: black;
+    height: 170px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/*DS*/
+.ds {
+    background-color: #ffcccc;
+    color: #cc0000;
+}
+
+/* PRJ - SAE*/
+.sae {
+    background-color: #ffcc00;
     color: black;
     height: 170px;
     display: flex;

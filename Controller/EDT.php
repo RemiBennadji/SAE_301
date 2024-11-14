@@ -31,13 +31,6 @@
 <?php
 include "../Controller/ConnectionBDD.php";
 
-session_start();
-// Vérification si le rôle est défini, sinon rediriger vers la page de connexion
-if (!isset($_SESSION['role'])) {
-    header("Location: ../View/HTML/Identification.html"); // Redirection si pas de rôle
-    exit();
-}
-
 // Exemple + Test
 $dateActuel = ' 2024-12-09';  // Date par défaut
 $classeActuel = 'C1';       // Groupe par défaut (TPC1 en 1ère année)
@@ -173,17 +166,25 @@ function RecupererCours($jour, $horaire, $classe, $annee) {
 
         $typeSeance = strtolower($cours['typeseance']);
 
-        // Si cours dure 3h, on utilise le CSS adapté
-        if ($dureeMinutes == 180){
-            $classeCSS = "cours-" . $discipline . "-" . $typeSeance.'-3';
+        // Déterminer la classe CSS en fonction du type de séance
+        if ($typeSeance == 'ds') {
+            $classeCSS = "ds";
         }
-        // Sinon le CSS de base
+        elseif ($typeSeance == 'prj') {
+            $classeCSS = "sae";
+        }
         else {
-            $classeCSS = "cours-" . $discipline . "-" . $typeSeance;
+            // Pour les autres types de séances (CM, TD, etc.), appliquer les classes spécifiques aux disciplines
+            if ($dureeMinutes == 180){
+                $classeCSS = "cours-" . $discipline . "-" . $typeSeance.'-3';
+            }
+            else {
+                $classeCSS = "cours-" . $discipline . "-" . $typeSeance;
+            }
         }
 
         // Si la salle est en amphi, on affiche uniquement "Amphi"
-        if ($cours['salle']=='200'){
+        if ($cours['salle'] == '200') {
             $contenuHTML = "<div class='$classeCSS'>" .
                 $cours['typeseance'] . "<br>" .
                 $cours['matiere'] . "<br>" .
@@ -191,9 +192,8 @@ function RecupererCours($jour, $horaire, $classe, $annee) {
                 "Amphi " .
                 "</div>";
         }
-
-        // Sinon, on est dans la salle de TD, on affiche "Salle" et son nuémro
-        else{
+        // Sinon, on est dans la salle de TD, on affiche "Salle" et son numéro
+        else {
             $contenuHTML = "<div class='$classeCSS'>" .
                 $cours['typeseance'] . "<br>" .
                 $cours['matiere'] . "<br>" .
