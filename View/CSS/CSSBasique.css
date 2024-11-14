@@ -231,6 +231,17 @@ input[type="password"], input[type="text"] {
     color: #1d1c1c;
     /*border: 1px solid cornflowerblue;*/
 }
+.newPSW[type="text"]{
+    display: block;
+    border: 1px solid #0081a1;
+    width: 15%;
+    padding: 10px;
+    margin: 10px auto;
+    background: white;
+    border-radius: 2px;
+    outline: none;
+    color: #1d1c1c;
+}
 
 .titreID{
     text-align: center;
@@ -434,7 +445,11 @@ input:focus ~ label {
 .salles-libre li:hover {
     background-color: #b2ebf2; /* Change la couleur au survol */
 }
-
+.titre {
+    text-align: center;
+    font-family: "Verdana",SansSerif, sans-serif;
+    width: 100%;
+}
 h2 {
     text-align: center;
     color: #00796b;
