@@ -461,6 +461,8 @@ table {
     background-color: #fff;
 }
 
+
+
 th, td {
     border: 1px solid #ddd;
     padding: 12px;
@@ -497,6 +499,10 @@ caption {
     caption-side: top;
     font-size: 1.5em;
     margin-bottom: 10px;
+}
+
+div {
+    border-radius: 6px;
 }
 
 /* Anglais */
