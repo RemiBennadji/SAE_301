@@ -26,7 +26,7 @@ if (!isset($_SESSION['role'])) {
             <span></span>
         </div>
         <ul class="menu">
-            <li><a class="underline-animation" href="../Controller/EDT.php">Emploi du temps</a></li>
+            <li><a id="edt" class="underline-animation" href="../Controller/EDT.php">Emploi du temps</a></li>
             <li><a class="underline-animation" href="#">Messagerie</a></li>
             <li><a class="underline-animation" href="../View/HTML/creationCompte.html" id="creationCompte" style="display: none">Créer un compte</a></li>
             <li><a class="underline-animation" href="../View/HTML/affichageSalle.html" id="afficheSalles" style="display: none">Salles disponibles</a></li>
