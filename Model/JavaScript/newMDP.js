@@ -1,4 +1,6 @@
-document.getElementById('formID').addEventListener('submit', function (event) {
+const mdp = document.getElementById('mdp');
+
+document.getElementById('changeMDPForm').addEventListener('submit', function (event) {
     event.preventDefault(); // Empêche l'envoi normal du formulaire
 
     const formData = new FormData(this);
@@ -8,9 +10,8 @@ document.getElementById('formID').addEventListener('submit', function (event) {
         .then(data => {//si il y a une reponse
             if (data === 'fail') {
                 // Change le style en cas d'échec
-                idcompte.style.background = '#f2a19b';
-                idcompte.style.border = '2px solid red';
-                labelIdentifiant.style.color = 'red';
+                mdp.style.background = '#f2a19b';
+                mdp.style.border = '2px solid red';
 
                 idpsw.style.background = '#f2a19b';
                 idpsw.style.border = '2px solid red';
