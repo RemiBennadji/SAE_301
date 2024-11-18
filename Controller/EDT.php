@@ -139,29 +139,25 @@ function RecupererCours($jour, $horaire, $classe, $annee) {
         // Récupérer la première entrée
         $cours = $coursList[0];
 
-        // Récupérer toutes les salles et les joindre avec une virgule
-        $salles = array_map(function($row) { return $row['salle']; }, $coursList);
-        $sallesStr = implode(", ", $salles);
+        // Récupérer toutes les salles de manière unique
+        $salles = array_unique(array_map(function($row) { return $row['salle']; }, $coursList));
 
         // Extraire la durée en minutes
         $dureeStr = $cours['duree'];
 
         // Gérer les deux formats possibles de durée
         if (strpos($dureeStr, 'years') !== false) {
-            // Format: "0 years 0 mons 0 days X hours Y mins 0.0 secs"
             preg_match('/(\d+) hours (\d+) mins/', $dureeStr, $matches);
             if (!empty($matches)) {
                 $dureeMinutes = (intval($matches[1]) * 60) + intval($matches[2]);
             }
         } else {
-            // Format: "HH:MM:SS"
             $dureeParts = explode(':', $dureeStr);
             if (count($dureeParts) == 3) {
                 $dureeMinutes = (intval($dureeParts[0]) * 60) + intval($dureeParts[1]);
             }
         }
 
-        // Si aucun format n'a été reconnu, utiliser la durée par défaut
         if (!isset($dureeMinutes)) {
             $dureeMinutes = 90;
         }
@@ -172,47 +168,41 @@ function RecupererCours($jour, $horaire, $classe, $annee) {
 
         $typeSeance = strtolower($cours['typeseance']);
 
-        // Déterminer la classe CSS en fonction du type de séance
+        // Déterminer la classe CSS et le format des salles en fonction du type de séance
         if ($typeSeance == 'ds') {
             $classeCSS = "ds";
+            $sallesStr = "Amphi, Salle 110"; // Format fixe pour les DS
         }
         elseif ($typeSeance == 'prj') {
             $classeCSS = "sae";
+            $sallesStr = "Salle " . implode(", ", $salles);
         }
         else {
-            // Pour les autres types de séances (CM, TD, etc.), appliquer les classes spécifiques aux disciplines
             if ($dureeMinutes == 180){
                 $classeCSS = "cours-" . $discipline . "-" . $typeSeance.'-3';
             }
             else {
                 $classeCSS = "cours-" . $discipline . "-" . $typeSeance;
             }
+            // Pour les autres types, vérifier si c'est uniquement en Amphi
+            if (count($salles) == 1 && reset($salles) == '200') {
+                $sallesStr = "Amphi";
+            } else {
+                $sallesStr = "Salle " . implode(", ", $salles);
+            }
         }
 
-        // Si le professeur est manquant, on n'affiche pas le "."
         $profInfo = '';
         if ($cours['prenom'] && $cours['nom']) {
             $profInfo = $cours['prenom'][0] . ". " . $cours['nom'];
         }
 
-        // Si la salle est en amphi, on affiche uniquement "Amphi"
-        if ($cours['salle'] == '200') {
-            $contenuHTML = "<div class='$classeCSS'>" .
-                $cours['typeseance'] . "<br>" .
-                $cours['matiere'] . "<br>" .
-                $profInfo . "<br>" .
-                "Amphi " .
-                "</div>";
-        }
-        // Sinon, on est dans la salle de TD, on affiche "Salle" et son numéro
-        else {
-            $contenuHTML = "<div class='$classeCSS'>" .
-                $cours['typeseance'] . "<br>" .
-                $cours['matiere'] . "<br>" .
-                $profInfo . "<br>" .
-                "Salle " . $sallesStr .
-                "</div>";
-        }
+        $contenuHTML = "<div class='$classeCSS'>" .
+            $cours['typeseance'] . "<br>" .
+            $cours['matiere'] . "<br>" .
+            $profInfo . "<br>" .
+            $sallesStr .
+            "</div>";
 
         return [
             'contenu' => $contenuHTML,
