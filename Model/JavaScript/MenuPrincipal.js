@@ -32,7 +32,7 @@ function getCookie() {
     //Pour tous les cookies il les separent avec des = pour preparer la liste avec des caracteres visibles (evite le %20 pour les espaces par exemple)
     for (let cookie of cookies) {
         let [clef, valeur] = cookie.trim().split('=');//trim() : evite les espaces, //split() : divise le cookie en 2 pour faire une liste avec ca clef et ca valeur
-        if (clef === "administrateur") {
+        if ((clef === "administrateur") || (clef === "secretariat")) {
             return true;
         }
     }

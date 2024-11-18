@@ -672,7 +672,51 @@ div {
 }
 /*Fin EDT*/
 
-/*Label emploi du temps menu deroulant : */
-.label{
+/* Style du select */
+select#edtAdmin {
+    width: 100%;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 8px 12px;
+    color: #333;
+    font-size: 14px;
+    appearance: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 10px;
+}
+
+/* Apparence au survol */
+select#edtAdmin:hover {
+    border-color: #007bff; /* Bordure bleue au survol */
+    background-color: #f9f9f9; /* Fond légèrement grisé */
+}
+
+/* Apparence quand le champ est actif */
+select#edtAdmin:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+/* Apparence des options désactivées */
+option:disabled {
+    color: #aaa;
+    background-color: #f8f8f8;
+    font-style: italic;
+}
+
+/* Apparence des options utilisées comme labels */
+option.label {
+    color: #007bff;
     font-weight: bold;
+    background-color: #eef5ff; /* Fond bleu pour distinguer */
+}
+
+/* Ajustements supplémentaires pour un alignement optimal */
+select#edtAdmin {
+    height: auto; /* Maintient la hauteur adaptée au contenu */
+    line-height: normal; /* Conserve une bonne lisibilité */
 }
