@@ -4,4 +4,6 @@ if(empty($_POST['mdp'])) {
 }
 
 $mdp = $_POST['mdp'];
+if($mdp == $_SESSION['mdp']) {
 
+}
