@@ -32,9 +32,9 @@
 include "../Controller/ConnectionBDD.php";
 
 // Exemple + Test
-$dateActuel = ' 2024-12-09';  // Date par défaut
-$classeActuel = 'C1';       // Groupe par défaut (TPC1 en 1ère année)
-$anneeActuel = 1;            // Année par défaut (1ère année)
+$dateActuel = ' 2025-01-06';  // Date par défaut
+$classeActuel = 'C1';         // Groupe par défaut (TPC1 en 1ère année)
+$anneeActuel = 1;             // Année par défaut (1ère année)
 
 // Fonction pour afficher l'emploi du temps de la semaine
 function AfficherEdtSemaine($dateDebut, $classe, $annee) {
@@ -112,31 +112,37 @@ function RecupererCours($jour, $horaire, $classe, $annee) {
     $semestresString = implode(",", $semestres);
     $sql = "
     SELECT
-        seance.idseance, seance.typeseance, seance.duree, schedulesalle.salle,
-        collegue.prenom, collegue.nom,
-        enseignement.court as matiere,
-        enseignement.discipline, horaire as date, schedule.nomgroupe
+    seance.idseance, seance.typeseance, seance.duree, schedulesalle.salle,
+    collegue.prenom, collegue.nom,
+    enseignement.court as matiere,
+    enseignement.discipline, horaire as date, schedule.nomgroupe
     FROM seance
-    LEFT JOIN collegue ON seance.collegue = collegue.id
-    JOIN enseignement USING (code, semestre)
-    JOIN schedule USING (code, typeseance, typeformation, nomgroupe, semestre, noseance)
-    JOIN ressourcegroupe rg USING (nomgroupe, typeformation, semestre)
-    JOIN schedulesalle USING (code, typeseance, typeformation, nomgroupe, semestre, noseance, version)
+         LEFT JOIN collegue ON seance.collegue = collegue.id
+         JOIN enseignement USING (code, semestre)
+         JOIN schedule USING (code, typeseance, typeformation, nomgroupe, semestre, noseance)
+         JOIN ressourcegroupe rg USING (nomgroupe, typeformation, semestre)
+         JOIN schedulesalle USING (code, typeseance, typeformation, nomgroupe, semestre, noseance, version)
     WHERE horaire = ?
     AND version = 38
     AND nomressource = ?
     AND semestre IN ($semestresString)
-    LIMIT 1
-";
-
+    ";
 
     $connexion = getConnectionBDD();
     $req = $connexion->prepare($sql);
     $req->execute([$dateTime, $classe]);
 
-    $cours = $req->fetch(PDO::FETCH_ASSOC);
+    // Récupérer toutes les lignes pour un cours
+    $coursList = $req->fetchAll(PDO::FETCH_ASSOC);
 
-    if ($cours) {
+    if ($coursList) {
+        // Récupérer la première entrée
+        $cours = $coursList[0];
+
+        // Récupérer toutes les salles et les joindre avec une virgule
+        $salles = array_map(function($row) { return $row['salle']; }, $coursList);
+        $sallesStr = implode(", ", $salles);
+
         // Extraire la durée en minutes
         $dureeStr = $cours['duree'];
 
@@ -183,12 +189,18 @@ function RecupererCours($jour, $horaire, $classe, $annee) {
             }
         }
 
+        // Si le professeur est manquant, on n'affiche pas le "."
+        $profInfo = '';
+        if ($cours['prenom'] && $cours['nom']) {
+            $profInfo = $cours['prenom'][0] . ". " . $cours['nom'];
+        }
+
         // Si la salle est en amphi, on affiche uniquement "Amphi"
         if ($cours['salle'] == '200') {
             $contenuHTML = "<div class='$classeCSS'>" .
                 $cours['typeseance'] . "<br>" .
                 $cours['matiere'] . "<br>" .
-                $cours['prenom'][0] . ". " . $cours['nom'] . "<br>" .
+                $profInfo . "<br>" .
                 "Amphi " .
                 "</div>";
         }
@@ -197,8 +209,8 @@ function RecupererCours($jour, $horaire, $classe, $annee) {
             $contenuHTML = "<div class='$classeCSS'>" .
                 $cours['typeseance'] . "<br>" .
                 $cours['matiere'] . "<br>" .
-                $cours['prenom'][0] . ". " . $cours['nom'] . "<br>" .
-                "Salle " . $cours['salle'] .
+                $profInfo . "<br>" .
+                "Salle " . $sallesStr .
                 "</div>";
         }
 
@@ -210,6 +222,7 @@ function RecupererCours($jour, $horaire, $classe, $annee) {
 
     return null;
 }
+
 
 // Fonction pour incrémenter une semaine
 function incrementerSemaine($ancienneDate) {
