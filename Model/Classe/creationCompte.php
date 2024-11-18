@@ -12,7 +12,6 @@ if (isset($_FILES['fichier']) && $_FILES['fichier']['error'] === UPLOAD_ERR_OK) 
 
     // Vérifier si c'est un fichier CSV
     if ($_FILES['fichier']['type'] === 'text/csv' || pathinfo($nomFichier, PATHINFO_EXTENSION) === 'csv') {
-        echo "Le fichier est un CSV.<br>";
         $lecture = fopen($_FILES['fichier']['tmp_name'], "r");
 
         if ($lecture !== FALSE) {//test si le fichier est lisable
@@ -28,9 +27,7 @@ if (isset($_FILES['fichier']) && $_FILES['fichier']['error'] === UPLOAD_ERR_OK) 
                     $sql1->bindParam(':nom', $nom);
                     $sql1->bindParam(':prenom', $prenom);
                     $sql1->execute();
-                    echo 'lecture new ligne'.'<br>';
                     if ($sql1->fetchColumn() == 0 && ($nom != "nom")) { // Test si la ligne existe deja dans la BDD et si le nom de la ligne n'est pas égal à nom
-                        echo 'Insertion des valeurs.<br>';
                         $insertStmt = $conn->prepare("INSERT INTO etudiants (civilite, nom, prenom, semestre, nom_ressource, email) VALUES (:civilite, :nom, :prenom, :semestre, :nom_ressource, :email)");
                         $insertStmt->execute([
                             'civilite' => $res[0],
@@ -43,8 +40,6 @@ if (isset($_FILES['fichier']) && $_FILES['fichier']['error'] === UPLOAD_ERR_OK) 
                         $etu = new Etudiant($nom, $prenom);
                         $etu->insererDonnees();
 
-                    } else {
-                        echo "Le doublon existe déjà pour $nom $prenom.<br>";
                     }
                 }
 
@@ -52,13 +47,7 @@ if (isset($_FILES['fichier']) && $_FILES['fichier']['error'] === UPLOAD_ERR_OK) 
             } catch (PDOException $e) {
                 echo "Erreur de base de données : " . $e->getMessage();
             }
-        } else {
-            echo "Impossible de lire le fichier.";
         }
-    } else {
-        echo "Le fichier n'est pas au format CSV.";
     }
-} else {
-    echo "Erreur lors du téléchargement du fichier.";
 }
 ?>

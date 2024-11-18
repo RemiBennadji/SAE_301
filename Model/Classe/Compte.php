@@ -47,12 +47,17 @@ abstract class Compte
 
     public function insererDonnees()
     {
-        $req = "INSERT INTO infoutilisateur VALUES(:identifiant, :motdepasse, :role, false)";
+//        $req1 ="SELECT etudiants.email from etudiants where nom=$this->nom";
+        $req2 = "INSERT INTO infoutilisateur VALUES(:identifiant, :motdepasse, :role, false)";
+
 
         try {
             $conn = getConnectionBDDEDTIdentification();
 
-            $insert = $conn->prepare($req);
+//            $requete = $conn->prepare($req1);
+//            $result= $requete->fetch(PDO::FETCH_ASSOC);
+//            $requete->execute();
+            $insert = $conn->prepare($req2);
             $insert->bindParam(":identifiant", $this->identifiant);
             $insert->bindParam(":motdepasse", $this->mdp);
             $insert->bindParam(":role", $this->role);

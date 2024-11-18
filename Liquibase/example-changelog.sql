@@ -41,7 +41,7 @@ INSERT INTO infoutilisateur (id, identifiant, motdepasse, role) VALUES
 
 --rollback DELETE FROM infoutilisateur WHERE id = 2 AND identifiant = 'iut.info';
 
---changeset mattheo labels:infoutilisateur update context:update-table
+--changeset mattheo:5 labels:infoutilisateur update context:update-table
 --comment: create new table
 create table infoutilisateur(
                                 identifiant text primary key ,
@@ -51,3 +51,14 @@ create table infoutilisateur(
 );
 
 --rollback DROP TABLE infoutilisateur;
+
+--changeset mattheo:6 labels:infoutilisateur insert context:insert-table
+--comment: insert iut.info
+insert into infoutilisateur ('iut.info', 'iutinfo1.', 'administrateur')
+--rollback DROP TABLE infoutilisateur;
+
+--changeset mattheo:7 labels:alter infoutilisateur context:alter-table-infoutiliseur
+--comment: alter table
+alter table infoutilisateur add column email text foreign key (email) references etudiants(email) ;
+
+--rollback alter table infoutilisateur drop column email;
