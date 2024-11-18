@@ -665,3 +665,8 @@ caption {
     justify-content: center;
 }
 /*Fin EDT*/
+
+/*Label emploi du temps menu deroulant : */
+.label{
+    font-weight: bold;
+}
