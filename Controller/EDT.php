@@ -41,8 +41,6 @@ function AfficherEdtSemaine($dateDebut, $classe, $annee) {
     $timestamp = strtotime($dateDebut);
     $lundi = date("Y-m-d", $timestamp);
 
-
-
     echo "<table>";
     echo "<tr><th>Heure</th>";
 
@@ -61,7 +59,7 @@ function AfficherEdtSemaine($dateDebut, $classe, $annee) {
     // Boucle sur chaque horaire
     for ($h = 0; $h < count($listeHorraire); $h++) {
         echo "<tr>";
-        echo "<td style='vertical-align: top;'>{$listeHorraire[$h]}</td>";
+        echo "<td style='vertical-align: top;'>$listeHorraire[$h]</td>";
 
         // Boucle pour chaque jour
         for ($j = 0; $j < 5; $j++) {
@@ -199,7 +197,7 @@ function RecupererCours($jour, $horaire, $classe, $annee) {
 
         $contenuHTML = "<div class='$classeCSS'>" .
             $cours['typeseance'] . "<br>" .
-            $cours['matiere'] . "<br>" .
+            $cours['matiere']  . "<br>" .
             $profInfo . "<br>" .
             $sallesStr .
             "</div>";

@@ -524,11 +524,9 @@ div {
 }
 .cours-anglais-tp {
     background-color: #99ccff;
-    color: black;
 }
 .cours-anglais-tp-3 {
     background-color: #99ccff;
-    color: black;
     height: 170px;
     display: flex;
     align-items: center;
@@ -554,11 +552,9 @@ div {
 }
 .cours-informatique-tp {
     background-color: #99cc99;
-    color: black;
 }
 .cours-informatique-tp-3 {
     background-color: #99cc99;
-    color: black;
     height: 170px;
     display: flex;
     align-items: center;
@@ -584,11 +580,9 @@ div {
 }
 .cours-mathematiques-tp {
     background-color: #ff9999;
-    color: black;
 }
 .cours-mathematiques-tp3 {
     background-color: #ff9999;
-    color: black;
     height: 170px;
     display: flex;
     align-items: center;
@@ -614,11 +608,9 @@ div {
 }
 .cours-communication-tp {
     background-color: #ffcc99;
-    color: black;
 }
 .cours-communication-tp-3 {
     background-color: #ffcc99;
-    color: black;
     height: 170px;
     display: flex;
     align-items: center;
@@ -644,11 +636,9 @@ div {
 }
 .cours-eco-gestion-tp {
     background-color: #e699e6;
-    color: black;
 }
 .cours-eco-gestion-tp-3 {
     background-color: #e699e6;
-    color: black;
     height: 170px;
     display: flex;
     align-items: center;
@@ -663,8 +653,7 @@ div {
 
 /* PRJ - SAE*/
 .sae {
-    background-color: #ffcc00;
-    color: black;
+    background-color: orange;
     height: 170px;
     display: flex;
     align-items: center;
