@@ -38,6 +38,7 @@ if (isset($_FILES['fichier']) && $_FILES['fichier']['error'] === UPLOAD_ERR_OK) 
                             'email' => $res[5]
                         ]);
                         $etu = new Etudiant($nom, $prenom);
+                        $etu->setEmail($res[5]);
                         $etu->insererDonnees();
 
                     }

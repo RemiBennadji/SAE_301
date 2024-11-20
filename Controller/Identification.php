@@ -43,11 +43,11 @@ try {
                     $role = $result['role'];
 
                     session_start();//Début session
-                    if($role == "administrateur"){
-                        $compte = new Administrateur();
-                    }elseif ($role == "etudiant"){
-                        $compte = new Etudiant();
-                    }
+//                    if($role == "administrateur"){
+//                        $compte = new Administrateur();
+//                    }elseif ($role == "etudiant"){
+//                        $compte = new Etudiant();
+//                    }
                     $_SESSION['role'] = $role;
                     $_SESSION['ID'] = $ID;
 
