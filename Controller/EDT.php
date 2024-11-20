@@ -31,6 +31,14 @@
 <br><br><br>
 
 <?php
+//
+//session_start();
+//// Vérification si le rôle est défini, sinon rediriger vers la page de connexion
+//if (!isset($_SESSION['role'])) {
+//    header("Location: ../View/HTML/Identification.html"); // Redirection si pas de rôle
+//    exit();
+//}
+
 include "../Controller/ConnectionBDD.php";
 
 // Exemple + Test
@@ -115,7 +123,7 @@ function RecupererCours($jour, $horaire, $classe, $annee) {
     seance.idseance, seance.typeseance, seance.duree, schedulesalle.salle,
     collegue.prenom, collegue.nom,
     enseignement.court as matiere,
-    enseignement.discipline, horaire as date, schedule.nomgroupe
+    enseignement.discipline, horaire as date, schedule.nomgroupe, code
     FROM seance
          LEFT JOIN collegue ON seance.collegue = collegue.id
          JOIN enseignement USING (code, semestre)
@@ -199,7 +207,7 @@ function RecupererCours($jour, $horaire, $classe, $annee) {
 
         $contenuHTML = "<div class='$classeCSS'>" .
             $cours['typeseance'] . "<br>" .
-            $cours['matiere']  . "<br>" .
+            $cours['matiere']  . " | " .  $cours['code']   ."<br>" .
             $profInfo . "<br>" .
             $sallesStr .
             "</div>";
