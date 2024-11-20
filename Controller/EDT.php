@@ -117,7 +117,7 @@ function RecupererCours($jour, $horaire, $classe, $annee) {
     $dateTime = $jour . ' ' . $horaire . ':00';
 
     $semestres = ($annee == 1) ? [1, 2] : (($annee == 2) ? [3, 4] : [5, 6]);
-    $semestresString = implode(",", $semestres);
+    $semestresString = implode(",", $semestres);//transforme un tableau en une chaîne de caractères avec separation par une ,
     $sql = "
     SELECT
     seance.idseance, seance.typeseance, seance.duree, schedulesalle.salle,
