@@ -29,7 +29,7 @@ if (!isset($_SESSION['role'])) {
             <li><a class="underline-animation" href="../Controller/EDT.php">Emploi du temps</a></li>
             <li><a class="underline-animation" href="#">Messagerie</a></li>
             <li><a class="underline-animation" href="../View/HTML/creationCompte.html" id="creationCompte" style="display: none">Créer un compte</a></li>
-            <li><a class="underline-animation" href="../View/HTML/affichageSalle.html" id="afficheSalles" style="display: none">Salles disponibles</a></li>
+            <li><a class="underline-animation" href="../Controller/affichageSalleCurrent.php" id="afficheSalles" style="display: none">Salles disponibles</a></li>
             <li><a class="underline-animation" href="../Controller/Deconnexion.php">Déconnexion</a></li>
         </ul>
     </nav>

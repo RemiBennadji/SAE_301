@@ -356,7 +356,7 @@ input:focus ~ label {
 /* Début AffichageSalle*/
 .sub-container{
     width: 500px;
-    height: 400px;
+    height: 33%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -364,11 +364,12 @@ input:focus ~ label {
     background-color: #f5f9fb;
     border-radius: 20px;
     color: #0081a1;
+    flex-direction: column;
 }
 
 .big-container{
     position: absolute;
-    top: 33%;
+    top: 15%;
     display: flex;
     width: 100%;
     justify-content: center;
@@ -649,3 +650,44 @@ caption {
     justify-content: center;
 }
 /*Fin EDT*/
+
+.buttonSalleLibre{
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-color: #C8A14E;
+    /*position: absolute;*/
+    /*top: 80%;*/
+    /*margin-left: 44%;*/
+    background-color: #C8A14E;
+    width: 200px;
+    height: 40px;
+    border-radius: 18px;
+    font-size: 18px;
+    color: white;
+    border-style: solid;
+}
+.buttonSalleLibre:hover{
+    color: #C8A14E;
+    background-color: white;
+    border-color: #C8A14E;
+    border-style: solid;
+}
+
+.salleLibreAncre{
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    display: block;
+    position: absolute;
+    z-index: 1000;
+
+}
+
+.horaireActuel{
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    display: flex;
+    margin-top: 25%;
+}
