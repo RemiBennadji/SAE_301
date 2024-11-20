@@ -12,7 +12,7 @@ class EdtClass
         $this->groupe = 'C1';
         $this->date = ' 2025-01-06';
 
-        //$this->annee = $_COOKIE['user'];
+        //$this->annee = $_COOKIE['annee'];
         //$this->groupe = $_COOKIE['groupe'];
         //$this->date = current;
     }
