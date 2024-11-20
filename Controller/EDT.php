@@ -170,9 +170,9 @@ function RecupererCours($jour, $horaire, $classe, $annee) {
             $dureeMinutes = 90;
         }
 
-        $discipline = strtolower(supprimerAccents($cours['discipline']));
-        $discipline = preg_replace('/[^a-z0-9]+/', '-', $discipline);
-        $discipline = trim($discipline, '-');
+        $discipline = strtolower(supprimerAccents($cours['discipline']));//Met tous en minuscule et supprime les accents
+        $discipline = preg_replace('/[^a-z0-9]+/', '-', $discipline);//Tout caractère qui n'est pas une lettre minuscule
+        $discipline = trim($discipline, '-');//Tiret au debut et a la fin sont supprimés
 
         $typeSeance = strtolower($cours['typeseance']);
 
