@@ -12,6 +12,7 @@ abstract class Compte
     private $role;
     private $nom;
     private $prenom;
+    private $email;
 
     public function __construct($role, $nom, $prenom)
     {
@@ -48,19 +49,17 @@ abstract class Compte
     public function insererDonnees()
     {
 //        $req1 ="SELECT etudiants.email from etudiants where nom=$this->nom";
-        $req2 = "INSERT INTO infoutilisateur VALUES(:identifiant, :motdepasse, :role, false)";
+        $req2 = "INSERT INTO infoutilisateur VALUES(:identifiant, :motdepasse, :role, false, :email)";
 
 
         try {
             $conn = getConnectionBDDEDTIdentification();
 
-//            $requete = $conn->prepare($req1);
-//            $result= $requete->fetch(PDO::FETCH_ASSOC);
-//            $requete->execute();
             $insert = $conn->prepare($req2);
             $insert->bindParam(":identifiant", $this->identifiant);
             $insert->bindParam(":motdepasse", $this->mdp);
             $insert->bindParam(":role", $this->role);
+            $insert->bindParam(":email", $this->email);
             $insert->execute();
 
 
@@ -130,5 +129,9 @@ abstract class Compte
     public function setRole($r)
     {
         $this->role = $r;
+    }
+
+    public function setEmail($email){
+        $this->email = $email;
     }
 }
