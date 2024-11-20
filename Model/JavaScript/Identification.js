@@ -37,9 +37,10 @@ document.getElementById('formID').addEventListener('submit', function (event) {
                 idpsw.style.border = '2px solid red';
                 labelPsw.style.color = 'red';
                 yeux.style.color = 'black';
-            } else {
+            }
+            else {
                 // Redirige l'utilisateur s'il est authentifié
-                window.location.href = '../../Controller/MenuPrincipal.php';
+                window.location.href = '../../Controller/EDT.php';
             }
         })
         .catch(error => console.error('Erreur:', error));

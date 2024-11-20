@@ -1,7 +1,9 @@
+<html>
 <head>
     <title>EDT</title>
     <link rel="stylesheet" type="text/css" href="../View/CSS/CSSBasique.css">
 </head>
+<body>
 <a href="MenuPrincipal.php"><img src="../Ressource/logouphf2.png" class="logoUPHF" alt="Logo UPHF"></a>
 <header>
     <nav>
@@ -259,3 +261,5 @@ echo ('<footer class="footer">
 // Affichage de l'emploi du temps pour la semaine choisie
 AfficherEdtSemaine($dateActuel, $classeActuel, $anneeActuel);
 ?>
+</body>
+</html>

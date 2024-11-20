@@ -12,28 +12,49 @@ if (!isset($_SESSION['role'])) {
 
 
 //récupération des données du formulaire
-$jour = $_POST["idJour"];
-$heure = $_POST["idHeure"];
+$jour = date("Y-m-d");
+$heure = date("H:i:s");
+
+$timestamp = strtotime($heure); // Convertit l'heure en timestamp
+$heure = strtotime("+60 minutes", $timestamp); // Pour être dans l'horaire UTC+1
+$heure = date("H:i:s", $heure); // Affiche le résultat au format heure
+
+
+if($heure < '9:30:00'){
+    $heure = '8:00';
+}
+elseif ($heure >= '09:30:00' and $heure < '11:00:00'){
+    $heure = '9:30';
+}
+elseif ($heure >= '12:30:00' and $heure < '14:00:00'){
+    $heure = '12:30';
+}
+elseif ($heure >= '14:00:00' and $heure < '15:30:00'){
+    $heure = '14:00';
+}
+elseif ($heure >= '15:30:00' and $heure < '17:00:00'){
+    $heure = '15:30';
+}
 
 //Initialisation d'une variable qui nous permettra d'avoir l'horaire précédent l'horaire choisi par l'utilisateur
-$heureInf = "00:00";
+
 
 //Attribue l'heure précédente
-if($heure == '9:30'){
+if($heure == '9:30:00'){
     $heureInf = '8:00';
-}elseif ($heure == '11:00'){
+}elseif ($heure == '11:00:00'){
     $heureInf = '9:30';
-}elseif ($heure == '14:00'){
+}elseif ($heure == '14:00:00'){
     $heureInf = '12:30';
-}elseif ($heure == '15:30'){
+}elseif ($heure == '15:30:00'){
     $heureInf = '14:00';
-}elseif ($heure == '17:00'){
+}elseif ($heure == '17:00:00'){
     $heureInf = '15:30';
 }
 //conversion de la date au format timestamp
 $timestamp = strtotime($jour);
-$date = date("Y-m-d", $timestamp).' '.$heure.':00';
-$dateInf = date("Y-m-d", $timestamp).' '.$heureInf.':00';
+$date = date("Y-m-d", $timestamp).' '.$heure;
+$dateInf = date("Y-m-d", $timestamp).' '.$heureInf;
 
 //requête permettant d'accéder aux salles utilisées à l'horaire saisi
 $sql1 = "SELECT DISTINCT salle FROM schedulesalle JOIN schedule 
@@ -138,7 +159,7 @@ try {
 
 <div class="big-container">
     <div class="sub-container"><br>
-        <h2>Les salles libres sont : </h2><br><br>
+        <h2>Les salles actuellement libres sont : </h2><br><br>
         <ul class="salles-libre">
             <?php
             foreach ($sallesLibres as $n) {
@@ -151,7 +172,7 @@ try {
 </div>
 
 <div class="horaireActuel">
-    <a class="salleLibreAncre" href="affichageSalleCurrent.php"><button class="buttonMDRForgotten">Horaire actuel</button></a>
+<a class="salleLibreAncre" href="../View/HTML/affichageSalle.html"><button class="buttonMDRForgotten">Choisir l'horaire</button></a>
 </div>
 
 <footer class="footer">
