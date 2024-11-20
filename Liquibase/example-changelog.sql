@@ -3,7 +3,6 @@
 --changeset your.name:1 labels:table-creation context:initial-setup
 --comment: Creating infoutilisateur table
 CREATE TABLE IF NOT EXISTS infoutilisateur (
-                                               id INT NOT NULL,
                                                identifiant TEXT NOT NULL,
                                                motdepasse TEXT NOT NULL,
                                                role TEXT NOT NULL,
@@ -36,12 +35,12 @@ INSERT INTO etudiants (civilite, nom, prenom, semestre, nom_ressource, email) VA
 
 --changeset your.name:4 labels:infoutilisateur-insert context:additional-data
 --comment: Inserting initial user data
-INSERT INTO infoutilisateur (id, identifiant, motdepasse, role) VALUES
-    (2, 'iut.info','iutinfo1.','administrateur');
+INSERT INTO infoutilisateur (identifiant, motdepasse, role) VALUES
+    ('iut.info','iutinfo1.','administrateur');
 
---rollback DELETE FROM infoutilisateur WHERE id = 2 AND identifiant = 'iut.info';
+--rollback DELETE FROM infoutilisateur WHERE identifiant = 'iut.info';
 
---changeset mattheo:5 labels:infoutilisateur update context:update-table
+--changeset mattheo:5 labels:create-infoutilisateur update context:update-table
 --comment: create new table
 create table infoutilisateur(
                                 identifiant text primary key ,
@@ -52,12 +51,13 @@ create table infoutilisateur(
 
 --rollback DROP TABLE infoutilisateur;
 
---changeset mattheo:6 labels:infoutilisateur insert context:insert-table
+--changeset mattheo:6 labels:insert-infoutilisateur-admin insert context:insert-table
 --comment: insert iut.info
-insert into infoutilisateur ('iut.info', 'iutinfo1.', 'administrateur')
+insert into infoutilisateur(identifiant, motdepasse, role, changeMDP)
+values ('iut.info', 'iutinfo1.', 'administrateur', true);
 --rollback DROP TABLE infoutilisateur;
 
---changeset mattheo:7 labels:alter infoutilisateur context:alter-table-infoutiliseur
+--changeset mattheo:7 labels:alter add-column-mail-infoutilisateur context:alter-table-infoutiliseur
 --comment: alter table
 alter table infoutilisateur add column email text foreign key (email) references etudiants(email) ;
 
