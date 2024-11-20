@@ -14,12 +14,9 @@ abstract class Compte
     private $prenom;
     private $email;
 
-    public function __construct($role, $nom, $prenom)
+    public function __construct($role)
     {
         $this->role=$role;
-        $this->nom=$nom;
-        $this->prenom=$prenom;
-        $this->identifiant= $this->genererIdentifiant();
         $this->mdp = $this->genererMDP();
     }
 
@@ -54,6 +51,7 @@ abstract class Compte
 
         try {
             $conn = getConnectionBDDEDTIdentification();
+            $this->identifiant= $this->genererIdentifiant();
 
             $insert = $conn->prepare($req2);
             $insert->bindParam(":identifiant", $this->identifiant);
@@ -133,5 +131,14 @@ abstract class Compte
 
     public function setEmail($email){
         $this->email = $email;
+    }
+    public function setPrenom($prenom){
+        echo"test";
+        $this->prenom = $prenom;
+        echo $prenom;
+    }
+
+    public function setNom($nom){
+        $this->nom = $nom;
     }
 }

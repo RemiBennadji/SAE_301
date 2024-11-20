@@ -41,13 +41,13 @@ try {
                 }
                 if ($result) {//si le role est bien recupérer alors on démarre la session et cookies
                     $role = $result['role'];
+                    if($role == "administrateur"){
+                        $compte = new Administrateur();
+                    }if($role == "etudiant"){
+                        $compte = new Etudiant();
+                    }
 
                     session_start();//Début session
-//                    if($role == "administrateur"){
-//                        $compte = new Administrateur();
-//                    }elseif ($role == "etudiant"){
-//                        $compte = new Etudiant();
-//                    }
                     $_SESSION['role'] = $role;
                     $_SESSION['ID'] = $ID;
 
