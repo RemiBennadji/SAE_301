@@ -79,14 +79,14 @@ try {
                         echo json_encode(['redirect' => '../../Controller/EDT.php']); // Retourne la redirection
                         exit();
                     }
-                    echo json_encode(['error' => 'Identifiant ou mot de passe incorrect.']);
-                    exit();
 //                    if (isset($role)) {//si le role n'est pas vide alors on lance MenuPrincipal.php
 //                        header("Location: ../../Controller/EDT.php");
 //                        exit();
 //                    }
                 }
             }
+            echo json_encode(['error' => 'errorConnexion']);
+            exit();
         }
     } else {
 //        echo "Identifiant ou mot de passe incorrect.";

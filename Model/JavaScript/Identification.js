@@ -35,23 +35,25 @@ document.getElementById('formID').addEventListener('submit', function (event) {
             console.log("Réponse brute :", data);
             try{
                 const jsonData = JSON.parse(data);
-            if (jsonData.redirect) {
+            if (jsonData.error){
+                console.error(jsonData.error);
+
+                if (jsonData.error === 'errorConnexion') {
+                    // Change le style en cas d'échec
+                    idcompte.style.background = '#f2a19b';
+                    idcompte.style.border = '2px solid red';
+                    labelIdentifiant.style.color = 'red';
+
+                    idpsw.style.background = '#f2a19b';
+                    idpsw.style.border = '2px solid red';
+                    labelPsw.style.color = 'red';
+                    yeux.style.color = 'black';
+                }
+            }else if (jsonData.redirect) {
                 // Effectue la redirection vers l'URL fournie par le PHP
                 window.location.href = jsonData.redirect;
-            }else if (jsonData.error){
-                console.error(jsonData.error);
-                }
-            else{
-                // Change le style en cas d'échec
-                idcompte.style.background = '#f2a19b';
-                idcompte.style.border = '2px solid red';
-                labelIdentifiant.style.color = 'red';
-
-                idpsw.style.background = '#f2a19b';
-                idpsw.style.border = '2px solid red';
-                labelPsw.style.color = 'red';
-                yeux.style.color = 'black';
             }
+
         }catch (error){
                 console.error("Erreur lors du parsing JSON : ", error);
             }
