@@ -2,8 +2,8 @@
 
 class Secretariat extends Compte
 {
-    public function __construct($nom, $prenom)
+    public function __construct()
     {
-        parent::__construct("secretariat", $nom, $prenom);
+        parent::__construct("secretariat");
     }
 }
