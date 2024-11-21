@@ -27,10 +27,21 @@ document.getElementById('formID').addEventListener('submit', function (event) {
     console.log('Données du formulaire :', [...formData.entries()]);
 
     fetch('../../Controller/Identification.php', {method: 'POST'/*POST = cacher info URL*/, body: formData})//envoie donnée au serveur et return réponse
-        .then(response => response.text())// enregistre la reponse du serveur
+        .then(response =>{ if (!response.ok) {
+        throw new Error(`Erreur HTTP : ${response.status}`);
+    }
+    return response.text();})// enregistre la reponse du serveur
         .then(data => {//si il y a une reponse
-            console.log('Réponse du serveur :', data);
-            if (data === 'fail') {
+            console.log("Réponse brute :", data);
+            try{
+                const jsonData = JSON.parse(data);
+            if (jsonData.redirect) {
+                // Effectue la redirection vers l'URL fournie par le PHP
+                window.location.href = jsonData.redirect;
+            }else if (jsonData.error){
+                console.error(jsonData.error);
+                }
+            else{
                 // Change le style en cas d'échec
                 idcompte.style.background = '#f2a19b';
                 idcompte.style.border = '2px solid red';
@@ -40,11 +51,14 @@ document.getElementById('formID').addEventListener('submit', function (event) {
                 idpsw.style.border = '2px solid red';
                 labelPsw.style.color = 'red';
                 yeux.style.color = 'black';
-            } else {
-                // Redirige l'utilisateur s'il est authentifié
-                window.location.href = '../../Controller/MenuPrincipal.php';
+            }
+        }catch (error){
+                console.error("Erreur lors du parsing JSON : ", error);
             }
         })
-        .catch(error => console.error('Erreur:', error));
-});
+
+        .catch(error => {
+            console.error('Erreur:', error.message);
+        });
+})
 
