@@ -3,6 +3,15 @@
 //ini_set('display_errors', 1);
 
 include "../Controller/ConnectionBDD.php";
+include_once "../Model/Classe/Compte.php";
+include_once "../Model/Classe/Administrateur.php";
+include_once "../Model/Classe/Etudiant.php";
+
+echo "Étape 1 : Script démarré<br>";
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 //Recupération des informations lors de la connexion de l'utilisateur
 if (!isset($_POST['id']) || !isset($_POST['pwd'])) {
@@ -20,7 +29,7 @@ $sql2 ="SELECT identifiant, motdepasse, changeMDP FROM infoutilisateur";
 //Connexion à la base de donnée + lancement des requêtes SQL
 try {
     $connection = getConnectionBDDEDTIdentification(); // Utilisation des informations de connexion du fichier ConnexionBDD.php
-
+    echo "Étape 2 : Connexion BDD réussie<br>";
     $result = $connection->prepare($sql1);
     $result->bindParam(':ID', $ID);
     $result->bindParam(':PWD', $PWD);
@@ -37,27 +46,35 @@ try {
             if (($result2[$i]['identifiant'] == $ID) and ($result2[$i]['motdepasse'] == $PWD)) {
                 if($result2[$i]['changemdp'] == false){
                     //TODO
-                    header("location: ../View/HTML/ChangeMDP.php");
+                    header("Location: ../../View/HTML/changeMDP.php");
                 }
                 if ($result) {//si le role est bien recupérer alors on démarre la session et cookies
                     $role = $result['role'];
                     echo $role;
+                    //tests pour déterminer quel type de compte créer
                     if($role == "etudiant"){
                         $compte = new Etudiant();
                     }
                     if($role == "administrateur"){
                         $compte = new Administrateur();
                     }
+                    if($role == "secretariat"){
+                        $compte = new Secretariat();
+                    }
+                    if($role == "professeur"){
+                        $compte = new Professeur();
+                    }
 
                     session_start();//Début session
                     $_SESSION['role'] = $role;
                     $_SESSION['ID'] = $ID;
+                    $_SESSION['compte'] = $compte;
 
                     setcookie("role", $role, time() + (60 * 15), "/");//Début cookie
                     setcookie("ID", $ID, time() + (60 * 15), "/");
 
                     if (isset($role)) {//si le role n'est pas vide alors on lance MenuPrincipal.php
-                        header("location:../Controller/EDT.php");
+                        header("Location: ../../Controller/EDT.php");
                         exit();
                     }
                 }
@@ -69,6 +86,6 @@ try {
     echo 'fail';
 
 } catch (PDOException $e) {
-    echo "Erreur : " . $e->getMessage();
+    echo "Erreur de connexion BDD : " . $e->getMessage();
     exit();
 }
