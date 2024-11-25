@@ -17,7 +17,7 @@ body {
     box-sizing: border-box;
 }
 
- /* Début burger */
+/* Début burger */
 header {
     display: flex;
     justify-content: flex-end;
@@ -356,7 +356,7 @@ input:focus ~ label {
 /* Début AffichageSalle*/
 .sub-container{
     width: 500px;
-    height: 33%;
+    height: 400px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -364,12 +364,11 @@ input:focus ~ label {
     background-color: #f5f9fb;
     border-radius: 20px;
     color: #0081a1;
-    flex-direction: column;
 }
 
 .big-container{
     position: absolute;
-    top: 15%;
+    top: 33%;
     display: flex;
     width: 100%;
     justify-content: center;
@@ -500,6 +499,10 @@ caption {
     margin-bottom: 10px;
 }
 
+div {
+    border-radius: 6px;
+}
+
 /* Anglais */
 .cours-anglais-cm {
     background-color: #0000ff;
@@ -519,11 +522,9 @@ caption {
 }
 .cours-anglais-tp {
     background-color: #99ccff;
-    color: black;
 }
 .cours-anglais-tp-3 {
     background-color: #99ccff;
-    color: black;
     height: 170px;
     display: flex;
     align-items: center;
@@ -549,11 +550,9 @@ caption {
 }
 .cours-informatique-tp {
     background-color: #99cc99;
-    color: black;
 }
 .cours-informatique-tp-3 {
     background-color: #99cc99;
-    color: black;
     height: 170px;
     display: flex;
     align-items: center;
@@ -579,11 +578,9 @@ caption {
 }
 .cours-mathematiques-tp {
     background-color: #ff9999;
-    color: black;
 }
 .cours-mathematiques-tp3 {
     background-color: #ff9999;
-    color: black;
     height: 170px;
     display: flex;
     align-items: center;
@@ -609,11 +606,9 @@ caption {
 }
 .cours-communication-tp {
     background-color: #ffcc99;
-    color: black;
 }
 .cours-communication-tp-3 {
     background-color: #ffcc99;
-    color: black;
     height: 170px;
     display: flex;
     align-items: center;
@@ -639,11 +634,24 @@ caption {
 }
 .cours-eco-gestion-tp {
     background-color: #e699e6;
-    color: black;
 }
 .cours-eco-gestion-tp-3 {
     background-color: #e699e6;
-    color: black;
+    height: 170px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/*DS*/
+.ds {
+    background-color: #ffcccc;
+    color: #cc0000;
+}
+
+/* PRJ - SAE*/
+.sae {
+    background-color: orange;
     height: 170px;
     display: flex;
     align-items: center;
@@ -651,43 +659,51 @@ caption {
 }
 /*Fin EDT*/
 
-.buttonSalleLibre{
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    border-color: #C8A14E;
-    /*position: absolute;*/
-    /*top: 80%;*/
-    /*margin-left: 44%;*/
-    background-color: #C8A14E;
-    width: 200px;
-    height: 40px;
-    border-radius: 18px;
-    font-size: 18px;
-    color: white;
-    border-style: solid;
-}
-.buttonSalleLibre:hover{
-    color: #C8A14E;
-    background-color: white;
-    border-color: #C8A14E;
-    border-style: solid;
+/* Style du select */
+select#edtAdmin {
+    width: 100%;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 8px 12px;
+    color: #333;
+    font-size: 14px;
+    appearance: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 10px;
 }
 
-.salleLibreAncre{
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    display: block;
-    position: absolute;
-    z-index: 1000;
-
+/* Apparence au survol */
+select#edtAdmin:hover {
+    border-color: #007bff; /* Bordure bleue au survol */
+    background-color: #f9f9f9; /* Fond légèrement grisé */
 }
 
-.horaireActuel{
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    display: flex;
-    margin-top: 25%;
+/* Apparence quand le champ est actif */
+select#edtAdmin:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+/* Apparence des options désactivées */
+option:disabled {
+    color: #aaa;
+    background-color: #f8f8f8;
+    font-style: italic;
+}
+
+/* Apparence des options utilisées comme labels */
+option.label {
+    color: #007bff;
+    font-weight: bold;
+    background-color: #eef5ff; /* Fond bleu pour distinguer */
+}
+
+/* Ajustements supplémentaires pour un alignement optimal */
+select#edtAdmin {
+    height: auto; /* Maintient la hauteur adaptée au contenu */
+    line-height: normal; /* Conserve une bonne lisibilité */
 }
