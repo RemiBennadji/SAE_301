@@ -31,6 +31,14 @@
 <br><br><br>
 
 <?php
+//
+//session_start();
+//// Vérification si le rôle est défini, sinon rediriger vers la page de connexion
+//if (!isset($_SESSION['role'])) {
+//    header("Location: ../View/HTML/Identification.html"); // Redirection si pas de rôle
+//    exit();
+//}
+
 include "../Controller/ConnectionBDD.php";
 
 // Exemple + Test
@@ -109,13 +117,13 @@ function RecupererCours($jour, $horaire, $classe, $annee) {
     $dateTime = $jour . ' ' . $horaire . ':00';
 
     $semestres = ($annee == 1) ? [1, 2] : (($annee == 2) ? [3, 4] : [5, 6]);
-    $semestresString = implode(",", $semestres);
+    $semestresString = implode(",", $semestres);//transforme un tableau en une chaîne de caractères avec separation par une ,
     $sql = "
     SELECT
     seance.idseance, seance.typeseance, seance.duree, schedulesalle.salle,
     collegue.prenom, collegue.nom,
     enseignement.court as matiere,
-    enseignement.discipline, horaire as date, schedule.nomgroupe
+    enseignement.discipline, horaire as date, schedule.nomgroupe, code
     FROM seance
          LEFT JOIN collegue ON seance.collegue = collegue.id
          JOIN enseignement USING (code, semestre)
@@ -162,9 +170,9 @@ function RecupererCours($jour, $horaire, $classe, $annee) {
             $dureeMinutes = 90;
         }
 
-        $discipline = strtolower(supprimerAccents($cours['discipline']));
-        $discipline = preg_replace('/[^a-z0-9]+/', '-', $discipline);
-        $discipline = trim($discipline, '-');
+        $discipline = strtolower(supprimerAccents($cours['discipline']));//Met tous en minuscule et supprime les accents
+        $discipline = preg_replace('/[^a-z0-9]+/', '-', $discipline);//Tout caractère qui n'est pas une lettre minuscule
+        $discipline = trim($discipline, '-');//Tiret au debut et a la fin sont supprimés
 
         $typeSeance = strtolower($cours['typeseance']);
 
@@ -199,7 +207,7 @@ function RecupererCours($jour, $horaire, $classe, $annee) {
 
         $contenuHTML = "<div class='$classeCSS'>" .
             $cours['typeseance'] . "<br>" .
-            $cours['matiere']  . "<br>" .
+            $cours['matiere']  . " | " .  $cours['code']   ."<br>" .
             $profInfo . "<br>" .
             $sallesStr .
             "</div>";

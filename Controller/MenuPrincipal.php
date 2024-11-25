@@ -50,6 +50,8 @@ if (!isset($_SESSION['role'])) {
                     <option value="FIA">FIA</option>
                     <option value="FIB">FIB</option>
                     <option value="FA">FA</option>
+                    <option class="label" disabled>MPH</option>
+                    <option value="MPH">MPH</option>
                 </select>
             </label>
         </ul>
