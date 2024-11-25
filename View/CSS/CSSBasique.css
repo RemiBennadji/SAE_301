@@ -664,3 +664,22 @@ caption {
     justify-content: center;
 }
 /*Fin EDT*/
+
+/*debut CreationCompte*/
+
+.upload-file{
+    border: 1px solid black;
+    padding-top: 20%;
+    padding-bottom: 10%;
+}
+
+.form-import{
+    padding-right: 10%;
+    padding-left: 10%;
+}
+
+.button-upload{
+    display: flex;
+}
+/*fin CreationCompte*/
+
