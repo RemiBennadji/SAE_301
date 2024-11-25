@@ -1,4 +1,4 @@
-<html>
+<html lang="fr">
 <head>
     <title>EDT</title>
     <link rel="stylesheet" type="text/css" href="../View/CSS/CSSBasique.css">
@@ -31,7 +31,6 @@
 <br><br><br>
 
 <?php
-//
 //session_start();
 //// Vérification si le rôle est défini, sinon rediriger vers la page de connexion
 //if (!isset($_SESSION['role'])) {
@@ -55,45 +54,76 @@ function AfficherEdtSemaine($dateDebut, $classe, $annee) {
     echo "<tr><th>Heure</th>";
 
     $joursSemaine = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi'];
+    $joursData = [];
+
+    // Récupérer les données pour tous les jours en une fois
     for ($i = 0; $i < 5; $i++) {
         $jourTimestamp = strtotime("+$i day", strtotime($lundi));
+        $jour = date("Y-m-d", $jourTimestamp);
+        $joursData[$i] = RecupererCoursParJour($jour, $classe, $annee);
         echo "<th>" . $joursSemaine[$i] . " " . date("d/m", $jourTimestamp) . "</th>";
     }
     echo "</tr>";
 
     $listeHorraire = ['08:00', '09:30', '11:00', '12:30', '14:00', '15:30', '17:00'];
-
-    // Tableau pour stocker les cellules à sauter
     $cellulesSautees = array_fill(0, 5, 0);
 
-    // Boucle sur chaque horaire
     for ($h = 0; $h < count($listeHorraire); $h++) {
         echo "<tr>";
         echo "<td style='vertical-align: top;'>$listeHorraire[$h]</td>";
 
-        // Boucle pour chaque jour
         for ($j = 0; $j < 5; $j++) {
             if ($cellulesSautees[$j] > 0) {
                 $cellulesSautees[$j]--;
                 continue;
             }
 
-            $jourTimestamp = strtotime("+$j day", strtotime($lundi));
-            $jour = date("Y-m-d", $jourTimestamp);
+            $horaireCourant = date("H:i:s", strtotime($listeHorraire[$h]));
+            $coursDuJour = array_filter($joursData[$j], function($cours) use ($horaireCourant) {
+                return date("H:i:s", strtotime($cours['date'])) === $horaireCourant;
+            });
 
-            $coursInfo = RecupererCours($jour, $listeHorraire[$h], $classe, $annee);
-
-            if ($coursInfo) {
-                $cours = $coursInfo['contenu'];
-                $duree = $coursInfo['duree'];
-                $nombreCreneaux = ceil($duree / 90);
-
-                if ($nombreCreneaux > 1) {
-                    echo "<td rowspan='$nombreCreneaux'>$cours</td>";
-                    $cellulesSautees[$j] = $nombreCreneaux - 1;
+            if (!empty($coursDuJour)) {
+                $cours = current($coursDuJour);
+                // Calculer la durée en minutes
+                $dureeStr = $cours['duree'];
+                if (strpos($dureeStr, 'years') !== false) {
+                    preg_match('/(\d+) hours (\d+) mins/', $dureeStr, $matches);
+                    $dureeMinutes = !empty($matches) ? (intval($matches[1]) * 60) + intval($matches[2]) : 90;
                 } else {
-                    echo "<td>$cours</td>";
+                    $dureeParts = explode(':', $dureeStr);
+                    $dureeMinutes = count($dureeParts) == 3 ? (intval($dureeParts[0]) * 60) + intval($dureeParts[1]) : 90;
                 }
+
+                $nombreCreneaux = ceil($dureeMinutes / 90);
+
+                // Générer le contenu HTML avec le style approprié
+                $discipline = strtolower(supprimerAccents($cours['discipline']));
+                $discipline = preg_replace('/[^a-z0-9]+/', '-', $discipline);
+                $discipline = trim($discipline, '-');
+
+                $typeSeance = strtolower($cours['typeseance']);
+
+                // Déterminer la classe CSS
+                if ($typeSeance == 'ds') {
+                    $classeCSS = "ds";
+                } elseif ($typeSeance == 'prj') {
+                    $classeCSS = "sae";
+                } else {
+                    $classeCSS = $dureeMinutes == 180 ?
+                        "cours-" . $discipline . "-" . $typeSeance . '-3' :
+                        "cours-" . $discipline . "-" . $typeSeance;
+                }
+
+                $contenuHTML = "<div class='$classeCSS'>" .
+                    $cours['typeseance'] . "<br>" .
+                    $cours['matiere'] . " | " . $cours['code'] . "<br>" .
+                    $cours['prenom'][0] . ". " . $cours['nom'] . "<br>" .
+                    "Salle " . $cours['salle'] .
+                    "</div>";
+
+                echo "<td rowspan='$nombreCreneaux'>$contenuHTML</td>";
+                $cellulesSautees[$j] = $nombreCreneaux - 1;
             } else {
                 echo "<td></td>";
             }
@@ -112,115 +142,34 @@ function supprimerAccents($str) {
     );
 }
 
-// Fonction pour récupérer un cours pour un jour et une heure donnés
-function RecupererCours($jour, $horaire, $classe, $annee) {
-    $dateTime = $jour . ' ' . $horaire . ':00';
-
+function RecupererCoursParJour($jour, $classe, $annee) {
     $semestres = ($annee == 1) ? [1, 2] : (($annee == 2) ? [3, 4] : [5, 6]);
     $semestresString = implode(",", $semestres);
+
     $sql = "
     SELECT
-    seance.idseance, seance.typeseance, seance.duree, schedulesalle.salle,
-    collegue.prenom, collegue.nom,
-    enseignement.court as matiere,
-    enseignement.discipline, horaire as date, schedule.nomgroupe, code
+        seance.idseance, seance.typeseance, seance.duree, schedulesalle.salle,
+        collegue.prenom, collegue.nom,
+        enseignement.court as matiere,
+        enseignement.discipline, horaire as date, schedule.nomgroupe, code
     FROM seance
-         LEFT JOIN collegue ON seance.collegue = collegue.id
-         JOIN enseignement USING (code, semestre)
-         JOIN schedule USING (code, typeseance, typeformation, nomgroupe, semestre, noseance)
-         JOIN ressourcegroupe rg USING (nomgroupe, typeformation, semestre)
-         JOIN schedulesalle USING (code, typeseance, typeformation, nomgroupe, semestre, noseance, version)
-    WHERE horaire = ?
-    AND version = 38
-    AND nomressource = ?
-    AND semestre IN ($semestresString)
+        LEFT JOIN collegue ON seance.collegue = collegue.id
+        JOIN enseignement USING (code, semestre)
+        JOIN schedule USING (code, typeseance, typeformation, nomgroupe, semestre, noseance)
+        JOIN ressourcegroupe rg USING (nomgroupe, typeformation, semestre)
+        JOIN schedulesalle USING (code, typeseance, typeformation, nomgroupe, semestre, noseance, version)
+    WHERE DATE(horaire) = ?
+        AND version = 38
+        AND nomressource = ?
+        AND semestre IN ($semestresString)
+    ORDER BY horaire
     ";
 
     $connexion = getConnectionBDD();
     $req = $connexion->prepare($sql);
-    $req->execute([$dateTime, $classe]);
-
-    // Récupérer toutes les lignes pour un cours
-    $coursList = $req->fetchAll(PDO::FETCH_ASSOC);
-
-    if ($coursList) {
-        // Récupérer la première entrée
-        $cours = $coursList[0];
-
-        // Récupérer toutes les salles de manière unique
-        $salles = array_unique(array_map(function($row) { return $row['salle']; }, $coursList));
-
-        // Extraire la durée en minutes
-        $dureeStr = $cours['duree'];
-
-        // Gérer les deux formats possibles de durée
-        if (strpos($dureeStr, 'years') !== false) {
-            preg_match('/(\d+) hours (\d+) mins/', $dureeStr, $matches);
-            if (!empty($matches)) {
-                $dureeMinutes = (intval($matches[1]) * 60) + intval($matches[2]);
-            }
-        } else {
-            $dureeParts = explode(':', $dureeStr);
-            if (count($dureeParts) == 3) {
-                $dureeMinutes = (intval($dureeParts[0]) * 60) + intval($dureeParts[1]);
-            }
-        }
-
-        if (!isset($dureeMinutes)) {
-            $dureeMinutes = 90;
-        }
-
-        $discipline = strtolower(supprimerAccents($cours['discipline']));
-        $discipline = preg_replace('/[^a-z0-9]+/', '-', $discipline);
-        $discipline = trim($discipline, '-');
-
-        $typeSeance = strtolower($cours['typeseance']);
-
-        // Déterminer la classe CSS et le format des salles en fonction du type de séance
-        if ($typeSeance == 'ds') {
-            $classeCSS = "ds";
-            $sallesStr = "Amphi, Salle 110"; // Format fixe pour les DS
-        }
-        elseif ($typeSeance == 'prj') {
-            $classeCSS = "sae";
-            $sallesStr = "Salle " . implode(", ", $salles);
-        }
-        else {
-            if ($dureeMinutes == 180){
-                $classeCSS = "cours-" . $discipline . "-" . $typeSeance.'-3';
-            }
-            else {
-                $classeCSS = "cours-" . $discipline . "-" . $typeSeance;
-            }
-            // Pour les autres types, vérifier si c'est uniquement en Amphi
-            if (count($salles) == 1 && reset($salles) == '200') {
-                $sallesStr = "Amphi";
-            } else {
-                $sallesStr = "Salle " . implode(", ", $salles);
-            }
-        }
-
-        $profInfo = '';
-        if ($cours['prenom'] && $cours['nom']) {
-            $profInfo = $cours['prenom'][0] . ". " . $cours['nom'];
-        }
-
-        $contenuHTML = "<div class='$classeCSS'>" .
-            $cours['typeseance'] . "<br>" .
-            $cours['matiere']  . " | " .  $cours['code']   ."<br>" .
-            $profInfo . "<br>" .
-            $sallesStr .
-            "</div>";
-
-        return [
-            'contenu' => $contenuHTML,
-            'duree' => $dureeMinutes
-        ];
-    }
-
-    return null;
+    $req->execute([$jour, $classe]);
+    return $req->fetchAll(PDO::FETCH_ASSOC);
 }
-
 
 // Fonction pour incrémenter une semaine
 function incrementerSemaine($ancienneDate) {
@@ -262,6 +211,7 @@ echo ('<div class="changerSemaine">
    </form>
 </div>');
 
+// Affichage du footer
 echo ('<footer class="footer">
     <p>&copy; 2024 - SAE Emploi du temps. Rémi | Dorian | Matthéo | Bastien | Noah.</p>
 </footer>');
