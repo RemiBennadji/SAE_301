@@ -1,12 +1,11 @@
 <?php
-session_start();
 header('Content-Type: application/json');
 
 include "../Controller/ConnectionBDD.php";
-include "../Model/Classe/Compte.php";
-include"../Model/Classe/Administrateur.php";
-include "../Model/Classe/Etudiant.php";
-
+require_once "../Model/Classe/Compte.php";
+require_once "../Model/Classe/Administrateur.php";
+require_once "../Model/Classe/Etudiant.php";
+session_start();
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -20,7 +19,7 @@ $mdp = $_POST['mdp'];
 $compte = $_SESSION['compte'];
 
 if($compte->verifMDP($mdp)){
-    $compte->changeMDP($mdp);
+    $compte->changeMdp($mdp);
     echo json_encode(['redirect' => '../../Controller/EDT.php']);
     exit();
 }

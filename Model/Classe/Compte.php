@@ -34,10 +34,11 @@ abstract class Compte
 
                 $insertion = $conn->prepare($change);
                 $insertion->bindParam(":motdepasse", $mdp);
-                $insertion->bindParam(":identifiant", $identifiant);
+                $insertion->bindParam(":identifiant", $this->identifiant);
                 $insertion->execute();
 
             } catch (PDOException $e) {
+                echo json_encode(['error' => $e->getMessage()]);
             }
         }
     }
