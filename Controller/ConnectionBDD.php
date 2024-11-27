@@ -9,9 +9,9 @@ function getConnectionBDD(){
 
             $dsn = "pgsql:host=iutinfo-sgbd.uphf.fr; dbname=$dbname";
 
-            //$dsn = "pgsql:host=2a02:842a:81db:d601:88a7:f394:4625:e9ff;dbname=sae";
-            //$user = "lecteur";
-            //$password = "root";
+            $dsn = "pgsql:host=2a02:842a:81db:d601:88a7:f394:4625:e9ff;dbname=sae";
+            $user = "lecteur";
+            $password = "root";
 
             $pdo = new PDO($dsn, $user, $password);
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
