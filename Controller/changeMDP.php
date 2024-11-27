@@ -1,17 +1,17 @@
 <?php
-header('Content-Type: application/json');
 session_start();
+header('Content-Type: application/json');
 
 include "../Controller/ConnectionBDD.php";
-include_once "../Model/Classe/Compte.php";
-include_once "../Model/Classe/Administrateur.php";
-include_once "../Model/Classe/Etudiant.php";
+include "../Model/Classe/Compte.php";
+include"../Model/Classe/Administrateur.php";
+include "../Model/Classe/Etudiant.php";
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-if(empty($_POST['mdp'] || empty($_SESSION['compte']))) {
+if(empty($_POST['mdp'] || !isset($_SESSION['compte']))) {
     echo json_encode(['error'=>'errorConnexion']);
     exit();
 }

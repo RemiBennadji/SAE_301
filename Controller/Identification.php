@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 header('Content-Type: application/json');
 
 include "../Controller/ConnectionBDD.php";
@@ -42,39 +42,38 @@ try {
 //    $result2 = $result2->fetch(PDO::FETCH_ASSOC);
 
 
-                if (!$result[0]['changemdp']) {
-                    echo json_encode(['redirect' => '../../View/HTML/changeMDP.html']); // Retourne la redirection
-                    exit(); // Stoppe le script PHP
-                }
-                 //si le role est bien recupérer alors on démarre la session et cookies
-                $role = $result[0]['role'];
-                $compte = null;
+     //si le role est bien recupérer alors on démarre la session et cookies
+    $role = $result[0]['role'];
+    $compte = null;
 
-                //tests pour déterminer quel type de compte créer
-                if($result[0]['role'] == 'etudiant'){
-                        $compte = new Etudiant();
-                }
-                else if($result[0]['role'] == 'administrateur'){
-                    $compte = new Administrateur();
-                }
-                else if($result[0]['role'] == 'secretariat'){
-                    $compte = new Secretariat();
-                }
-                else if($result[0]['role'] == 'professeur'){
-                    $compte = new Professeur();
-                }
+    //tests pour déterminer quel type de compte créer
+    if($result[0]['role'] == 'etudiant'){
+        $compte = new Etudiant();
+    }
+    else if($result[0]['role'] == 'administrateur'){
+        $compte = new Administrateur();
+    }
+    else if($result[0]['role'] == 'secretariat'){
+        $compte = new Secretariat();
+    }
+    else if($result[0]['role'] == 'professeur'){
+        $compte = new Professeur();
+    }
+    //Début session
+    $_SESSION['role'] = $role;
+    $_SESSION['ID'] = $ID;
+    $_SESSION['compte'] = $compte;
 
-                session_start();//Début session
-                $_SESSION['role'] = $role;
-                $_SESSION['ID'] = $ID;
-                $_SESSION['compte'] = $compte;
+    setcookie("role", $role, time() + (60 * 15), "/");//Début cookie
+    setcookie("ID", $ID, time() + (60 * 15), "/");
 
-//                setcookie("role", $role, time() + (60 * 15), "/");//Début cookie
-//                setcookie("ID", $ID, time() + (60 * 15), "/");
+    if (!$result[0]['changemdp']) {
+        echo json_encode(['redirect' => '../../View/HTML/changeMDP.html']); // Retourne la redirection
+        exit(); // Stoppe le script PHP
+    }
 
-
-                echo json_encode(['redirect' => '../../Controller/EDT.php']); // Retourne la redirection
-                exit();
+    echo json_encode(['redirect' => '../../Controller/EDT.php']); // Retourne la redirection
+    exit();
 
 //                    if (isset($role)) {//si le role n'est pas vide alors on lance MenuPrincipal.php
 //                        header("Location: ../../Controller/EDT.php");
@@ -84,7 +83,7 @@ try {
 //            echo json_encode(['error' => 'errorConnexion']);
 //            exit();
 
-} catch (PDOException $e) {
-    echo json_encode(['error' => 'Erreur du serveur : ' . $e->getMessage()]);
-    exit();
-}
+    } catch (PDOException $e) {
+        echo json_encode(['error' => 'Erreur du serveur : ' . $e->getMessage()]);
+        exit();
+    }

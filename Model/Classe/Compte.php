@@ -132,7 +132,6 @@ abstract class Compte
         $this->email = $email;
     }
     public function setPrenom($prenom){
-        echo"test";
         $this->prenom = $prenom;
         echo $prenom;
     }
