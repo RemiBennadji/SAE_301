@@ -25,10 +25,10 @@ abstract class Compte
         return $this->mdp;
     }
 
-    public function changeMdp($identifiant, $mdp){
+    public function changeMdp($mdp){
         if ($this->verifMdp($mdp)){
             $mdp = password_hash($mdp, PASSWORD_DEFAULT);
-            $change = "alter table infoutilisateur VALUES(:motdepasse, true) where(identifiant=:identifiant)";
+            $change = "UPDATE infoutilisateur SET motdepasse = :motdepasse, changemdp = true WHERE identifiant = :identifiant;";
             try {
                 $conn = getConnectionBDDEDTIdentification();
 
@@ -38,7 +38,6 @@ abstract class Compte
                 $insertion->execute();
 
             } catch (PDOException $e) {
-                echo $e->getMessage();
             }
         }
     }
