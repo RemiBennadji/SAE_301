@@ -17,12 +17,13 @@ if(empty($_POST['mdp'] || empty($_SESSION['compte']))) {
 }
 
 $mdp = $_POST['mdp'];
-$compte = $_SESSION['typeCompte'];
+$compte = $_SESSION['compte'];
 
 if($compte->verifMDP($mdp)){
     $compte->changeMDP($mdp);
     echo json_encode(['redirect' => '../../Controller/EDT.php']);
     exit();
 }
+
 echo json_encode(['error'=> 'errorConnexion']);
 exit();
