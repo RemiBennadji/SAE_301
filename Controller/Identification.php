@@ -20,8 +20,8 @@ if (!isset($_POST['id']) || !isset($_POST['pwd'])) {
     exit();
 }
 
-$ID = $_POST["id"];
-$PWD = $_POST["pwd"];
+$ID = $_POST["idcompte"];
+$PWD = $_POST["idpsw"];
 
 //Requête SQL
 $sql1 ="SELECT identifiant, motdepasse, changeMDP, role FROM infoutilisateur WHERE identifiant=:ID AND motdepasse=:PWD";
@@ -59,7 +59,7 @@ try {
     else if($result[0]['role'] == 'professeur'){
         $compte = new Professeur();
     }
-    $compte->setIdentifiant($ID);
+    $compte->setIdentifiant($result[0]['identifiant']);
     //Début session
     $_SESSION['role'] = $role;
     $_SESSION['ID'] = $ID;

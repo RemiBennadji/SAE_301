@@ -26,14 +26,6 @@ abstract class Compte
     }
 
     public function changeMdp($mdp){
-        $debugData = [
-            'identifiant' => $this->identifiant,
-            'nouveau_mdp' => $mdp,
-        ];
-
-        // Encode et affiche les données de débogage
-        echo json_encode($debugData);
-        exit();
         if ($this->verifMdp($mdp)){
             $mdp = password_hash($mdp, PASSWORD_DEFAULT);
             $change = "UPDATE infoutilisateur SET motdepasse = :motdepasse, changemdp = true WHERE identifiant = :identifiant";
