@@ -59,6 +59,7 @@ try {
     else if($result[0]['role'] == 'professeur'){
         $compte = new Professeur();
     }
+    $compte->setIdentifiant($ID);
     //Début session
     $_SESSION['role'] = $role;
     $_SESSION['ID'] = $ID;

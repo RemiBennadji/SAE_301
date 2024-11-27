@@ -18,11 +18,27 @@ if(empty($_POST['mdp'] || !isset($_SESSION['compte']))) {
 $mdp = $_POST['mdp'];
 $compte = $_SESSION['compte'];
 
-if($compte->verifMDP($mdp)){
-    $compte->changeMdp($mdp);
-    echo json_encode(['redirect' => '../../Controller/EDT.php']);
+// Vérifiez que l'objet est valide
+if (!$compte instanceof Compte) {
+    echo json_encode(['error' => 'L\'objet compte n\'est pas valide.']);
     exit();
 }
 
-echo json_encode(['error'=> 'errorConnexion']);
+// Vérifiez que la méthode existe
+if (!method_exists($compte, 'changeMdp')) {
+    echo json_encode(['error' => 'La méthode changeMdp n\'existe pas pour cet objet.']);
+    exit();
+}
+$compte->setMDP($mdp);
+$compte->changeMdp($mdp);
+echo json_encode(['redirect'=>'../../Controller/EDT.php']);
 exit();
+//
+//if($compte->verifMDP($mdp)){
+//    $compte->changeMdp($mdp);
+//    echo json_encode(['redirect' => '../../Controller/EDT.php']);
+//    exit();
+//}
+//
+//echo json_encode(['error'=> 'errorConnexion']);
+//exit();

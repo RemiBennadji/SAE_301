@@ -6,4 +6,5 @@ class Etudiant extends Compte
     {
         parent::__construct("etudiant");
     }
+
 }
