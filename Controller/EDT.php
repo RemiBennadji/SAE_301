@@ -115,10 +115,15 @@ function AfficherEdtSemaine($dateDebut, $classe, $annee) {
                         "cours-" . $discipline . "-" . $typeSeance;
                 }
 
+                $prenomProf = $cours['prenom'][0] . ".";
+                if ($prenomProf == ".") {
+                    $prenomProf = "";  // Si c'est juste un ".", cela veut dire qu'il n'y a pas de prof
+                }
+
                 $contenuHTML = "<div class='$classeCSS'>" .
                     $cours['typeseance'] . "<br>" .
                     $cours['matiere'] . " | " . $cours['code'] . "<br>" .
-                    $cours['prenom'][0] . ". " . $cours['nom'] . "<br>" .
+                    $prenomProf . $cours['nom'] . "<br>" .
                     "Salle " . $cours['salle'] .
                     "</div>";
 
