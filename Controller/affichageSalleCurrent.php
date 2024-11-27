@@ -5,10 +5,10 @@ include "ConnectionBDD.php";
 
 session_start();
 // Vérification si le rôle est défini, sinon rediriger vers la page de connexion
-//if (!isset($_SESSION['role'])) {
-//    header("Location: ../View/HTML/Identification.html"); // Redirection si pas de rôle
-//    exit();
-//}
+if (!isset($_SESSION['role'])) {
+    header("Location: ../View/HTML/Identification.html"); // Redirection si pas de rôle
+    exit();
+}
 
 
 //récupération des données du formulaire
@@ -137,6 +137,8 @@ try {
             <span></span>
         </div>
         <ul class="menu">
+            <li><a class="underline-animation" href="../View/HTML/affichageSalle.html">Choisir horaire salles libres</a></li>
+            <li><a class="underline-animation" href="EDTsalleLibres.php">Emploi du temps des salles libres</a></li>
             <li><a class="underline-animation" href="../Controller/EDT.php">Emploi du temps</a></li>
             <li><a class="underline-animation" href="#">Messagerie</a></li>
             <li><a class="underline-animation" href="../View/HTML/creationCompte.html" id="creationCompte" style="display: none">Créer un compte</a></li>
@@ -171,9 +173,9 @@ try {
     </div>
 </div>
 
-<div class="horaireActuel">
-<a class="salleLibreAncre" href="../View/HTML/affichageSalle.html"><button class="buttonMDRForgotten">Choisir l'horaire</button></a>
-</div>
+<!--<div class="horaireActuel">-->
+<!--<a class="salleLibreAncre" href="../View/HTML/affichageSalle.html"><button class="buttonMDRForgotten">Choisir l'horaire</button></a>-->
+<!--</div>-->
 
 <footer class="footer">
     <p>&copy; 2024 - SAE Emploi du temps. Rémi | Dorian | Matthéo | Bastien | Noah.</p>

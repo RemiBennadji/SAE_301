@@ -19,6 +19,8 @@
             <span></span>
         </div>
         <ul class="menu">
+            <li><a class="underline-animation" href="affichageSalleCurrent.php">Salles libres actuelles</a></li>
+            <li><a class="underline-animation" href="../View/HTML/affichageSalle.html">Choisir horaire salles libres</a></li>
             <li><a class="underline-animation" href="../Controller/EDT.php">Emploi du temps</a></li>
             <li><a class="underline-animation" href="#">Messagerie</a></li>
             <li><a class="underline-animation" href="../View/HTML/creationCompte.html" id="creationCompte" style="display: none">Créer un compte</a></li>
@@ -40,6 +42,13 @@
 <?php
 // Connexion à la base de données
 include "ConnectionBDD.php";
+
+session_start();
+// Vérification si le rôle est défini, sinon rediriger vers la page de connexion
+if (!isset($_SESSION['role'])) {
+    header("Location: ../View/HTML/Identification.html"); // Redirection si pas de rôle
+    exit();
+}
 
 // Récupérer la date actuelle et naviguer par jour
 if (isset($_POST['suivant'])) {
