@@ -25,7 +25,7 @@ $PWD = $_POST["idpsw"];
 
 //Requête SQL
 $sql1 ="SELECT identifiant, motdepasse, changeMDP, role FROM infoutilisateur WHERE identifiant=:ID AND motdepasse=:PWD";
-$sql2 ="SELECT identifiant, motdepasse, changeMDP, role FROM infoutilisateur";
+
 
 //Connexion à la base de donnée + lancement des requêtes SQL
 try {
@@ -72,9 +72,19 @@ try {
         echo json_encode(['redirect' => '../../View/HTML/changeMDP.html']); // Retourne la redirection
         exit(); // Stoppe le script PHP
     }
+    else {
+        $testMdp = password_hash($PWD, PASSWORD_DEFAULT);
+        $sql2 ="SELECT motdepasse FROM infoutilisateur WHERE identifiant=:ID";
+        $result2 = $connection->prepare($sql2);
+        $result2->execute();
+        $result2 = $result2->fetch(PDO::FETCH_ASSOC);
+        if ($testMdp == $result2[0]['motdepasse']) {
+            echo json_encode(['redirect' => '../../Controller/EDT.php']); // Retourne la redirection
+            exit();
+        }
+    }
 
-    echo json_encode(['redirect' => '../../Controller/EDT.php']); // Retourne la redirection
-    exit();
+
 
 //                    if (isset($role)) {//si le role n'est pas vide alors on lance MenuPrincipal.php
 //                        header("Location: ../../Controller/EDT.php");
