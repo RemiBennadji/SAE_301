@@ -669,8 +669,10 @@ caption {
 
 .upload-file{
     border: 1px solid black;
-    padding-top: 20%;
-    padding-bottom: 10%;
+    padding-left: 70px;
+    padding-right: 70px;
+    padding-top: 25%;
+    padding-bottom: 25%;
 }
 
 .form-import{
