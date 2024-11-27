@@ -49,6 +49,7 @@ try {
                     echo json_encode(['redirect' => '../../View/HTML/changeMDP.html']); // Retourne la redirection
                     exit(); // Stoppe le script PHP
                 }
+                echo $result2[$i]['role'];
                 if (!empty($result['role'])) {//si le role est bien recupérer alors on démarre la session et cookies
                     $role = $ID;
                     $compte = null;
