@@ -1,5 +1,5 @@
 <?php
-session_start();
+
 header('Content-Type: application/json');
 
 include "../Controller/ConnectionBDD.php";
@@ -8,7 +8,7 @@ include_once "../Model/Classe/Administrateur.php";
 include_once "../Model/Classe/Etudiant.php";
 include_once "../Model/Classe/Secretariat.php";
 include_once "../Model/Classe/Professeur.php";
-
+session_start();
 //echo "Étape 1 : Script démarré<br>";
 
 ini_set('display_errors', 1);
@@ -20,8 +20,8 @@ if (!isset($_POST['id']) || !isset($_POST['pwd'])) {
     exit();
 }
 
-$ID = $_POST["idcompte"];
-$PWD = $_POST["idpsw"];
+$ID = $_POST["id"];
+$PWD = $_POST["pwd"];
 
 //Requête SQL
 $sql1 ="SELECT identifiant, motdepasse, changeMDP, role FROM infoutilisateur WHERE identifiant=:ID AND motdepasse=:PWD";
@@ -30,17 +30,11 @@ $sql1 ="SELECT identifiant, motdepasse, changeMDP, role FROM infoutilisateur WHE
 //Connexion à la base de donnée + lancement des requêtes SQL
 try {
     $connection = getConnectionBDDEDTIdentification(); // Utilisation des informations de connexion du fichier ConnexionBDD.php
-//    echo "Étape 2 : Connexion BDD réussie<br>";
     $result = $connection->prepare($sql1);
     $result->bindParam(':ID', $ID);
     $result->bindParam(':PWD', $PWD);
     $result->execute();
     $result = $result->fetchAll(PDO::FETCH_ASSOC);
-
-//    $result2 = $connection->prepare($sql2);
-//    $result2->execute();
-//    $result2 = $result2->fetch(PDO::FETCH_ASSOC);
-
 
      //si le role est bien recupérer alors on démarre la session et cookies
     $role = $result[0]['role'];
@@ -72,27 +66,9 @@ try {
         echo json_encode(['redirect' => '../../View/HTML/changeMDP.html']); // Retourne la redirection
         exit(); // Stoppe le script PHP
     }
-    else {
-        $testMdp = password_hash($PWD, PASSWORD_DEFAULT);
-        $sql2 ="SELECT motdepasse FROM infoutilisateur WHERE identifiant=:ID";
-        $result2 = $connection->prepare($sql2);
-        $result2->execute();
-        $result2 = $result2->fetch(PDO::FETCH_ASSOC);
-        if ($testMdp == $result2[0]['motdepasse']) {
-            echo json_encode(['redirect' => '../../Controller/EDT.php']); // Retourne la redirection
-            exit();
-        }
-    }
 
-
-
-//                    if (isset($role)) {//si le role n'est pas vide alors on lance MenuPrincipal.php
-//                        header("Location: ../../Controller/EDT.php");
-//                        exit();
-//                    }
-
-//            echo json_encode(['error' => 'errorConnexion']);
-//            exit();
+    echo json_encode(['redirect' => '../../Controller/EDT.php']); // Retourne la redirection
+    exit();
 
     } catch (PDOException $e) {
         echo json_encode(['error' => 'Erreur du serveur : ' . $e->getMessage()]);
