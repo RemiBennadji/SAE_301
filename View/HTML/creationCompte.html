@@ -35,12 +35,21 @@
     });
 </script>
 <br><br>
+<div class="big-container">
+    <div class="sub-container">
+        <form class="form-import" action="../../Model/Classe/creationCompte.php" method="post" enctype="multipart/form-data">
+            <div class="upload-file">
+                <h1>Importation du CSV</h1><br><br><br>
+                <div class="button-upload">
+                    <input class ="select-file" type="file" name="fichier" id="fichier" accept=".csv" required>
+                    <button type="submit">Uploader</button>
+                </div>
 
-<h1>Création d'un compte</h1><br><br><br>
-<form action="../../Model/Classe/creationCompte.php" method="post" enctype="multipart/form-data">
-    <input type="file" name="fichier" id="fichier" accept=".csv" required>
-    <button type="submit">Uploader</button>
-</form>
+            </div>
+        </form>
+    </div>
+</div>
+
 
 <footer class="footer">
     <p>&copy; 2024 - SAE Emploi du temps. Rémi | Dorian | Matthéo | Bastien | Noah.</p>

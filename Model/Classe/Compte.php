@@ -12,13 +12,11 @@ abstract class Compte
     private $role;
     private $nom;
     private $prenom;
+    private $email;
 
-    public function __construct($role, $nom, $prenom)
+    public function __construct($role)
     {
         $this->role=$role;
-        $this->nom=$nom;
-        $this->prenom=$prenom;
-        $this->identifiant= $this->genererIdentifiant();
         $this->mdp = $this->genererMDP();
     }
 
@@ -27,35 +25,44 @@ abstract class Compte
         return $this->mdp;
     }
 
-    public function changeMdp($identifiant, $mdp){
+    public function changeMdp($mdp){
         if ($this->verifMdp($mdp)){
             $mdp = password_hash($mdp, PASSWORD_DEFAULT);
-            $change = "alter table infoutilisateur VALUES(:motdepasse, true) where(identifiant=:identifiant)";
+            $change = "UPDATE infoutilisateur SET motdepasse = :motdepasse, changemdp = true WHERE identifiant = :identifiant;";
             try {
                 $conn = getConnectionBDDEDTIdentification();
 
                 $insertion = $conn->prepare($change);
                 $insertion->bindParam(":motdepasse", $mdp);
-                $insertion->bindParam(":identifiant", $identifiant);
+                $insertion->bindParam(":identifiant", $this->identifiant);
                 $insertion->execute();
 
+                if ($insertion->rowCount() === 0) {
+                    echo json_encode(['error' => 'Aucune donnée mise à jour.']);
+                    exit();
+                }
+
             } catch (PDOException $e) {
-                echo $e->getMessage();
+                echo json_encode(['error' => $e->getMessage()]);
             }
         }
     }
 
     public function insererDonnees()
     {
-        $req = "INSERT INTO infoutilisateur VALUES(:identifiant, :motdepasse, :role, false)";
+//        $req1 ="SELECT etudiants.email from etudiants where nom=$this->nom";
+        $req2 = "INSERT INTO infoutilisateur VALUES(:identifiant, :motdepasse, :role, false, :email)";
+
 
         try {
             $conn = getConnectionBDDEDTIdentification();
+            $this->identifiant= $this->genererIdentifiant();
 
-            $insert = $conn->prepare($req);
+            $insert = $conn->prepare($req2);
             $insert->bindParam(":identifiant", $this->identifiant);
             $insert->bindParam(":motdepasse", $this->mdp);
             $insert->bindParam(":role", $this->role);
+            $insert->bindParam(":email", $this->email);
             $insert->execute();
 
 
@@ -121,9 +128,37 @@ abstract class Compte
         return $id;
     }
 
+    public function setIdentifiant($id){
+        $this->identifiant = $id;
+    }
 
     public function setRole($r)
     {
         $this->role = $r;
     }
+
+    public function setEmail($email){
+        $this->email = $email;
+    }
+    public function setPrenom($prenom){
+        $this->prenom = $prenom;
+    }
+
+    public function setMDP($mdp){
+        if($this->verifMdp($mdp)){
+            $this->mdp = $mdp;
+        }
+        else{
+            json_encode(['error' => 'Mot de passe incorrect.']);
+        }
+}
+    public function setNom($nom){
+        $this->nom = $nom;
+    }
+
+    public function getIdentifiant()
+    {
+        return $this->identifiant;
+    }
+
 }

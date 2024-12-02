@@ -20,29 +20,46 @@ const labelPsw = document.getElementById('labelPsw')
 const yeux = document.getElementById('passwordSymbole')
 
 document.getElementById('formID').addEventListener('submit', function (event) {
+    console.log('Gestionnaire de soumission appelé');
     event.preventDefault(); // Empêche l'envoi normal du formulaire
 
     const formData = new FormData(this);
+    console.log('Données du formulaire :', [...formData.entries()]);
 
     fetch('../../Controller/Identification.php', {method: 'POST'/*POST = cacher info URL*/, body: formData})//envoie donnée au serveur et return réponse
-        .then(response => response.text())// enregistre la reponse du serveur
+        .then(response =>{ if (!response.ok) {
+        throw new Error(`Erreur HTTP : ${response.status}`);
+    }
+    return response.json();})// enregistre la reponse du serveur
         .then(data => {//si il y a une reponse
-            if (data === 'fail') {
-                // Change le style en cas d'échec
-                idcompte.style.background = '#f2a19b';
-                idcompte.style.border = '2px solid red';
-                labelIdentifiant.style.color = 'red';
+            console.log("Réponse brute :", data);
+            console.log('Valeur de role :', data.role);
+            try{
+                if (data.error){
+                    console.error(data.error);
 
-                idpsw.style.background = '#f2a19b';
-                idpsw.style.border = '2px solid red';
-                labelPsw.style.color = 'red';
-                yeux.style.color = 'black';
-            }
-            else {
-                // Redirige l'utilisateur s'il est authentifié
-                window.location.href = '../../Controller/EDT.php';
+                    if (data.error === 'errorConnexion') {
+                        // Change le style en cas d'échec
+                        idcompte.style.background = '#f2a19b';
+                        idcompte.style.border = '2px solid red';
+                        labelIdentifiant.style.color = 'red';
+
+                        idpsw.style.background = '#f2a19b';
+                        idpsw.style.border = '2px solid red';
+                        labelPsw.style.color = 'red';
+                        yeux.style.color = 'black';
+                    }
+                }else if (data.redirect) {
+                    // Effectue la redirection vers l'URL fournie par le PHP
+                    window.location.href = data.redirect;
+                }
+        }catch (error){
+                console.error("Erreur lors du parsing JSON : ", error);
             }
         })
-        .catch(error => console.error('Erreur:', error));
-});
+
+        .catch(error => {
+            console.error('Erreur:', error.message);
+        });
+})
 

@@ -95,7 +95,7 @@ nav {
 }
 
 /* Media queries pour mobile */
-@media (min-width: 1100px) {
+@media (min-width: 900px) {
     .burger {
         display: none;
     }
@@ -231,6 +231,17 @@ input[type="password"], input[type="text"] {
     outline: none;
     color: #1d1c1c;
     /*border: 1px solid cornflowerblue;*/
+}
+.newPSW[type="text"]{
+    display: block;
+    border: 1px solid #0081a1;
+    width: 15%;
+    padding: 10px;
+    margin: 10px auto;
+    background: white;
+    border-radius: 2px;
+    outline: none;
+    color: #1d1c1c;
 }
 
 .titreID{
@@ -376,8 +387,8 @@ input:focus ~ label {
     background-color: #f5f9fb;
     border-radius: 20px;
     color: #0081a1;
-    flex-direction: column;
 }
+
 
 .buttonSeConfirmer{
     /*border: none;*/
@@ -715,3 +726,24 @@ select#edtAdmin {
     height: auto; /* Maintient la hauteur adaptée au contenu */
     line-height: normal; /* Conserve une bonne lisibilité */
 }
+
+/*debut CreationCompte*/
+
+.upload-file{
+    border: 1px solid black;
+    padding-left: 70px;
+    padding-right: 70px;
+    padding-top: 25%;
+    padding-bottom: 25%;
+}
+
+.form-import{
+    padding-right: 10%;
+    padding-left: 10%;
+}
+
+.button-upload{
+    display: flex;
+}
+/*fin CreationCompte*/
+

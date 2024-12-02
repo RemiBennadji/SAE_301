@@ -2,8 +2,8 @@
 
 class Professeur extends Compte
 {
-    public function __construct($nom, $prenom)
+    public function __construct()
     {
-        parent::__construct("professeur", $nom, $prenom);
+        parent::__construct("professeur");
     }
 }
