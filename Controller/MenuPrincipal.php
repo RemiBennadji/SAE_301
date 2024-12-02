@@ -29,29 +29,27 @@ if (!isset($_SESSION['role'])) {
             <li><a id="edt" class="underline-animation" href="../Controller/EDT.php">Emploi du temps</a></li>
             <li><a class="underline-animation" href="#">Messagerie</a></li>
             <li><a class="underline-animation" href="../View/HTML/creationCompte.html" id="creationCompte" style="display: none">Créer un compte</a></li>
-            <li><a class="underline-animation" href="../Controller/affichageSalleCurrent.php" id="afficheSalles" style="display: none">Salles disponibles</a></li>
+            <li><a class="underline-animation" href="../Controller/EDTsalleLibres.php" id="afficheSalles">Salles disponibles</a></li>
             <li><a class="underline-animation" href="../Controller/Deconnexion.php">Déconnexion</a></li>
             <label class="choixClasse">
-                <select id="edtAdmin">
-                    <option selected disabled>Emploi du temps</option>
-                    <option class="label" disabled>Anee 1</option>
+                <select id="edtAdmin" class="edtAdmin">
+                    <option selected disabled>Administration</option>
+                    <option class="label" disabled>Année 1</option>
                     <option value="A1">A1</option>
                     <option value="A2">A2</option>
                     <option value="B1">B1</option>
                     <option value="B2">B2</option>
                     <option value="C1">C1</option>
                     <option value="C2">C2</option>
-                    <option class="label" disabled>Anee 2</option>
+                    <option class="label" disabled>Année 2</option>
                     <option value="FIA1">FIA1</option>
                     <option value="FIA2">FIA2</option>
                     <option value="2FIB">FIB</option>
                     <option value="2FA">FA</option>
-                    <option class="label" disabled>Anee 3</option>
+                    <option class="label" disabled>Année 3</option>
                     <option value="FIA">FIA</option>
                     <option value="FIB">FIB</option>
                     <option value="FA">FA</option>
-                    <option class="label" disabled>MPH</option>
-                    <option value="MPH">MPH</option>
                 </select>
             </label>
         </ul>

@@ -1,6 +1,5 @@
 function admin() {
     document.getElementById("creationCompte").style.display = "block";
-    document.getElementById("afficheSalles").style.display = "block";
 }
 
 function etudiant() {

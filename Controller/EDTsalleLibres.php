@@ -19,8 +19,6 @@
             <span></span>
         </div>
         <ul class="menu">
-            <li><a class="underline-animation" href="affichageSalleCurrent.php">Salles libres actuelles</a></li>
-            <li><a class="underline-animation" href="../View/HTML/affichageSalle.html">Choisir horaire salles libres</a></li>
             <li><a class="underline-animation" href="../Controller/EDT.php">Emploi du temps</a></li>
             <li><a class="underline-animation" href="#">Messagerie</a></li>
             <li><a class="underline-animation" href="../View/HTML/creationCompte.html" id="creationCompte" style="display: none">Créer un compte</a></li>
