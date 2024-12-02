@@ -37,7 +37,6 @@ if (isset($_FILES['fichier']) && $_FILES['fichier']['error'] === UPLOAD_ERR_OK) 
                             'nom_ressource' => $res[4],
                             'email' => $res[5]
                         ]);
-                        echo "caca";
                         $etu = new Etudiant();
                         $etu->setPrenom($prenom);
                         $etu->setNom($nom);
