@@ -1,8 +1,6 @@
 <?php
-// Connexion à la base de données
 include "ConnectionBDD.php";
 
-// Gestion de la session (décommenter si nécessaire)
 /*
 session_start();
 if (!isset($_SESSION['role'])) {
@@ -28,7 +26,7 @@ $horaire = $dateActuelle->format('Y-m-d');
 try {
     $version = 38;
 
-    // Requête pour récupérer les horaires et salles
+    // Requête pour récupérer les horaires, les salles et les noms des professeurs
     $connection = getConnectionBDD();
     $sql = "
         SELECT DISTINCT
@@ -50,7 +48,6 @@ try {
     $resultSalles->bindParam(':version', $version);
     $resultSalles->execute();
 
-    // Récupération des données
     $listeSalles = $resultSalles->fetchAll(PDO::FETCH_ASSOC);
 
 } catch (PDOException $e) {
@@ -60,17 +57,18 @@ try {
 // Organisation des données
 $sallesParHoraire = [];
 foreach ($listeSalles as $i) {
-    $heure = substr($i['horaire'], 11, 5);
+    $heure = substr($i['horaire'], 11, 5);//Extrait l'heure
     $salle = 'Salle ' . $i['salle'] . ' (' . $i['enseignant'] . ')';
 
-    if (!isset($sallesParHoraire[$heure])) {
+    //chaque salle est bien assignée à sa propre colonne dans le tableau final à l'affichage
+    if (!isset($sallesParHoraire[$heure])) {//Vérifie si un tableau existe déjà pour l'horaire
         $sallesParHoraire[$heure] = [];
     }
     $sallesParHoraire[$heure][$i['salle']] = $salle;
 }
 
 // Horaires prédéfinis
-$horaires = ['08:00', '09:30', '11:00', '12:30', '14:00', '15:30', '17:00'];
+$horaires = ['08:00', '09:30', '11:00', '12:30', '14:00', '15:30', '17:00', '18h30'];
 $lesSalles = ['101', '103', '105', '106', '107', '108', '109', '110', '111', '112', '113', '114', '115', '117', '118', '200'];
 
 // Création de la structure du tableau final
