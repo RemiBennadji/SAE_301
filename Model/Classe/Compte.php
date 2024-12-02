@@ -25,20 +25,24 @@ abstract class Compte
         return $this->mdp;
     }
 
-    public function changeMdp($identifiant, $mdp){
+    public function changeMdp($mdp){
         if ($this->verifMdp($mdp)){
-            $mdp = password_hash($mdp, PASSWORD_DEFAULT);
-            $change = "alter table infoutilisateur VALUES(:motdepasse, true) where(identifiant=:identifiant)";
+            $change = "UPDATE infoutilisateur SET motdepasse = :motdepasse, changemdp = true WHERE identifiant = :identifiant;";
             try {
                 $conn = getConnectionBDDEDTIdentification();
 
                 $insertion = $conn->prepare($change);
                 $insertion->bindParam(":motdepasse", $mdp);
-                $insertion->bindParam(":identifiant", $identifiant);
+                $insertion->bindParam(":identifiant", $this->identifiant);
                 $insertion->execute();
 
+                if ($insertion->rowCount() === 0) {
+                    echo json_encode(['error' => 'Aucune donnée mise à jour.']);
+                    exit();
+                }
+
             } catch (PDOException $e) {
-                echo $e->getMessage();
+                echo json_encode(['error' => $e->getMessage()]);
             }
         }
     }
@@ -123,6 +127,9 @@ abstract class Compte
         return $id;
     }
 
+    public function setIdentifiant($id){
+        $this->identifiant = $id;
+    }
 
     public function setRole($r)
     {
@@ -133,12 +140,25 @@ abstract class Compte
         $this->email = $email;
     }
     public function setPrenom($prenom){
-        echo"test";
         $this->prenom = $prenom;
         echo $prenom;
     }
 
+    public function setMDP($mdp){
+        if($this->verifMdp($mdp)){
+            $this->mdp = $mdp;
+        }
+        else{
+            json_encode(['error' => 'Mot de passe incorrect.']);
+        }
+}
     public function setNom($nom){
         $this->nom = $nom;
     }
+
+    public function getIdentifiant()
+    {
+        return $this->identifiant;
+    }
+
 }
