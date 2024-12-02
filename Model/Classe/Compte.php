@@ -142,7 +142,6 @@ abstract class Compte
     }
     public function setPrenom($prenom){
         $this->prenom = $prenom;
-        echo $prenom;
     }
 
     public function setMDP($mdp){

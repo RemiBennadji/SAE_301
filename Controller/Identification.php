@@ -24,8 +24,7 @@ $ID = $_POST["id"]; //récupération des information entrer pars l'utilisateur l
 $PWD = $_POST["pwd"];
 
 //Requête SQL
-$sql1 ="SELECT identifiant, motdepasse, changeMDP, role FROM infoutilisateur WHERE identifiant=:ID AND motdepasse=:PWD";
-//$sql2 ="SELECT identifiant, motdepasse, changeMDP, role FROM infoutilisateur WHERE identifiant=:ID";
+$sql1 ="SELECT identifiant, motdepasse, changeMDP, role FROM infoutilisateur WHERE identifiant=:ID";
 
 
 //Connexion à la base de donnée + lancement des requêtes SQL
@@ -33,14 +32,8 @@ try {
     $connection = getConnectionBDDEDTIdentification(); // Utilisation des informations de connexion du fichier ConnexionBDD.php
     $result = $connection->prepare($sql1);
     $result->bindParam(':ID', $ID);
-    $result->bindParam(':PWD', $PWD);
     $result->execute();
     $result = $result->fetchAll(PDO::FETCH_ASSOC);
-
-//    $result2 = $connection->prepare($sql2);
-//    $result2->bindParam(':ID', $ID);
-//    $result2->execute();
-//    $result2 = $result2->fetchAll(PDO::FETCH_ASSOC);
 
      //si le role est bien recupérer alors on démarre la session et cookies
     $role = $result[0]['role'];
@@ -72,17 +65,12 @@ try {
         echo json_encode(['redirect' => '../../View/HTML/changeMDP.html']); // Retourne la redirection
         exit(); // Stoppe le script PHP
     }
-    echo json_encode(['redirect' => '../../Controller/EDT.php']); // Retourne la redirection
-    exit();
-
-//    else {
-//        $mdpTemp = password_hash($PWD, PASSWORD_DEFAULT);
-//        echo json_encode($mdpTemp);
-//        if ($mdpTemp==$result2[0]['motdepasse']) {
-//            echo json_encode(['redirect' => '../../Controller/EDT.php']); // Retourne la redirection
-//            exit();
-//        }
-//    }
+    if (password_verify($PWD,$result[0]['motdepasse'])) {
+        echo json_encode(['redirect' => '../../Controller/EDT.php']); // Retourne la redirection
+        exit();
+    } else{
+        echo json_encode(['error' => 'errorConnexion']);
+    }
 
     } catch (PDOException $e) {
         echo json_encode(['error' => 'Erreur du serveur : ' . $e->getMessage()]);
