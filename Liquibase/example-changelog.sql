@@ -51,14 +51,33 @@ create table infoutilisateur(
 
 --rollback DROP TABLE infoutilisateur;
 
---changeset mattheo:6 labels:insert-infoutilisateur-admin insert context:insert-table
+--changeset mattheo:6 labels:insert-infoutilisateur context:insert-table
 --comment: insert iut.info
 insert into infoutilisateur(identifiant, motdepasse, role, changeMDP)
-values ('iut.info', 'iutinfo1.', 'administrateur', true);
---rollback DROP TABLE infoutilisateur;
+values ('iut.info', 'iutinfo1.', 'administrateur', false);
+--rollback delete from infoutilisateur where identifiant = 'iut.info';
 
---changeset mattheo:7 labels:alter add-column-mail-infoutilisateur context:alter-table-infoutiliseur
---comment: alter table
-alter table infoutilisateur add column email text foreign key (email) references etudiants(email) ;
+--changeset mattheo:7 labels:create-table-asso context:table-mailidentifant
+--comment: create table mail-identifiant
+create table MailIdentifiant(
+    mail text ,
+    identifiant text ,
+    primary key (mail, identifiant),
+    foreign key (mail) references etudiants(email),
+    foreign key (identifiant) references infoutilisateur(identifiant)
+);
 
---rollback alter table infoutilisateur drop column email;
+--rollback DROP TABLE MailIdentifant;
+
+--changeset mattheo:8 lables:create-trigger context:trigger-mailidentifiant
+--comment: create trigger
+create  trigger insert_MailIdentifiant
+after insert on infoutilisateur
+for each row
+begin
+    declare identifiant_infoutilisateur text;
+    set identifiant_infoutilisateur = concat(new.nom,'.',new.prenom)
+    insert into MailIdentifiant (mail, identifiant)
+    values (NEW.mail)
+
+--rollback: DROP TRIGGER insert_MailIdentifiant ON Mailidentifiant;

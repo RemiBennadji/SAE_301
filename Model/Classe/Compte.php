@@ -12,7 +12,6 @@ abstract class Compte
     private $role;
     private $nom;
     private $prenom;
-    private $email;
 
     public function __construct($role)
     {
@@ -51,7 +50,7 @@ abstract class Compte
     public function insererDonnees()
     {
 //        $req1 ="SELECT etudiants.email from etudiants where nom=$this->nom";
-        $req2 = "INSERT INTO infoutilisateur VALUES(:identifiant, :motdepasse, :role, false, :email)";
+        $req2 = "INSERT INTO infoutilisateur VALUES(:identifiant, :motdepasse, :role, false)";
 
 
         try {
@@ -62,7 +61,6 @@ abstract class Compte
             $insert->bindParam(":identifiant", $this->identifiant);
             $insert->bindParam(":motdepasse", $this->mdp);
             $insert->bindParam(":role", $this->role);
-            $insert->bindParam(":email", $this->email);
             $insert->execute();
 
 
@@ -136,10 +134,6 @@ abstract class Compte
     {
         $this->role = $r;
     }
-
-    public function setEmail($email){
-        $this->email = $email;
-    }
     public function setPrenom($prenom){
         $this->prenom = $prenom;
     }
@@ -154,11 +148,6 @@ abstract class Compte
 }
     public function setNom($nom){
         $this->nom = $nom;
-    }
-
-    public function getIdentifiant()
-    {
-        return $this->identifiant;
     }
 
 }
