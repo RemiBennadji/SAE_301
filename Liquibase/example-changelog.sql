@@ -78,6 +78,7 @@ begin
     declare identifiant_infoutilisateur text;
     set identifiant_infoutilisateur = concat(new.nom,'.',new.prenom)
     insert into MailIdentifiant (mail, identifiant)
-    values (NEW.mail)
+    values (NEW.mail, identifiant_utilisateur)
+end;
 
 --rollback: DROP TRIGGER insert_MailIdentifiant ON Mailidentifiant;
