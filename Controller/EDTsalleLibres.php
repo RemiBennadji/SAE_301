@@ -60,10 +60,25 @@ foreach ($listeSalles as $i) {
     $heure = substr($i['horaire'], 11, 5);//Extrait l'heure
     $salle = 'Salle ' . $i['salle'] . ' (' . $i['enseignant'] . ')';
     $duree = substr($i['duree'], 22, 1).":".substr($i['duree'], 30, 2);//Extrait la duree
-    echo $duree."|";
 
-    if(substr($duree, 0, 1) == "3"){
-        echo $i['salle'].",";
+    if((substr($duree, 0, 1) === "3") || (substr($heure, 3, 1) === "3")) {
+        $h = 1 + (int)substr($heure, 0, 2);
+        $m = 30 + (int)substr($heure, 3, 2);
+        //echo "$h:$m|";
+
+        // Gestion des dépassements de minutes
+        if($m == 60) {
+            $m = 0; // Retirer 60 minutes
+            $h++;     // Ajouter 1 heure
+        }
+
+        //Si les minutes est de taille 1 (9h0 devient 9h00
+        if(strlen($m) == 1){
+            $m = $m."0";
+        }
+
+        $sallesParHoraire["$h:$m"][$i['salle']] = $salle;
+        //echo "$h:$m|";
     }
 
     //chaque salle est bien assignée à sa propre colonne dans le tableau final à l'affichage
