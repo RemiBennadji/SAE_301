@@ -66,19 +66,34 @@ create table MailIdentifiant(
     foreign key (mail) references etudiants(email),
     foreign key (identifiant) references infoutilisateur(identifiant)
 );
-
 --rollback DROP TABLE MailIdentifant;
 
---changeset mattheo:8 lables:create-trigger context:trigger-mailidentifiant
---comment: create trigger
-create  trigger insert_MailIdentifiant
-after insert on infoutilisateur
-for each row
-begin
-    declare identifiant_infoutilisateur text;
-    set identifiant_infoutilisateur = concat(new.nom,'.',new.prenom)
-    insert into MailIdentifiant (mail, identifiant)
-    values (NEW.mail, identifiant_utilisateur)
-end;
+--changeset mattheo:8 labels:start-function context:atomate-table-MailIdentifiant
+--comment: start function of trigger
+CREATE OR REPLACE FUNCTION insert_MailIdentifiant_trigger()
+RETURNS TRIGGER AS $$
+DECLARE
+etudiant_email TEXT;
+BEGIN
+SELECT email
+INTO etudiant_email
+FROM etudiants
+WHERE email LIKE NEW.identifiant || '%';
 
+IF FOUND THEN
+        INSERT INTO MailIdentifiant (mail, identifiant)
+        VALUES (etudiant_email, NEW.identifiant);
+END IF;
+
+RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+--rollback: Drop function if exist insert_MailIdentifiant_trigger;
+
+--changeset mattheo:9 labels:create-trigger context:trigger-mailidentifiant
+--comment: create trigger
+CREATE TRIGGER insert_trigger_on_Mailidentifiant
+    AFTER INSERT ON infoutilisateur
+    FOR EACH ROW
+    EXECUTE FUNCTION insert_MailIdentifiant_trigger();
 --rollback: DROP TRIGGER insert_MailIdentifiant ON Mailidentifiant;
