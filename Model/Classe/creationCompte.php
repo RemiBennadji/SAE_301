@@ -28,7 +28,7 @@ if (isset($_FILES['fichier']) && $_FILES['fichier']['error'] === UPLOAD_ERR_OK) 
                     $sql1->bindParam(':prenom', $prenom);
                     $sql1->execute();
                     if ($sql1->fetchColumn() == 0 && ($nom != "nom")) { // Test si la ligne existe deja dans la BDD et si le nom de la ligne n'est pas égal à nom
-                        $insertStmt = $conn->prepare("INSERT INTO etudiants (civilite, nom, prenom, semestre, nom_ressource) VALUES (:civilite, :nom, :prenom, :semestre, :nom_ressource, :email)");
+                        $insertStmt = $conn->prepare("INSERT INTO etudiants (civilite, nom, prenom, semestre, nom_ressource) VALUES (:civilite, :nom, :prenom, :semestre, :nom_ressource)");
                         $insertStmt->execute([
                             'civilite' => $res[0],
                             'nom' => $nom,
