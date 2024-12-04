@@ -59,6 +59,12 @@ $sallesParHoraire = [];
 foreach ($listeSalles as $i) {
     $heure = substr($i['horaire'], 11, 5);//Extrait l'heure
     $salle = 'Salle ' . $i['salle'] . ' (' . $i['enseignant'] . ')';
+    $duree = substr($i['duree'], 22, 1).":".substr($i['duree'], 30, 2);//Extrait la duree
+    echo $duree."|";
+
+    if(substr($duree, 0, 1) == "3"){
+        echo $i['salle'].",";
+    }
 
     //chaque salle est bien assignée à sa propre colonne dans le tableau final à l'affichage
     if (!isset($sallesParHoraire[$heure])) {//Vérifie si un tableau existe déjà pour l'horaire

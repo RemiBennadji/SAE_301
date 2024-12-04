@@ -2,17 +2,39 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Choix EDT</title>
+    <title>changementMDP</title>
     <link href="../CSS/CSSBasique.css" rel="stylesheet">
 </head>
 <body>
-<h1 class="titre">Bienvenue sur votre emploi du temps ! </h1><br>
-<h2>Avant de pouvoir y accéder, étant donné que c'est votre
-première connexion, vous devez changer votre Mot de passe.</h2>
-<form id="changeMDPForm" name ="changeMDPForm" method='post' action="../../Controller/changeMDP.php">
-    <input type='text' id='mdp' name='mdp' placeholder='Nouveau mot de passe' class="newPSW" required>
-    <input type='submit' value='Enregistrer'>
-</form>
+<img src="../../Ressource/logouphf2.png" class="logoUPHF" alt="Logo de l'UPHF">
+<header>
+    <nav>
+        <div class="burger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <ul class="menu">
+            <li><a class="underline-animation" href="#">À propos</a></li>
+        </ul>
+    </nav>
+</header>
+<br><br><br><br>
+<h1>Avant de pouvoir accéder à l'emploi du temps, étant donné que c'est</h1>
+<h1>votre première connexion, vous devez changer votre Mot de passe.</h1>
+<h1></h1>
+<div class="big-container2">
+    <div class="sub-container2">
+        <form id="changeMDPForm" name ="changeMDPForm" method='post' action="../../Controller/changeMDP.php">
+            <input type='text' id='mdp' name='mdp' placeholder='Nouveau mot de passe' class="newPSW" required>
+            <input type='submit' class="buttonMDRForgotten" value='Enregistrer'>
+        </form>
+    </div>
+</div>
+
 <script src="../../Model/JavaScript/newMDP.js"></script>
+<footer class="footer">
+    <p>&copy; 2024 - SAE Emploi du temps. Rémi | Dorian | Matthéo | Bastien | Noah.</p>
+</footer>
 </body>
 </html>

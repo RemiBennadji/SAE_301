@@ -141,9 +141,10 @@ nav {
     color: #fff;
     text-align: center;
     padding: 20px 0;
-    position: static;
+    position: fixed;
     bottom: 0;
     width: 100%;
+    z-index: -1000;
 }
 
 .footer p {
@@ -235,7 +236,7 @@ input[type="password"], input[type="text"] {
 .newPSW[type="text"]{
     display: block;
     border: 1px solid #0081a1;
-    width: 15%;
+    width: 100%;
     padding: 10px;
     margin: 10px auto;
     background: white;
@@ -381,6 +382,29 @@ input:focus ~ label {
     width: 500px;
     height: 400px;
     display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: #f5f9fb;
+    border-radius: 20px;
+    color: #0081a1;
+}
+
+.big-container2{
+    position: absolute;
+    top: 30%;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.sub-container2{
+    width: 300px;
+    height: 250px;
+    display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
@@ -449,6 +473,11 @@ input:focus ~ label {
     background-color: #b2ebf2; /* Change la couleur au survol */
 }
 
+h1 {
+    text-align: center;
+    color: #0081a1;
+    width: 100%;
+}
 h2 {
     text-align: center;
     color: #00796b;
