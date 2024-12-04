@@ -73,18 +73,14 @@ create table MailIdentifiant(
 CREATE OR REPLACE FUNCTION insert_MailIdentifiant_trigger()
 RETURNS TRIGGER AS $$
 DECLARE
-etudiant_email TEXT;
+       etudiant_email TEXT;
 BEGIN
 SELECT email
 INTO etudiant_email
 FROM etudiants
 WHERE email LIKE NEW.identifiant || '%';
-
-IF FOUND THEN
-        INSERT INTO MailIdentifiant (mail, identifiant)
-        VALUES (etudiant_email, NEW.identifiant);
+IF FOUND THEN INSERT INTO MailIdentifiant (mail, identifiant) VALUES (etudiant_email, NEW.identifiant);
 END IF;
-
 RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
@@ -96,4 +92,4 @@ CREATE TRIGGER insert_trigger_on_Mailidentifiant
     AFTER INSERT ON infoutilisateur
     FOR EACH ROW
     EXECUTE FUNCTION insert_MailIdentifiant_trigger();
---rollback: DROP TRIGGER insert_MailIdentifiant ON Mailidentifiant;
+--rollback: DROP TRIGGER insert_MailIdentifiant ON infoutilisateur;
