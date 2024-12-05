@@ -10,26 +10,24 @@
 <body>
 <h2>Changement de votre mot de passe</h2>
 <form id="MdpOublieForm" name ="MdpOublieForm" method='post' action="../../Controller/mdpOublie.php">
-    <input type='text' id='identifiant' name='identifiant' placeholder='Votre identifiant' class="newPSW" required>
-
+    <input type='text' id='identifiant' name='identifiant' placeholder='Votre identifiant' required>
     <div class="input-container">
-                <span class="eye" id="togglePassword">
-                    <i class="fas fa-eye" id="passwordSymbole"></i> <!-- Icône d'œil initiale -->
-                </span>
-        <input type="password" id="mdp" name="mdp" class="password" placeholder='Nouveau mot de passe' required><br><br>
-        <label for="mdp" class="placeholderActif" id="labelPsw">*</label>
+        <span class="eye" id="togglePassword">
+            <i class="fas fa-eye" id="passwordSymbole"></i> <!-- Icône d'œil initiale -->
+        </span>
+        <input type="password" id="idpsw" name="mdp" placeholder='Nouveau mot de passe' required><br><br>
+        <label for="idpsw" class="placeholderActif" id="labelPsw">*</label>
     </div>
-
-<!--    <div class="input-container">-->
-<!--                <span class="eye" id="togglePassword2">-->
-<!--                    <i class="fas fa-eye" id="passwordSymbole2"></i> &lt;!&ndash; Icône d'œil initiale &ndash;&gt;-->
-<!--                </span>-->
-<!--        <input type="password" id="idpsw" name="mdp2" class="password" placeholder="Confirmer mot de passe" required><br><br>-->
-<!--        <label for="idpsw" class="placeholderActif" id="labelPsw2">*</label>-->
-<!--    </div>-->
+    <div class="input-container">
+        <span class="eye" id="togglePassword2">
+            <i class="fas fa-eye" id="passwordSymbole2"></i> <!-- Icône d'œil initiale -->
+        </span>
+        <input type="password" id="idpsw2" name="mdp2" placeholder="Confirmer mot de passe" required><br><br>
+        <label for="idpsw2" class="placeholderActif" id="labelPsw2">*</label>
+    </div>
     <input type='submit' value='Enregistrer'>
 
-        <script src="../../Model/JavaScript/Identification.js" defer></script>
+    <script src="../../Model/JavaScript/Identification.js" defer></script>
 </form>
 </body>
 </html>
