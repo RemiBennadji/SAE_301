@@ -61,10 +61,14 @@ foreach ($listeSalles as $i) {
     $salle = 'Salle ' . $i['salle'] . ' (' . $i['enseignant'] . ')';
     $duree = substr($i['duree'], 22, 1).":".substr($i['duree'], 30, 2);//Extrait la duree
 
-    if((substr($duree, 0, 1) === "3") || (substr($heure, 3, 1) === "3")) {
+    //chaque salle est bien assignée à sa propre colonne dans le tableau final à l'affichage
+    if (!isset($sallesParHoraire[$heure])) {//Vérifie si un tableau existe déjà pour l'horaire
+        $sallesParHoraire[$heure] = [];
+    }
+
+    if((substr($duree, 0, 1) === "3")) {//Si la duree est de 3h
         $h = 1 + (int)substr($heure, 0, 2);
         $m = 30 + (int)substr($heure, 3, 2);
-        //echo "$h:$m|";
 
         // Gestion des dépassements de minutes
         if($m == 60) {
@@ -72,18 +76,12 @@ foreach ($listeSalles as $i) {
             $h++;     // Ajouter 1 heure
         }
 
-        //Si les minutes est de taille 1 (9h0 devient 9h00
+        //Si les minutes est de taille 1 (8h0 devient 8h00
         if(strlen($m) == 1){
-            $m = $m."0";
+            $m .="0";
         }
 
         $sallesParHoraire["$h:$m"][$i['salle']] = $salle;
-        //echo "$h:$m|";
-    }
-
-    //chaque salle est bien assignée à sa propre colonne dans le tableau final à l'affichage
-    if (!isset($sallesParHoraire[$heure])) {//Vérifie si un tableau existe déjà pour l'horaire
-        $sallesParHoraire[$heure] = [];
     }
     $sallesParHoraire[$heure][$i['salle']] = $salle;
 }
@@ -114,7 +112,7 @@ $salles = $resultat;
 <body>
 
 <!-- Lien vers le menu principal avec logo -->
-<a href="MenuPrincipal.php"><img src="../Ressource/logouphf2.png" class="logoUPHF" alt="Logo UPHF"></a>
+<!--<a href="MenuPrincipal.php"><img src="../Ressource/logouphf2.png" class="logoUPHF" alt="Logo UPHF"></a>-->
 
 <header>
     <nav>
