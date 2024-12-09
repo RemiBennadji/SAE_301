@@ -2,11 +2,32 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>mdpOublie</title>
-    <link href="../CSS/mdpOublie.css" rel="stylesheet">
+    <title>Mot de passe Oublié</title>
+    <link href="../CSS/CSSBasique.css" rel="stylesheet">
+    <link class="eye" rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-<img src="https://upload.wikimedia.org/wikipedia/commons/b/bd/UPHF_logo.svg" alt="Logo UPHF" width=10% height=10%"/>
+<h2>Changement de votre mot de passe</h2>
+<form id="MdpOublieForm" name ="MdpOublieForm" method='post' action="../../Controller/mdpOublie.php">
+    <input type='text' id='identifiant' name='identifiant' placeholder='Votre identifiant' required>
+    <div class="input-container">
+        <span class="eye" id="togglePassword">
+            <i class="fas fa-eye" id="passwordSymbole"></i> <!-- Icône d'œil initiale -->
+        </span>
+        <input type="password" id="idpsw" name="mdp" placeholder='Nouveau mot de passe' required><br><br>
+        <label for="idpsw" class="placeholderActif" id="labelPsw">*</label>
+    </div>
+    <div class="input-container">
+        <span class="eye" id="togglePassword2">
+            <i class="fas fa-eye" id="passwordSymbole2"></i> <!-- Icône d'œil initiale -->
+        </span>
+        <input type="password" id="idpsw2" name="mdp2" placeholder="Confirmer mot de passe" required><br><br>
+        <label for="idpsw2" class="placeholderActif" id="labelPsw2">*</label>
+    </div>
+    <input type='submit' value='Enregistrer'>
 
+    <script src="../../Model/JavaScript/Identification.js" defer></script>
+</form>
 </body>
 </html>
