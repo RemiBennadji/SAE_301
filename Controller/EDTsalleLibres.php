@@ -8,7 +8,6 @@ if (!isset($_SESSION['role'])) {
     exit();
 }
 */
-
 // Récupération de la date et gestion des boutons de navigation
 if (isset($_POST['suivant'])) {
     $dateActuelle = new DateTime($_POST['date']);
@@ -100,6 +99,8 @@ foreach ($horaires as $horaire) {
     $resultat[] = $ligne;
 }
 $salles = $resultat;
+
+$currentHour = date('H:i', strtotime('+1 hour'));
 ?>
 
 <!DOCTYPE html>
@@ -160,9 +161,14 @@ $salles = $resultat;
     <tbody>
     <?php foreach ($horaires as $index => $horaire): ?>
         <tr>
-            <td><?= htmlspecialchars($horaire) ?></td>
+            <td ><?= htmlspecialchars($horaire) ?></td>
             <?php foreach ($salles[$index] as $cellule): ?>
-                <td><?= htmlspecialchars($cellule) ?></td>
+                <?php if (($currentHour >= $horaire) && (isset($horaires[$index + 1]) && ($currentHour) < $horaires[$index + 1])): ?>
+                    <td style="background-color: lightskyblue"><?= htmlspecialchars($cellule) ?></td>
+                <?php else: ?>
+                    <td><?= htmlspecialchars($cellule) ?></td>
+                <?php endif; ?>
+
             <?php endforeach; ?>
         </tr>
     <?php endforeach; ?>
