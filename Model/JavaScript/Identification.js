@@ -48,7 +48,6 @@ document.getElementById('formID').addEventListener('submit', function (event) {
     return response.json();})// enregistre la reponse du serveur
         .then(data => {//si il y a une reponse
             console.log("Réponse brute :", data);
-            console.log('Valeur de role :', data.role);
             try{
                 if (data.error){
                     console.error(data.error);
