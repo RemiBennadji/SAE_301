@@ -776,3 +776,46 @@ select#edtAdmin {
 }
 /*fin CreationCompte*/
 
+
+
+
+
+
+
+
+.changerJour {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.changerJour form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.changerJour label {
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.changerJour input[type="date"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+.changerJour input[type="date"]:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
+}

@@ -1,20 +1,10 @@
 <?php
 include "ConnectionBDD.php";
 
-/*
-session_start();
-if (!isset($_SESSION['role'])) {
-    header("Location: ../View/HTML/Identification.html");
-    exit();
-}
-*/
-// Récupération de la date et gestion des boutons de navigation
-if (isset($_POST['suivant'])) {
+// Gestion de la date actuelle ou sélectionnée
+date_default_timezone_set('Europe/Paris');
+if (isset($_POST['date'])) {
     $dateActuelle = new DateTime($_POST['date']);
-    $dateActuelle->modify('+1 day');
-} elseif (isset($_POST['precedent'])) {
-    $dateActuelle = new DateTime($_POST['date']);
-    $dateActuelle->modify('-1 day');
 } else {
     $dateActuelle = new DateTime();
 }
@@ -56,28 +46,25 @@ try {
 // Organisation des données
 $sallesParHoraire = [];
 foreach ($listeSalles as $i) {
-    $heure = substr($i['horaire'], 11, 5);//Extrait l'heure
+    $heure = substr($i['horaire'], 11, 5);
     $salle = 'Salle ' . $i['salle'] . ' (' . $i['enseignant'] . ')';
-    $duree = substr($i['duree'], 22, 1).":".substr($i['duree'], 30, 2);//Extrait la duree
+    $duree = substr($i['duree'], 22, 1) . ":" . substr($i['duree'], 30, 2);
 
-    //chaque salle est bien assignée à sa propre colonne dans le tableau final à l'affichage
-    if (!isset($sallesParHoraire[$heure])) {//Vérifie si un tableau existe déjà pour l'horaire
+    if (!isset($sallesParHoraire[$heure])) {
         $sallesParHoraire[$heure] = [];
     }
 
-    if((substr($duree, 0, 1) === "3")) {//Si la duree est de 3h
+    if ((substr($duree, 0, 1) === "3")) {
         $h = 1 + (int)substr($heure, 0, 2);
         $m = 30 + (int)substr($heure, 3, 2);
 
-        // Gestion des dépassements de minutes
-        if($m == 60) {
-            $m = 0; // Retirer 60 minutes
-            $h++;     // Ajouter 1 heure
+        if ($m == 60) {
+            $m = 0;
+            $h++;
         }
 
-        //Si les minutes est de taille 1 (8h0 devient 8h00
-        if(strlen($m) == 1){
-            $m .="0";
+        if (strlen($m) == 1) {
+            $m .= "0";
         }
 
         $sallesParHoraire["$h:$m"][$i['salle']] = $salle;
@@ -85,8 +72,8 @@ foreach ($listeSalles as $i) {
     $sallesParHoraire[$heure][$i['salle']] = $salle;
 }
 
-// Horaires prédéfinis
-$horaires = ['08:00', '09:30', '11:00', '12:30', '14:00', '15:30', '17:00', '18h30'];
+// Horaires et salles prédéfinis
+$horaires = ['08:00', '09:30', '11:00', '12:30', '14:00', '15:30', '17:00', '18:30'];
 $lesSalles = ['101', '103', '105', '106', '107', '108', '109', '110', '111', '112', '113', '114', '115', '117', '118', '200'];
 
 // Création de la structure du tableau final
@@ -94,7 +81,7 @@ $resultat = [];
 foreach ($horaires as $horaire) {
     $ligne = [];
     foreach ($lesSalles as $salle) {
-        $ligne[] = $sallesParHoraire[$horaire][$salle] ?? ''; // Ajouter la salle ou une case vide
+        $ligne[] = $sallesParHoraire[$horaire][$salle] ?? '';
     }
     $resultat[] = $ligne;
 }
@@ -111,9 +98,6 @@ $currentHour = date('H:i', strtotime('+1 hour'));
     <link rel="stylesheet" type="text/css" href="../View/CSS/CSSBasique.css">
 </head>
 <body>
-
-<!-- Lien vers le menu principal avec logo -->
-<!--<a href="MenuPrincipal.php"><img src="../Ressource/logouphf2.png" class="logoUPHF" alt="Logo UPHF"></a>-->
 
 <header>
     <nav>
@@ -142,10 +126,8 @@ $currentHour = date('H:i', strtotime('+1 hour'));
 
 <div class="changerJour">
     <form action="EDTsalleLibres.php" method="post">
-        <input type="hidden" name="date" value="<?= htmlspecialchars($dateActuelle->format('Y-m-d')) ?>">
-        <button type="submit" name="precedent"><</button>
-        <label>Date du jour : <?= htmlspecialchars($dateDuJour) ?></label>
-        <button type="submit" name="suivant">></button>
+        <label for="date">Changer la date :</label>
+        <input type="date" id="date" name="date" value="<?= htmlspecialchars($dateActuelle->format('Y-m-d')) ?>" onchange="this.form.submit()">
     </form>
 </div>
 
@@ -161,14 +143,13 @@ $currentHour = date('H:i', strtotime('+1 hour'));
     <tbody>
     <?php foreach ($horaires as $index => $horaire): ?>
         <tr>
-            <td ><?= htmlspecialchars($horaire) ?></td>
+            <td><?= htmlspecialchars($horaire) ?></td>
             <?php foreach ($salles[$index] as $cellule): ?>
                 <?php if (($currentHour >= $horaire) && (isset($horaires[$index + 1]) && ($currentHour) < $horaires[$index + 1])): ?>
-                    <td style="background-color: lightskyblue"><?= htmlspecialchars($cellule) ?></td>
+                    <td style="background-color: lightskyblue;"><?= htmlspecialchars($cellule) ?></td>
                 <?php else: ?>
                     <td><?= htmlspecialchars($cellule) ?></td>
                 <?php endif; ?>
-
             <?php endforeach; ?>
         </tr>
     <?php endforeach; ?>
