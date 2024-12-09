@@ -1,14 +1,3 @@
-<?php
-include "../Controller/ConnectionBDD.php";
-
-session_start();
-
-// Vérification si le rôle est défini, sinon rediriger vers la page de connexion
-if (!isset($_SESSION['role'])) {
-    header("Location: ../View/HTML/Identification.html"); // Redirection si pas de rôle
-    exit();
-}
-?>
 <html lang="fr">
 <head>
     <title>EDT</title>
@@ -16,7 +5,6 @@ if (!isset($_SESSION['role'])) {
 </head>
 <body>
 <a href="MenuPrincipal.php"><img src="../Ressource/logouphf2.png" class="logoUPHF" alt="Logo UPHF"></a>
-
 <header>
     <nav>
         <div class="burger">
@@ -25,40 +13,16 @@ if (!isset($_SESSION['role'])) {
             <span></span>
         </div>
         <ul class="menu">
-            <li><a id="edt" class="underline-animation" href="../Controller/EDT.php">Emploi du temps</a></li>
+            <li><a class="underline-animation" href="../Controller/EDT.php">Emploi du temps</a></li>
             <li><a class="underline-animation" href="#">Messagerie</a></li>
             <li><a class="underline-animation" href="../View/HTML/creationCompte.html" id="creationCompte" style="display: none">Créer un compte</a></li>
-            <li><a class="underline-animation" href="../Controller/EDTsalleLibres.php" id="afficheSalles">Salles disponibles</a></li>
             <li><a class="underline-animation" href="../Controller/Deconnexion.php">Déconnexion</a></li>
-            <label class="choixClasse">
-                <select id="edtAdmin">
-                    <option selected disabled>Administration</option>
-                    <option class="label" disabled>Année 1</option>
-                    <option value="A1">A1</option>
-                    <option value="A2">A2</option>
-                    <option value="B1">B1</option>
-                    <option value="B2">B2</option>
-                    <option value="C1">C1</option>
-                    <option value="C2">C2</option>
-                    <option class="label" disabled>Année 2</option>
-                    <option value="FIA1">FIA1</option>
-                    <option value="FIA2">FIA2</option>
-                    <option value="2FIB">FIB</option>
-                    <option value="2FA">FA</option>
-                    <option class="label" disabled>Année 3</option>
-                    <option value="FIA">FIA</option>
-                    <option value="FIB">FIB</option>
-                    <option value="FA">FA</option>
-                </select>
-            </label>
         </ul>
     </nav>
 </header>
-
-<script><!-- script pour que les liens href soi responsive -->
+<script>
     const burger = document.querySelector('.burger');
     const menu = document.querySelector('.menu');
-
     burger.addEventListener("click", () => {
         menu.classList.toggle("active");
         burger.classList.toggle("toggle");
@@ -67,13 +31,12 @@ if (!isset($_SESSION['role'])) {
 <br><br><br>
 
 <?php
+include "../Controller/ConnectionBDD.php";
 
-// Exemple + Test
-$dateActuel = ' 2025-01-06';  // Date par défaut
-$classeActuel = 'C1';         // Groupe par défaut (TPC1 en 1ère année)
-$anneeActuel = 1;             // Année par défaut (1ère année)
+$dateActuel = date('Y-m-d', strtotime('monday this week'));
+$classeActuel = 'C1';
+$anneeActuel = 1;
 
-// Fonction pour afficher l'emploi du temps de la semaine
 function AfficherEdtSemaine($dateDebut, $classe, $annee) {
     $timestamp = strtotime($dateDebut);
     $lundi = date("Y-m-d", $timestamp);
@@ -84,7 +47,6 @@ function AfficherEdtSemaine($dateDebut, $classe, $annee) {
     $joursSemaine = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi'];
     $joursData = [];
 
-    // Récupérer les données pour tous les jours en une fois
     for ($i = 0; $i < 5; $i++) {
         $jourTimestamp = strtotime("+$i day", strtotime($lundi));
         $jour = date("Y-m-d", $jourTimestamp);
@@ -113,7 +75,7 @@ function AfficherEdtSemaine($dateDebut, $classe, $annee) {
 
             if (!empty($coursDuJour)) {
                 $cours = current($coursDuJour);
-                // Calculer la durée en minutes
+
                 $dureeStr = $cours['duree'];
                 if (strpos($dureeStr, 'years') !== false) {
                     preg_match('/(\d+) hours (\d+) mins/', $dureeStr, $matches);
@@ -125,34 +87,49 @@ function AfficherEdtSemaine($dateDebut, $classe, $annee) {
 
                 $nombreCreneaux = ceil($dureeMinutes / 90);
 
-                // Générer le contenu HTML avec le style approprié
                 $discipline = strtolower(supprimerAccents($cours['discipline']));
                 $discipline = preg_replace('/[^a-z0-9]+/', '-', $discipline);
                 $discipline = trim($discipline, '-');
 
                 $typeSeance = strtolower($cours['typeseance']);
+                $salles = explode(',', $cours['salles']);
 
-                // Déterminer la classe CSS
                 if ($typeSeance == 'ds') {
                     $classeCSS = "ds";
-                } elseif ($typeSeance == 'prj') {
+                    if ($annee == 1){
+                        $sallesStr = "Amphi, Salle 110";
+                    }
+                    else{
+                        $sallesStr = "Amphi";
+                    }
+                }
+
+                elseif ($typeSeance == 'prj') {
                     $classeCSS = "sae";
-                } else {
+                    $sallesStr = "Salle " . implode(", ", $salles);
+                }
+                else {
                     $classeCSS = $dureeMinutes == 180 ?
                         "cours-" . $discipline . "-" . $typeSeance . '-3' :
                         "cours-" . $discipline . "-" . $typeSeance;
+
+                    if (count($salles) == 1 && $salles[0] == '200') {
+                        $sallesStr = "Amphi";
+                    } else {
+                        $sallesStr = "Salle " . implode(", ", $salles);
+                    }
                 }
 
                 $prenomProf = $cours['prenom'][0] . ".";
                 if ($prenomProf == ".") {
-                    $prenomProf = "";  // Si c'est juste un ".", cela veut dire qu'il n'y a pas de prof
+                    $prenomProf = "";
                 }
 
                 $contenuHTML = "<div class='$classeCSS'>" .
                     $cours['typeseance'] . "<br>" .
-                    $cours['matiere'] . " | " . $cours['code'] . "<br>" .
+                    $cours['code'] . " " . $cours['matiere'] . "<br>" .
                     $prenomProf . $cours['nom'] . "<br>" .
-                    "Salle " . $cours['salle'] .
+                    $sallesStr .
                     "</div>";
 
                 echo "<td rowspan='$nombreCreneaux'>$contenuHTML</td>";
@@ -166,7 +143,6 @@ function AfficherEdtSemaine($dateDebut, $classe, $annee) {
     echo "</table>";
 }
 
-// Fonction pour retirer les accents et convertir en équivalents non accentués
 function supprimerAccents($str) {
     return str_replace(
         ['é', 'è', 'ê', 'ë', 'à', 'â', 'ä', 'ù', 'û', 'ü', 'î', 'ï', 'ô', 'ö', 'ç', 'É', 'È', 'Ê', 'Ë', 'À', ' ', 'Ä', 'Ù', 'Û', 'Ü', 'Î', 'Ï', 'Ô', 'Ö', 'Ç'],
@@ -175,13 +151,15 @@ function supprimerAccents($str) {
     );
 }
 
-function RecupererCoursParJour($jour, $classe, $annee) {
+function RecupererCoursParJour($jour, $classe, $annee): array
+{
     $semestres = ($annee == 1) ? [1, 2] : (($annee == 2) ? [3, 4] : [5, 6]);
     $semestresString = implode(",", $semestres);
 
     $sql = "
-    SELECT
-        seance.idseance, seance.typeseance, seance.duree, schedulesalle.salle,
+    SELECT DISTINCT
+        seance.idseance, seance.typeseance, seance.duree,
+        schedulesalle.salle as salles,
         collegue.prenom, collegue.nom,
         enseignement.court as matiere,
         enseignement.discipline, horaire as date, schedule.nomgroupe, code
@@ -204,37 +182,30 @@ function RecupererCoursParJour($jour, $classe, $annee) {
     return $req->fetchAll(PDO::FETCH_ASSOC);
 }
 
-// Fonction pour incrémenter une semaine
 function incrementerSemaine($ancienneDate) {
     $timestamp = strtotime($ancienneDate);
     $nouveauLundi = strtotime("+7 day", $timestamp);
     return date("Y-m-d", $nouveauLundi);
 }
 
-// Fonction pour décrémenter une semaine
 function decrementerSemaine($ancienneDate) {
     $timestamp = strtotime($ancienneDate);
     $nouveauLundi = strtotime("-7 day", $timestamp);
     return date("Y-m-d", $nouveauLundi);
 }
 
-// Gestion des requêtes POST (navigation entre les semaines)
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Récupération de la date actuelle envoyée par le formulaire
-    $dateActuel = isset($_POST["dateActuel"]) ? $_POST["dateActuel"] : $dateActuel;
+    $dateActuel = $_POST["dateActuel"] ?? $dateActuel;
 
-    // Si le bouton semaine précédente est pressé
     if (isset($_POST["precedent"])) {
         $dateActuel = decrementerSemaine($dateActuel);
     }
 
-    // Si le bouton semaine suivante est pressé
     if (isset($_POST["suivant"])) {
         $dateActuel = incrementerSemaine($dateActuel);
     }
 }
 
-// Affichage du titre et du formulaire de changement de semaine
 echo ('<div class="changerSemaine">
    <form action="EDT.php" method="post">
        <button type="submit" name="precedent"><</button>
@@ -244,13 +215,10 @@ echo ('<div class="changerSemaine">
    </form>
 </div>');
 
-// Affichage du footer
 echo ('<footer class="footer">
     <p>&copy; 2024 - SAE Emploi du temps. Rémi | Dorian | Matthéo | Bastien | Noah.</p>
 </footer>');
 
-// Affichage de l'emploi du temps pour la semaine choisie
 AfficherEdtSemaine($dateActuel, $classeActuel, $anneeActuel);
 ?>
 </body>
-</html>
