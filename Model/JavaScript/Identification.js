@@ -13,21 +13,6 @@ document.getElementById('togglePassword').addEventListener('click', function () 
     }
 });
 
-document.getElementById('togglePassword2').addEventListener('click', function () {
-    var password = document.getElementById("idpsw2");
-
-    // Bascule entre les types "password" et "text"
-    if (password.type === "password") {
-        password.type = "text";
-        // Change l'icône en œil barré
-        this.innerHTML = '<i class="fas fa-eye-slash"></i>';
-    } else {
-        password.type = "password";
-        // Remet l'icône en œil ouvert
-        this.innerHTML = '<i class="fas fa-eye"></i>';
-    }
-});
-
 const idcompte = document.getElementById('idcompte');
 const idpsw = document.getElementById('idpsw');
 const labelIdentifiant = document.getElementById('labelIdentifiant')
@@ -43,17 +28,17 @@ document.getElementById('formID').addEventListener('submit', function (event) {
 
     fetch('../../Controller/Identification.php', {method: 'POST'/*POST = cacher info URL*/, body: formData})//envoie donnée au serveur et return réponse
         .then(response =>{ if (!response.ok) {
-        throw new Error(`Erreur HTTP : ${response.status}`);
-    }
-    return response.json();})// enregistre la reponse du serveur
+            throw new Error(`Erreur HTTP : ${response.status}`);
+        }
+            return response.text();})// enregistre la reponse du serveur
         .then(data => {//si il y a une reponse
             console.log("Réponse brute :", data);
-            console.log('Valeur de role :', data.role);
             try{
-                if (data.error){
-                    console.error(data.error);
+                const jsonData = JSON.parse(data);
+                if (jsonData.error){
+                    console.error(jsonData.error);
 
-                    if (data.error === 'errorConnexion') {
+                    if (jsonData.error === 'errorConnexion') {
                         // Change le style en cas d'échec
                         idcompte.style.background = '#f2a19b';
                         idcompte.style.border = '2px solid red';
@@ -64,11 +49,12 @@ document.getElementById('formID').addEventListener('submit', function (event) {
                         labelPsw.style.color = 'red';
                         yeux.style.color = 'black';
                     }
-                }else if (data.redirect) {
+                }else if (jsonData.redirect) {
                     // Effectue la redirection vers l'URL fournie par le PHP
-                    window.location.href = data.redirect;
+                    window.location.href = jsonData.redirect;
                 }
-        }catch (error){
+
+            }catch (error){
                 console.error("Erreur lors du parsing JSON : ", error);
             }
         })
