@@ -8,6 +8,7 @@ include_once "../Model/Classe/Administrateur.php";
 include_once "../Model/Classe/Etudiant.php";
 include_once "../Model/Classe/Secretariat.php";
 include_once "../Model/Classe/Professeur.php";
+
 session_start();
 //echo "Étape 1 : Script démarré<br>";
 
@@ -36,8 +37,14 @@ try {
     $result->execute();
     $result = $result->fetchAll(PDO::FETCH_ASSOC);
 
+    if(!$result){
+        echo json_encode(['error' => 'errorConnexion']);
+        exit();
+    }
+
      //si le role est bien recupérer alors on démarre la session et cookies
     $role = $result[0]['role'];
+
     $compte = null;
 
     //tests pour déterminer quel type de compte créer
@@ -53,6 +60,7 @@ try {
     else if($result[0]['role'] == 'professeur'){
         $compte = new Professeur();
     }
+
     $compte->setIdentifiant($result[0]['identifiant']);
     //Début session
     $_SESSION['role'] = $role;
