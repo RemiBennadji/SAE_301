@@ -101,8 +101,8 @@ function decrementerSemaine($ancienneDate) {
     return date("Y-m-d", $nouveauJour);
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $dateActuel = $_POST["dateActuel"] ?? $dateActuelle;
+if ($_SERVER["METHOD"] == "POST") {
+    $dateActuel = $_POST["date2"] ?? $dateActuelle;
 
     if (isset($_POST["precedent"])) {
         $dateActuel = decrementerSemaine($dateActuel);
@@ -160,7 +160,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <div class="changerJour">
     <form action="EDTsalleLibres.php" method="post">
-        <input type="hidden" name="date" value="<?= htmlspecialchars($dateActuelle->format('Y-m-d')) ?>">
+        <input type="hidden" name="date2" value="<?= htmlspecialchars($dateActuelle->format('Y-m-d')) ?>">
         <button type="submit" name="precedent"><</button>
         <label>Date du jour : <?= htmlspecialchars($dateDuJour) ?></label>
         <button type="submit" name="suivant">></button>
