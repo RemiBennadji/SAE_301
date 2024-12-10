@@ -88,6 +88,30 @@ foreach ($horaires as $horaire) {
 $salles = $resultat;
 
 $currentHour = date('H:i', strtotime('+1 hour'));
+
+function incrementerSemaine($ancienneDate) {
+    $timestamp = strtotime($ancienneDate);
+    $nouveauJour = strtotime("+1 day", $timestamp);
+    return date("Y-m-d", $nouveauJour);
+}
+
+function decrementerSemaine($ancienneDate) {
+    $timestamp = strtotime($ancienneDate);
+    $nouveauJour = strtotime("-1 day", $timestamp);
+    return date("Y-m-d", $nouveauJour);
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $dateActuel = $_POST["dateActuel"] ?? $dateActuelle;
+
+    if (isset($_POST["precedent"])) {
+        $dateActuel = decrementerSemaine($dateActuel);
+    }
+
+    if (isset($_POST["suivant"])) {
+        $dateActuel = incrementerSemaine($dateActuel);
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -124,9 +148,25 @@ $currentHour = date('H:i', strtotime('+1 hour'));
     });
 </script>
 
+<!--<div class="changerJour">-->
+<!--    <form action="EDTsalleLibres.php" method="post">-->
+<!--        <label for="date">Changer la date :</label>-->
+<!--        <input type="date" id="date" name="date" value="--><?php //= htmlspecialchars($dateActuelle->format('Y-m-d')) ?><!--" onchange="this.form.submit()">-->
+<!--    </form>-->
+<!--</div>-->
+
+
+
+
 <div class="changerJour">
     <form action="EDTsalleLibres.php" method="post">
-        <label for="date">Changer la date :</label>
+        <input type="hidden" name="date" value="<?= htmlspecialchars($dateActuelle->format('Y-m-d')) ?>">
+        <button type="submit" name="precedent"><</button>
+        <label>Date du jour : <?= htmlspecialchars($dateDuJour) ?></label>
+        <button type="submit" name="suivant">></button>
+
+
+        <label for="date">Calendrier :</label>
         <input type="date" id="date" name="date" value="<?= htmlspecialchars($dateActuelle->format('Y-m-d')) ?>" onchange="this.form.submit()">
     </form>
 </div>
