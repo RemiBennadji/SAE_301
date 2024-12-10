@@ -11,6 +11,7 @@ try {
     $res1->bindParam(":mail", $mail);
     $res1->execute();
 
+
 } catch (PDOException $e) {
     $erreur = "Erreur SQL : " . $e->getMessage();
 }
