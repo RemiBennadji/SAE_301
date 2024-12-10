@@ -14,8 +14,7 @@ CREATE TABLE IF NOT EXISTS infoutilisateur (
 --changeset your.name:2 labels:etudiants-creation context:student-setup
 --comment: Creating etudiants table
 CREATE TABLE IF NOT EXISTS etudiants (
-                                         id SERIAL PRIMARY KEY,
-                                         civilite VARCHAR(4),
+    civilite VARCHAR(4),
     nom VARCHAR(100),
     prenom VARCHAR(100),
     semestre INTEGER,
@@ -29,7 +28,7 @@ CREATE TABLE IF NOT EXISTS etudiants (
 --comment: Inserting additional student records
 INSERT INTO etudiants (civilite, nom, prenom, semestre, nom_ressource, email) VALUES
                                                                                   ('M.', 'VIGNOLLE', 'Victor', 1, 'A1', 'victor.vignolle@uphf.fr'),
-                                                                                  ('M.', 'VIGNOLLE', 'Victor', 1, 'A1', 'victor.vigaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaanolle@uphf.fr');
+                                                                                  ('M.', 'VIGNOLLE', 'Victor', 1, 'A1', 'victor.vignolle@uphf.fr');
 
 --rollback DELETE FROM etudiants WHERE email = 'victor.vignolle@uphf.fr' OR email = 'victor.vigaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaanolle@uphf.fr';
 
