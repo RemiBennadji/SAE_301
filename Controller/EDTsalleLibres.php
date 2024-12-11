@@ -1,5 +1,7 @@
 <?php
 include "ConnectionBDD.php";
+//$dateActuel : utilisé pour les fleches
+//$dateActuelle : utilisé pour le calendrier
 
 // Gestion de la date actuelle ou sélectionnée
 date_default_timezone_set('Europe/Paris');
@@ -101,16 +103,24 @@ function decrementerSemaine($ancienneDate) {
     return date("Y-m-d", $nouveauJour);
 }
 
-if ($_SERVER["METHOD"] == "POST") {
-    $dateActuel = $_POST["date2"] ?? $dateActuelle;
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Récupération de la date passée par POST
+    $dateActuel = $_POST["date2"] ?? $dateActuelle->format('Y-m-d');
 
+    // Changer de jour si la flèche "précédent" est cliquée
     if (isset($_POST["precedent"])) {
         $dateActuel = decrementerSemaine($dateActuel);
     }
 
+    // Changer de jour si la flèche "suivant" est cliquée
     if (isset($_POST["suivant"])) {
         $dateActuel = incrementerSemaine($dateActuel);
     }
+
+    // Mettre à jour la variable $dateActuelle avec la nouvelle date
+    $dateActuelle = new DateTime($dateActuel);
+    $dateDuJour = $dateActuelle->format('d/m/Y');
+    $horaire = $dateActuelle->format('Y-m-d');
 }
 ?>
 
@@ -120,6 +130,15 @@ if ($_SERVER["METHOD"] == "POST") {
     <meta charset="UTF-8">
     <title>EDT Salle</title>
     <link rel="stylesheet" type="text/css" href="../View/CSS/CSSBasique.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.22/jspdf.plugin.autotable.min.js"></script>
+
+    <script>
+        // JavaScript pour soumettre automatiquement le formulaire lorsque la date est modifiée
+        document.getElementById("date").addEventListener("change", function() {
+            this.form.submit();
+        });
+    </script>
 </head>
 <body>
 
@@ -139,33 +158,22 @@ if ($_SERVER["METHOD"] == "POST") {
     </nav>
 </header>
 
-<script>
-    const burger = document.querySelector('.burger');
-    const menu = document.querySelector('.menu');
-    burger.addEventListener("click", () => {
-        menu.classList.toggle("active");
-        burger.classList.toggle("toggle");
-    });
-</script>
-
-<!--<div class="changerJour">-->
-<!--    <form action="EDTsalleLibres.php" method="post">-->
-<!--        <label for="date">Changer la date :</label>-->
-<!--        <input type="date" id="date" name="date" value="--><?php //= htmlspecialchars($dateActuelle->format('Y-m-d')) ?><!--" onchange="this.form.submit()">-->
-<!--    </form>-->
-<!--</div>-->
-
-
-
-
 <div class="changerJour">
+    <button id="download-pdf" class="btn">Télécharger en PDF</button>
     <form action="EDTsalleLibres.php" method="post">
+        <!-- Formulaire pour les flèches de navigation -->
         <input type="hidden" name="date2" value="<?= htmlspecialchars($dateActuelle->format('Y-m-d')) ?>">
-        <button type="submit" name="precedent"><</button>
-        <label>Date du jour : <?= htmlspecialchars($dateDuJour) ?></label>
-        <button type="submit" name="suivant">></button>
 
+        <!-- Flèche gauche pour -1 jour -->
+        <button type="submit" name="precedent">&#8592;</button>
 
+        <!-- Affichage de la date actuelle -->
+        <label id="dateDuJour">Date du jour : <?= htmlspecialchars($dateDuJour) ?></label>
+
+        <!-- Flèche droite pour +1 jour -->
+        <button type="submit" name="suivant">&#8594;</button>
+
+        <!-- Sélecteur de date -->
         <label for="date">Calendrier :</label>
         <input type="date" id="date" name="date" value="<?= htmlspecialchars($dateActuelle->format('Y-m-d')) ?>" onchange="this.form.submit()">
     </form>
@@ -195,6 +203,10 @@ if ($_SERVER["METHOD"] == "POST") {
     <?php endforeach; ?>
     </tbody>
 </table>
+
+
+
+<script src="../Model/JavaScript/GenererPDF.js"></script>
 
 <footer class="footer">
     <p>&copy; 2024 - SAE Emploi du temps. Rémi | Dorian | Matthéo | Bastien | Noah.</p>
