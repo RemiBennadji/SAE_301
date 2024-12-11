@@ -1,5 +1,5 @@
 function generation() {
-    var date = document.getElementById("dateDuJour").textContent
+    var date = document.getElementById("labelDate").textContent
 
     document.getElementById('download-pdf').addEventListener('click', function () {
     const {jsPDF} = window.jspdf;

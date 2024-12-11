@@ -5,6 +5,8 @@
 </head>
 <body>
 <a href="MenuPrincipal.php"><img src="../Ressource/logouphf2.png" class="logoUPHF" alt="Logo UPHF"></a>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.22/jspdf.plugin.autotable.min.js"></script>
 <header>
     <nav>
         <div class="burger">
@@ -207,9 +209,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 echo ('<div class="changerSemaine">
+    <button id="download-pdf" class="btn">Télécharger en PDF</button>
    <form action="EDT.php" method="post">
        <button type="submit" name="precedent"><</button>
-       <label>Semaine du ' . date("d/m/Y", strtotime($dateActuel)) . '</label>
+       <label id="labelDate">Semaine du ' . date("d/m/Y", strtotime($dateActuel)) . '</label>
        <input type="hidden" name="dateActuel" value="'. $dateActuel .'">
        <button type="submit" name="suivant">></button>
    </form>
@@ -221,4 +224,6 @@ echo ('<footer class="footer">
 
 AfficherEdtSemaine($dateActuel, $classeActuel, $anneeActuel);
 ?>
+
+<script src="../Model/JavaScript/GenererPDF.js"></script>
 </body>

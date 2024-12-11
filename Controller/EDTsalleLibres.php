@@ -168,7 +168,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <button type="submit" name="precedent">&#8592;</button>
 
         <!-- Affichage de la date actuelle -->
-        <label id="dateDuJour">Date du jour : <?= htmlspecialchars($dateDuJour) ?></label>
+        <label id="labelDate">Date du jour : <?= htmlspecialchars($dateDuJour) ?></label>
 
         <!-- Flèche droite pour +1 jour -->
         <button type="submit" name="suivant">&#8594;</button>
