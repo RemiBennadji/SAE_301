@@ -46,7 +46,8 @@ function sendCode($email, $code){
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = isset($_POST["email"]) ? htmlspecialchars($_POST["email"]) : "";
-    $code = rand(000000,999999);
+    $code = rand(0,999999);
+    $code = sprintf('%06d', $code);
     sendCode($email, $code);
 }
 
