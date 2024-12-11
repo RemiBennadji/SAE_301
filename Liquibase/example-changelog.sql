@@ -93,7 +93,7 @@ CREATE TRIGGER insert_trigger_on_Mailidentifiant
     EXECUTE FUNCTION insert_MailIdentifiant_trigger();
 --rollback: DROP TRIGGER insert_MailIdentifiant ON infoutilisateur;
 
---changeset matthéo:10 labels:new-table context:table-codeverif
+--changeset matthéo:10 labels:new-table-code context:table-codeverif
 --comment: create table
 CREATE TABLE codeverif(
     email text not null ,
