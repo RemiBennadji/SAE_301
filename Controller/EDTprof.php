@@ -2,11 +2,11 @@
 <head>
     <title>EDT</title>
     <link rel="stylesheet" type="text/css" href="../View/CSS/CSSBasique.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.22/jspdf.plugin.autotable.min.js"></script>
 </head>
 <body>
 <a href="MenuPrincipal.php"><img src="../Ressource/logouphf2.png" class="logoUPHF" alt="Logo UPHF"></a>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.22/jspdf.plugin.autotable.min.js"></script>
 <header>
     <nav>
         <div class="burger">
@@ -36,10 +36,9 @@
 include "../Controller/ConnectionBDD.php";
 
 $dateActuel = date('Y-m-d', strtotime('monday this week'));
-$classeActuel = 'C1';
-$anneeActuel = 1;
+$nomProf = 'Delattre';
 
-function AfficherEdtSemaine($dateDebut, $classe, $annee) {
+function AfficherEdtSemaine($dateDebut, $nomProf) {
     $timestamp = strtotime($dateDebut);
     $lundi = date("Y-m-d", $timestamp);
 
@@ -52,7 +51,7 @@ function AfficherEdtSemaine($dateDebut, $classe, $annee) {
     for ($i = 0; $i < 5; $i++) {
         $jourTimestamp = strtotime("+$i day", strtotime($lundi));
         $jour = date("Y-m-d", $jourTimestamp);
-        $joursData[$i] = RecupererCoursParJour($jour, $classe, $annee);
+        $joursData[$i] = RecupererCoursParJour($jour, $nomProf);
         echo "<th>" . $joursSemaine[$i] . " " . date("d/m", $jourTimestamp) . "</th>";
     }
     echo "</tr>";
@@ -96,14 +95,11 @@ function AfficherEdtSemaine($dateDebut, $classe, $annee) {
                 $typeSeance = strtolower($cours['typeseance']);
                 $salles = explode(',', $cours['salles']);
 
+
                 if ($typeSeance == 'ds') {
                     $classeCSS = "ds";
-                    if ($annee == 1){
-                        $sallesStr = "Amphi, Salle 110";
-                    }
-                    else{
-                        $sallesStr = "Amphi";
-                    }
+                    $sallesStr = "Amphi, Salle 110";
+
                 }
 
                 elseif ($typeSeance == 'prj') {
@@ -127,11 +123,15 @@ function AfficherEdtSemaine($dateDebut, $classe, $annee) {
                     $prenomProf = "";
                 }
 
+                $semestre = $cours['semestre'];
+                $nomRessource = $cours['ressource'];
+
                 $contenuHTML = "<div class='$classeCSS'>" .
                     $cours['typeseance'] . "<br>" .
                     $cours['code'] . " " . $cours['matiere'] . "<br>" .
-                    $prenomProf . $cours['nom'] . "<br>" .
-                    $sallesStr .
+//                    $prenomProf . $cours['nom'] . "<br>" .
+                    $sallesStr . "<br>" .
+                    "Semestre : ".$semestre . " | " . $nomRessource . "<br>" .
                     "</div>";
 
                 echo "<td rowspan='$nombreCreneaux'>$contenuHTML</td>";
@@ -153,18 +153,17 @@ function supprimerAccents($str) {
     );
 }
 
-function RecupererCoursParJour($jour, $classe, $annee): array
+function RecupererCoursParJour($jour, $nomProf): array
 {
-    $semestres = ($annee == 1) ? [1, 2] : (($annee == 2) ? [3, 4] : [5, 6]);
-    $semestresString = implode(",", $semestres);
 
     $sql = "
-    SELECT DISTINCT
+    SELECT
         seance.idseance, seance.typeseance, seance.duree,
         schedulesalle.salle as salles,
         collegue.prenom, collegue.nom,
         enseignement.court as matiere,
-        enseignement.discipline, horaire as date, schedule.nomgroupe, code
+        enseignement.discipline, schedule.horaire as date, 
+        enseignement.semestre, schedule.nomgroupe, enseignement.code, rg.nomressource as ressource
     FROM seance
         LEFT JOIN collegue ON seance.collegue = collegue.id
         JOIN enseignement USING (code, semestre)
@@ -173,14 +172,13 @@ function RecupererCoursParJour($jour, $classe, $annee): array
         JOIN schedulesalle USING (code, typeseance, typeformation, nomgroupe, semestre, noseance, version)
     WHERE DATE(horaire) = ?
         AND version = 38
-        AND nomressource = ?
-        AND semestre IN ($semestresString)
+        AND nom ILIKE ?
     ORDER BY horaire
     ";
 
     $connexion = getConnectionBDD();
     $req = $connexion->prepare($sql);
-    $req->execute([$jour, $classe]);
+    $req->execute([$jour, $nomProf]);
     return $req->fetchAll(PDO::FETCH_ASSOC);
 }
 
@@ -210,7 +208,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 echo ('<div class="changerSemaine">
     <button id="download-pdf" class="btn">Télécharger en PDF</button>
-   <form action="EDT.php" method="post">
+   <form action="EDTprof.php" method="post">
        <button type="submit" name="precedent"><</button>
        <label id="labelDate">Semaine du ' . date("d/m/Y", strtotime($dateActuel)) . '</label>
        <input type="hidden" name="dateActuel" value="'. $dateActuel .'">
@@ -222,7 +220,7 @@ echo ('<footer class="footer">
     <p>&copy; 2024 - SAE Emploi du temps. Rémi | Dorian | Matthéo | Bastien | Noah.</p>
 </footer>');
 
-AfficherEdtSemaine($dateActuel, $classeActuel, $anneeActuel);
+AfficherEdtSemaine($dateActuel, $nomProf);
 ?>
 
 <script src="../Model/JavaScript/GenererPDF.js"></script>
