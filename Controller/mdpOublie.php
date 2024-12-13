@@ -40,7 +40,7 @@ function sendCode($email, $code){
             exit();
         }
     } catch (PDOException $e) {
-        $erreur = "Erreur lolrs de l'envoi de l'email : " . $mail->ErrorInfo;
+        $erreur = "Erreur lors de l'envoi de l'email : " . $mail->ErrorInfo;
     }
 }
 
