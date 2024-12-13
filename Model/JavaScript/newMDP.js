@@ -1,7 +1,7 @@
-const mdp = document.getElementById('mdp');
+const mdp = document.getElementById('idpsw');
 
 function verifyMDP() {
-    var mdp = document.getElementById("mdp").value;
+    var mdp = document.getElementById("idpsw").value;
     var mdpVerif = document.getElementById("mdpverify").value;
 
     // Vérifier si les mots de passe correspondent
