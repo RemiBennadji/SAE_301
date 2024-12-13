@@ -11,7 +11,11 @@
 <h2>Changement de votre mot de passe</h2>
 <form id="MdpOublieForm" name ="MdpOublieForm" method='post' action="../../Controller/mdpOublie.php">
     <input type='email' id='email' name='email' placeholder='Votre email uphf' required>
-    <button>Envoyer</button>
+    <button id="start">Envoyer</button>
+    <button style="display: none" id="resend" >Renvoyer code</button>
+    <input type="text" id="inputCode" name="code" style="display: none" required>
+    <button style="display: none" >Accepter</button>
 </form>
+<script src="../../Model/JavaScript/newMDP.js"></script>
 </body>
 </html>

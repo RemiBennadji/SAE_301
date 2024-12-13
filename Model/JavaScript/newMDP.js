@@ -10,6 +10,18 @@ function verifyMDP() {
         erreur.style.display = "block";
     }
 }
+const B2 = document.getElementById("start")
+function entrerCode(){
+    var B1 = document.getElementById("resend")
+    var input = document.getElementById("inputCode")
+    B1.style.display = "block";
+    input.style.display = "block";
+
+}
+
+B2.addEventListener("click",function (){
+   const res = entrerCode();
+});
 
 document.getElementById('changeMDPForm').addEventListener('submit', function (event) {
     verifyMDP();
