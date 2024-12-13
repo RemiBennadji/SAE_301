@@ -7,6 +7,7 @@ require 'PHPMailer/src/PHPMailer.php';
 require 'PHPMailer/src/SMTP.php';
 require 'vendor/autoload.php';
 require '../../Controller/ConnectionBDD.php';
+
 class Mail
 {
     private $expediteur;
@@ -109,6 +110,8 @@ class Mail
         $fonctionMail->addAddress($this->destinataire);
         $this->param = true;
     }
+
+
 
 
 
