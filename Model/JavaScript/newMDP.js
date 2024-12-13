@@ -1,6 +1,18 @@
 const mdp = document.getElementById('mdp');
 
+function verifyMDP() {
+    var mdp = document.getElementById("mdp").value;
+    var mdpVerif = document.getElementById("mdpverify").value;
+
+    // Vérifier si les mots de passe correspondent
+    if (mdp !== mdpVerif) {
+        var erreur = document.getElementById("erreur");
+        erreur.style.display = "block";
+    }
+}
+
 document.getElementById('changeMDPForm').addEventListener('submit', function (event) {
+    verifyMDP();
     console.log('Gestionnaire de soumission appelé');
     event.preventDefault(); // Empêche l'envoi normal du formulaire
 
