@@ -24,9 +24,13 @@ abstract class Compte
         return $this->mdp;
     }
 
+    //Fonction permettant le hashage et l'insertion du mot de passe du compte dans la BDD @Noah
     public function changeMdp($mdp){
+        //Vérification des critères @Noah
         if ($this->verifMdp($mdp)){
+            //Hashage du mdp @Noah
             $mdp = password_hash($mdp, PASSWORD_DEFAULT);
+            //Met à jour le mot de passe et dit à la BDD que la première connexion a été faite @Noah
             $change = "UPDATE infoutilisateur SET motdepasse = :motdepasse, changemdp = true WHERE identifiant = :identifiant;";
             try {
                 $conn = getConnectionBDDEDTIdentification();
