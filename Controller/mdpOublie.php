@@ -29,11 +29,12 @@ function sendCode($email, $code){
         $mail->setObjet('Code de Vérification');
         $message = 'Voici votre code de vérification : '.$code;
         $mail->setMessage($message);
+        $mail->setParam();
         $mail->creerMail();
         header('location: changeMDP.html');
             exit();
     }catch (PDOException $e){
-        echo "Erreur lors de l'envoi de l'email : ";
+        echo "Erreur lors de l'envoi de l'email : " ;
     }
 
 
