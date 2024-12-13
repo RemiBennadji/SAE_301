@@ -111,6 +111,11 @@ class Mail
         $this->param = true;
     }
 
+    public function getFonctionMail()
+    {
+        return $this->fonctionMail;
+    }
+
 
 
 

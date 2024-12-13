@@ -34,7 +34,7 @@ function sendCode($email, $code){
         header('location: changeMDP.html');
             exit();
     }catch (PDOException $e){
-        echo "Erreur lors de l'envoi de l'email : " ;
+        echo "Erreur lors de l'envoi de l'email : ". $mail->getFonctionMail()->errorInfo(); ;
     }
 
 
