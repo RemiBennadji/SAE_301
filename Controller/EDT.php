@@ -35,9 +35,21 @@
 <?php
 include "../Controller/ConnectionBDD.php";
 
+// Vérifier si le cookie "groupe" existe
+if (isset($_COOKIE['groupe'])) {
+    $classeActuel = $_COOKIE['groupe'];
+} else {
+    echo "Le cookie 'groupe' n'est pas défini.";
+}
+
+// Vérifier si le cookie "annee" existe
+if (isset($_COOKIE['annee'])) {
+    $anneeActuel = $_COOKIE['annee'];
+} else {
+    echo "Le cookie 'annee' n'est pas défini.";
+}
+
 $dateActuel = date('Y-m-d', strtotime('monday this week'));
-$classeActuel = 'C1';
-$anneeActuel = 1;
 
 function AfficherEdtSemaine($dateDebut, $classe, $annee) {
     $timestamp = strtotime($dateDebut);
