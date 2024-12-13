@@ -93,7 +93,7 @@ CREATE TRIGGER insert_trigger_on_Mailidentifiant
     EXECUTE FUNCTION insert_MailIdentifiant_trigger();
 --rollback: DROP TRIGGER insert_MailIdentifiant ON infoutilisateur;
 
---changeset mattheo.10 labels:alter-mailidentifiant context:add-unique-mail
+--changeset mattheo:10 labels:alter-mailidentifiant context:add-unique-mail
 --comment: forgotten unique
 alter table MailIdentifiant
 add constraint unique_mail unique (mail);
