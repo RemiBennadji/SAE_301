@@ -105,7 +105,6 @@ function AfficherEdtSemaine($dateDebut, $classe, $annee) {
                         $sallesStr = "Amphi";
                     }
                 }
-
                 elseif ($typeSeance == 'prj') {
                     $classeCSS = "sae";
                     $sallesStr = "Salle " . implode(", ", $salles);
@@ -197,7 +196,16 @@ function decrementerSemaine($ancienneDate) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $dateActuel = $_POST["dateActuel"] ?? $dateActuel;
+    if (isset($_POST["selectedDate"])) {
+        // Convertir la date sélectionnée en date du lundi de la semaine
+        $selectedDate = new DateTime($_POST["selectedDate"]);
+        $dayOfWeek = $selectedDate->format('N'); // 1 (lundi) à 7 (dimanche)
+        $daysToSubtract = $dayOfWeek - 1;
+        $selectedDate->sub(new DateInterval("P{$daysToSubtract}D"));
+        $dateActuel = $selectedDate->format('Y-m-d');
+    } else {
+        $dateActuel = $_POST["dateActuel"] ?? $dateActuel;
+    }
 
     if (isset($_POST["precedent"])) {
         $dateActuel = decrementerSemaine($dateActuel);
@@ -208,15 +216,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-echo ('<div class="changerSemaine">
+echo '<div class="changerSemaine">
     <button id="download-pdf" class="btn">Télécharger en PDF</button>
-   <form action="EDT.php" method="post">
-       <button type="submit" name="precedent"><</button>
-       <label id="labelDate">Semaine du ' . date("d/m/Y", strtotime($dateActuel)) . '</label>
-       <input type="hidden" name="dateActuel" value="'. $dateActuel .'">
-       <button type="submit" name="suivant">></button>
-   </form>
-</div>');
+    <form action="EDT.php" method="post">
+        <button type="submit" name="precedent">&lt;</button>
+        
+        <label for="selectionnerSemaine">Semaine du</label>
+        <input type="date" id="selectionnerSemaine" name="selectedDate" onchange="this.form.submit()" 
+               value="' . htmlspecialchars($dateActuel, ENT_QUOTES, 'UTF-8') . '">
+        
+        <input type="hidden"  name="dateActuel" 
+               value="' . htmlspecialchars($dateActuel, ENT_QUOTES, 'UTF-8') . '">
+        
+        <button type="submit" name="suivant">&gt;</button>
+    </form>
+</div>';
 
 echo ('<footer class="footer">
     <p>&copy; 2024 - SAE Emploi du temps. Rémi | Dorian | Matthéo | Bastien | Noah.</p>
@@ -225,5 +239,7 @@ echo ('<footer class="footer">
 AfficherEdtSemaine($dateActuel, $classeActuel, $anneeActuel);
 ?>
 
+<script src="../Model/JavaScript/CalendrierEDT.js"></script>
 <script src="../Model/JavaScript/GenererPDF.js"></script>
 </body>
+</html>
