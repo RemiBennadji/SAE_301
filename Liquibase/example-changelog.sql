@@ -96,7 +96,7 @@ CREATE TRIGGER insert_trigger_on_Mailidentifiant
 --changeset mattheo.10 labels:alter-mailidentifiant context:add-unique-mail
 --comment: forgotten unique
 alter table MailIdentifiant
-add constraint unique_mail unique;
+add constraint unique_mail unique (mail);
 --rollback: alter table MailIdentifiant drop constraint unique_mail;
 
 --changeset matthéo:11 labels:new-table-code context:table-codeverif
