@@ -15,7 +15,7 @@ $dateDuJour = $dateActuelle->format('d/m/Y');
 $horaire = $dateActuelle->format('Y-m-d');
 
 try {
-    $version = 38;
+    $version = 39;
 
     // Requête pour récupérer les horaires, les salles et les noms des professeurs
     $connection = getConnectionBDD();
@@ -28,7 +28,8 @@ try {
         FROM seance
         LEFT JOIN collegue ON seance.collegue = collegue.id
         JOIN enseignement USING (code, semestre)
-        JOIN schedule USING (code, typeseance, typeformation, nomgroupe, semestre, noseance)
+        right join schedule USING (code, typeseance, typeformation, nomgroupe, semestre, noseance)
+        JOIN ressourcegroupe rg USING (nomgroupe, typeformation, semestre)
         JOIN schedulesalle USING (code, typeseance, typeformation, nomgroupe, semestre, noseance, version)
         WHERE date(horaire) = :horaire
           AND version = :version
@@ -48,15 +49,26 @@ try {
 // Organisation des données
 $sallesParHoraire = [];
 foreach ($listeSalles as $i) {
-    $heure = substr($i['horaire'], 11, 5);
-    $salle = 'Salle ' . $i['salle'] . ' (' . $i['enseignant'] . ')';
-    $duree = substr($i['duree'], 22, 1) . ":" . substr($i['duree'], 30, 2);
+    // Vérifiez si 'horaire' n'est pas null avant d'utiliser substr()
+    $heure = !empty($i['horaire']) ? substr($i['horaire'], 11, 5) : '';
 
+    // Construisez la chaîne pour la salle, avec une vérification sur 'salle' et 'enseignant'
+    $salle = 'Salle ' . ($i['salle'] ?? 'Inconnue') . ' (' . ($i['enseignant'] ?? 'Inconnu') . ')';
+
+    // Vérifiez si 'duree' n'est pas null avant de l'utiliser avec substr()
+    if (!empty($i['duree'])) {
+        $duree = substr($i['duree'], 22, 1) . ":" . substr($i['duree'], 30, 2);
+    } else {
+        $duree = '';
+    }
+
+    // Initialisez un horaire si nécessaire
     if (!isset($sallesParHoraire[$heure])) {
         $sallesParHoraire[$heure] = [];
     }
 
-    if ((substr($duree, 0, 1) === "3")) {
+    // Gestion spéciale pour les durées de 3 heures (ou autres cas spécifiques)
+    if (substr($duree, 0, 1) === "3") {
         $h = 1 + (int)substr($heure, 0, 2);
         $m = 30 + (int)substr($heure, 3, 2);
 
@@ -65,14 +77,18 @@ foreach ($listeSalles as $i) {
             $h++;
         }
 
-        if (strlen($m) == 1) {
-            $m .= "0";
+        if (strlen((string)$m) == 1) {
+            $m = "0$m";
         }
 
-        $sallesParHoraire["$h:$m"][$i['salle']] = $salle;
+        $sallesParHoraire["$h:$m"][$i['salle'] ?? 'Inconnue'] = $salle;
     }
-    $sallesParHoraire[$heure][$i['salle']] = $salle;
+
+    // Ajoutez la salle à l'horaire principal
+    $sallesParHoraire[$heure][$i['salle'] ?? 'Inconnue'] = $salle;
 }
+
+
 
 // Horaires et salles prédéfinis
 $horaires = ['08:00', '09:30', '11:00', '12:30', '14:00', '15:30', '17:00', '18:30'];
