@@ -819,3 +819,14 @@ select#edtAdmin {
     border-color: #007bff;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
 }
+
+.changerSemaine input[type="date"] {
+    padding: 5px;
+    border: 2px solid #ccc;
+    border-radius: 40px;
+    cursor: pointer;
+}
+
+.changerSemaine input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+}
