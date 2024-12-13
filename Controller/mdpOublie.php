@@ -3,9 +3,8 @@ require 'ConnectionBDD.php';
 include_once "../Model/Classe/Mail.php";
 
 
-function sendCode($email, $code){
+function sendCode($email, $code, $conn){
 
-    $conn = getConnectionBDDEDTIdentification();
     $time = strtotime("now");
     $sql1 = 'insert into codeverif values(email=:email, codeV=:code, date=:time)';
     try {
@@ -69,7 +68,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = isset($_POST["email"]) ? htmlspecialchars($_POST["email"]) : "";
     $code = rand(0,999999);
     $code = sprintf('%06d', $code);
-    sendCode($email, $code);
+    $conn = getConnectionBDDEDTIdentification();
+    $listeMail = "SELECT mail FROM mailidentifiant";
+    $listeMail = $conn->prepare($listeMail);
+    $listeMail->execute();
+    if(in_array($email, $listeMail->fetchAll(PDO::FETCH_ASSOC))){
+        sendCode($email, $code, $conn);
+    }else{
+        echo "Erreur : le mail n'existe pas";
+    }
+
 }
 
 ?>
