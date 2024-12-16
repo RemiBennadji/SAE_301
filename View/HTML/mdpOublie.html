@@ -9,13 +9,22 @@
 </head>
 <body>
 <h2>Changement de votre mot de passe</h2>
-<form id="MdpOublieForm" name ="MdpOublieForm" method='post' action="../../Controller/mdpOublie.php">
-    <input type='email' id='email' name='email' placeholder='Votre email uphf' required>
-    <button id="start">Envoyer</button>
-    <button style="display: none" id="resend" >Renvoyer code</button>
-    <input type="text" id="inputCode" name="code" style="display: none" required>
-    <button style="display: none" >Accepter</button>
-</form>
+<div class="big-container">
+    <div class="sub-container">
+        <form id="MdpOublieForm" name ="MdpOublieForm" method='post' action="../../Controller/mdpOublie.php">
+            <input type='email' id='email' name='email' placeholder='Votre email uphf' required>
+            <button id="start">Envoyer</button><br>
+            <button style="display: none" id="resend">Renvoyer code</button>
+        </form>
+        <form>
+            <input type="text" id="inputCode" name="code" style="display: none" required>
+            <button id="accept" style="display: none" >Accepter</button>
+        </form>
+    </div>
+</div>
+<footer class="footer">
+    <p>&copy; 2024 - SAE Emploi du temps. Rémi | Dorian | Matthéo | Bastien | Noah.</p>
+</footer>
 <script src="../../Model/JavaScript/newMDP.js"></script>
 </body>
 </html>
