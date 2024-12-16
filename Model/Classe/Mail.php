@@ -2,10 +2,8 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require '../../vendor/PHPMailer/src/Exception.php';
-require '../../vendor/PHPMailer/src/PHPMailer.php';
-require '../../vendor/PHPMailer/src/SMTP.php';
-require 'vendor/autoload.php';
+
+require __DIR__ . '/../../vendor/autoload.php';
 
 class Mail
 {
@@ -25,17 +23,24 @@ class Mail
     }
 
     public function creerMail(){
-        if($this->expediteur !='' and $this->destinataire !='' and $this->objet !='' and $this->message !='' ){
-            if($this->getParam()){
-                $this->fonctionMail->isHTML(true);
-                $this->fonctionMail->body($this->message);
-                $this->fonctionMail->subject($this->objet);
-                $this->fonctionMail->send();
+        if($this->expediteur !='' && $this->destinataire !='' && $this->objet !='' && $this->message !=''){
+            try {
+                $this->setParam(); // Configure PHPMailer
+                if($this->param){
+                    $this->fonctionMail->isHTML(true);
+                    $this->fonctionMail->Body = $this->message;
+                    $this->fonctionMail->Subject = $this->objet;
+                    $this->fonctionMail->send();
+                    echo 'E-mail envoyé avec succès.';
+                }
+            } catch (Exception $e) {
+                echo 'Erreur lors de l\'envoi : ' . $this->fonctionMail->ErrorInfo;
             }
-        }else{
-            echo 'Il manque une information';
+        } else {
+            echo 'Il manque une information.';
         }
     }
+
     public function getExpediteur()
     {
         return $this->expediteur;
@@ -95,20 +100,21 @@ class Mail
 
     public function setParam()
     {
-        $fonctionMail = new PHPMailer(true);
-        $time = strtotime("now");
+        $this->fonctionMail = new PHPMailer(true);
 
-        $fonctionMail->isSMTP();
-        $fonctionMail->Host = 'smtp.gmail.com';
-        $fonctionMail->SMTPAuth = true;
-        $fonctionMail->Username = $this->expediteur;
-        $fonctionMail->Password = $this->mdp;
-        $fonctionMail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-        $fonctionMail->Port = 465;
-        $fonctionMail->setFrom($this->expediteur, 'Sae-EDT');
-        $fonctionMail->addAddress($this->destinataire);
+        $this->fonctionMail->isSMTP();
+        $this->fonctionMail->Host = 'smtp.gmail.com';
+        $this->fonctionMail->SMTPAuth = true;
+        $this->fonctionMail->Username = $this->expediteur;
+        $this->fonctionMail->Password = $this->mdp;
+        $this->fonctionMail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+        $this->fonctionMail->Port = 465;
+        $this->fonctionMail->setFrom($this->expediteur, 'Sae-EDT');
+        $this->fonctionMail->addAddress($this->destinataire);
+
         $this->param = true;
     }
+
 
     public function getFonctionMail()
     {

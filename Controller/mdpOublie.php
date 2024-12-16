@@ -1,34 +1,37 @@
 <?php
+
+use PHPMailer\PHPMailer\PHPMailer;
+
 require 'ConnectionBDD.php';
 include_once "../Model/Classe/Mail.php";
 
 
 function sendCode($email, $code, $conn){
-
-//    $conn = getConnectionBDDEDTIdentification();
-    $time = strtotime("now");
-    $sql1 = 'insert into codeverif values(email=:email, codeV=:code, date=:time)';
-    try {
-        $result = $conn->prepare($sql1);
-        $result->bindParam(':email', $email);
-        $result->bindParam(':code', $code);
-        $result->bindParam(':time', $time);
-        $result->execute();
-
-        $mail = new Mail();
-        $mail->setMdp('wxwxfhvqmswxufni');
-        $mail->setDestinataire($email);
-        $mail->setExpediteur('saeedt301@gmail.com');
-        $mail->setObjet('Code de Vérification');
-        $message = 'Voici votre code de vérification : '.$code;
-        $mail->setMessage($message);
-        $mail->setParam();
-        $mail->creerMail();
-        header('location: changeMDP.html');
-            exit();
-    }catch (PDOException $e){
-        echo "Erreur lors de l'envoi de l'email : ". $mail->getFonctionMail()->errorInfo(); ;
-    }
+//
+//    $conn = getConnectionBDD();
+//    $time = strtotime("now");
+//    $sql1 = 'insert into codeverif values(email=:email, codeV=:code, date=:time)';
+//    try {
+//        $result = $conn->prepare($sql1);
+//        $result->bindParam(':email', $email);
+//        $result->bindParam(':code', $code);
+//        $result->bindParam(':time', $time);
+//        $result->execute();
+//
+//        $mail = new Mail();
+//        $mail->setMdp('wxwxfhvqmswxufni');
+//        $mail->setDestinataire($email);
+//        $mail->setExpediteur('saeedts301@gmail.com');
+//        $mail->setObjet('Code de Vérification');
+//        $message = 'Voici votre code de vérification : '.$code;
+//        $mail->setMessage($message);
+//        $mail->setParam();
+//        $mail->creerMail();
+//        header('location: changeMDP.html');
+//        exit();
+//    }catch (PDOException $e){
+//        echo "Erreur lors de l'envoi de l'email : ". $e->getMessage(); ;
+//    }
 
 
 //    $mail = new PHPMailer(true);
@@ -67,7 +70,7 @@ function sendCode($email, $code, $conn){
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
         $mail->Username = 'saeedts301@gmail.com';
-        $mail->Password = 'wxwxfhvqmswxufni';
+        $mail->Password = 'xthbhnhaiazxbebp';
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
         $mail->Port = 465;
         $mail->setFrom('saeedts301@gmail.com', 'Sae-EDT');
@@ -81,11 +84,11 @@ function sendCode($email, $code, $conn){
 //        $result->execute();
 
         $mail->isHTML(true);
-        $mail->Subject = 'Code de Vérification';
-        $mail->Body = 'Voici votre code de vérification : '.$code;
+        $mail->Subject = 'Code de Verification';
+        $mail->Body = 'Voici votre code de verification : '.$code;
 
         if($mail->send()){
-            header('location: changeMDP.html');
+            header('location: ../View/HTML/changeMDP.html');
             exit();
         }
     } catch (PDOException $e) {
@@ -98,13 +101,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = isset($_POST["email"]) ? htmlspecialchars($_POST["email"]) : "";
     $code = rand(0,999999);
     $code = sprintf('%06d', $code);
-    $conn = getConnectionBDDEDTIdentification();
+    $conn = getConnectionBDD();
     $listeMail = "SELECT mail FROM mailidentifiant";
     $listeMail = $conn->prepare($listeMail);
     $listeMail->execute();
     if(in_array($email, $listeMail->fetchAll(PDO::FETCH_ASSOC))){
         sendCode($email, $code, $conn);
     }else{
+        sendCode($email, $code, $conn);
         echo "Erreur : le mail n'existe pas";
     }
 
