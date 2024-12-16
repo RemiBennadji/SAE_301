@@ -12,9 +12,8 @@ document.getElementById('togglePassword').addEventListener('click', function () 
         this.innerHTML = '<i class="fas fa-eye"></i>';
     }
 });
-
 document.getElementById('togglePassword2').addEventListener('click', function () {
-    var password = document.getElementById("idpsw2");
+    var password = document.getElementById("mdpverify");
 
     // Bascule entre les types "password" et "text"
     if (password.type === "password") {
