@@ -9,14 +9,14 @@ include_once "../Model/Classe/Mail.php";
 function sendCode($email, $code, $conn){
 //
 //    $conn = getConnectionBDD();
-//    $time = strtotime("now");
-//    $sql1 = 'insert into codeverif values(email=:email, codeV=:code, date=:time)';
-//    try {
-//        $result = $conn->prepare($sql1);
-//        $result->bindParam(':email', $email);
-//        $result->bindParam(':code', $code);
-//        $result->bindParam(':time', $time);
-//        $result->execute();
+    $time = strtotime("now");
+    $sql1 = 'INSERT INTO codeverif (email, codev, date) VALUES (:email, :code, :time)';
+    try {
+        $result = $conn->prepare($sql1);
+        $result->bindParam(':email', $email);
+        $result->bindParam(':code', $code);
+        $result->bindParam(':time', $time);
+        $result->execute();
 
         $mail = new Mail();
         $mail->setMdp('xthbhnhaiazxbebp');
@@ -27,11 +27,11 @@ function sendCode($email, $code, $conn){
         $mail->setMessage($message);
         $mail->setParam();
         $mail->creerMail();
-//        header('location: ../View/HTML/changeMDP.html');
+        header('location: ../View/HTML/changeMDP.html');
         exit();
-//    }catch (PDOException $e){
-//        echo "Erreur lors de l'envoi de l'email : ". $e->getMessage(); ;
-//    }
+    }catch (PDOException $e){
+        echo "Erreur lors de l'envoi de l'email : ". $e->getMessage(); ;
+    }
 
 
 //    $mail = new PHPMailer(true);
@@ -108,7 +108,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if(in_array($email, $listeMail->fetchAll(PDO::FETCH_ASSOC))){
         sendCode($email, $code, $conn);
     }else{
-        sendCode($email, $code, $conn);
         echo "Erreur : le mail n'existe pas";
     }
 
