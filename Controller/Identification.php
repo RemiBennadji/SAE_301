@@ -30,7 +30,7 @@ $sql1 ="SELECT identifiant, motdepasse, changeMDP, role FROM infoutilisateur WHE
 
 //Connexion à la BDD + lancement des requêtes SQL @Noah
 try {
-    $connection = getConnectionBDD();
+    $connection = getConnectionBDDEDTIdentification();
     $result = $connection->prepare($sql1);
     $result->bindParam(':ID', $ID);
     $result->execute();
