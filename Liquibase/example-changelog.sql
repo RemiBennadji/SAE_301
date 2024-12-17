@@ -1,110 +1,53 @@
 --liquibase formatted sql
 
---changeset your.name:1 labels:table-creation context:initial-setup
+--changeset mattheo:1 labels:table-creation context:initial-setup
 --comment: Creating infoutilisateur table
 CREATE TABLE IF NOT EXISTS infoutilisateur (
                                                identifiant TEXT NOT NULL,
                                                motdepasse TEXT NOT NULL,
                                                role TEXT NOT NULL,
-                                               PRIMARY KEY (id, identifiant)
+                                               PRIMARY KEY (identifiant)
     );
-
 --rollback DROP TABLE infoutilisateur;
 
---changeset your.name:2 labels:etudiants-creation context:student-setup
+
+--changeset mattheo:2 labels:etudiants-creation context:etudiant-setup
 --comment: Creating etudiants table
 CREATE TABLE IF NOT EXISTS etudiants (
     civilite VARCHAR(4),
-    nom VARCHAR(100),
-    prenom VARCHAR(100),
+    nom VARCHAR(50),
+    prenom VARCHAR(50),
     semestre INTEGER,
-    nom_ressource VARCHAR(50),
-    email VARCHAR(255)
+    nom_ressource VARCHAR(50)
     );
-
 --rollback DROP TABLE etudiants;
 
---changeset your.name:3 labels:etudiants-insert context:additional-data
---comment: Inserting additional student records
-INSERT INTO etudiants (civilite, nom, prenom, semestre, nom_ressource, email) VALUES
-                                                                                  ('M.', 'VIGNOLLE', 'Victor', 1, 'A1', 'victor.vignolle@uphf.fr'),
-                                                                                  ('M.', 'VIGNOLLE', 'Victor', 1, 'A1', 'victor.vignolle@uphf.fr');
 
---rollback DELETE FROM etudiants WHERE email = 'victor.vignolle@uphf.fr' OR email = 'victor.vigaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaanolle@uphf.fr';
+--changeset mattheo:3 labels:alter-infoutilisateur update context:alter-table
+--comment: create new table
+alter table infoutilisateur add column changeMDP boolean;
+--rollback alter table infoutilisateur drop column changeMDP;
+
 
 --changeset your.name:4 labels:infoutilisateur-insert context:additional-data
 --comment: Inserting initial user data
-INSERT INTO infoutilisateur (identifiant, motdepasse, role) VALUES
-    ('iut.info','iutinfo1.','administrateur');
-
+INSERT INTO infoutilisateur (identifiant, motdepasse, role, changeMDP) VALUES
+    ('iut.info','iutinfo1.','administrateur', false);
 --rollback DELETE FROM infoutilisateur WHERE identifiant = 'iut.info';
 
---changeset mattheo:5 labels:create-infoutilisateur update context:update-table
+
+--changeset mattheo:5 labels:alter-infoutilisateur update context:alter-table
 --comment: create new table
-create table infoutilisateur(
-                                identifiant text primary key ,
-                                motdepasse text not null ,
-                                role text not null ,
-                                changeMDP boolean not null
-);
+alter table infoutilisateur add column mail text;
+--rollback alter table infoutilisateur drop column mail;
 
---rollback DROP TABLE infoutilisateur;
 
---changeset mattheo:6 labels:insert-infoutilisateur context:insert-table
---comment: insert iut.info
-insert into infoutilisateur(identifiant, motdepasse, role, changeMDP)
-values ('iut.info', 'iutinfo1.', 'administrateur', false);
---rollback delete from infoutilisateur where identifiant = 'iut.info';
-
---changeset mattheo:7 labels:create-table-asso context:table-mailidentifant
---comment: create table mail-identifiant
-create table MailIdentifiant(
-    mail text ,
-    identifiant text ,
-    primary key (mail, identifiant),
-    foreign key (mail) references etudiants(email),
-    foreign key (identifiant) references infoutilisateur(identifiant)
-);
---rollback DROP TABLE MailIdentifant;
-
---changeset mattheo:8 labels:start-function context:atomate-table-MailIdentifiant
---comment: start function of trigger
-CREATE OR REPLACE FUNCTION insert_MailIdentifiant_trigger()
-RETURNS TRIGGER AS $$
-DECLARE
-       etudiant_email TEXT;
-BEGIN
-SELECT email
-INTO etudiant_email
-FROM etudiants
-WHERE email LIKE NEW.identifiant || '%';
-IF FOUND THEN INSERT INTO MailIdentifiant (mail, identifiant) VALUES (etudiant_email, NEW.identifiant);
-END IF;
-RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
---rollback: Drop function if exist insert_MailIdentifiant_trigger;
-
---changeset mattheo:9 labels:create-trigger context:trigger-mailidentifiant
---comment: create trigger
-CREATE TRIGGER insert_trigger_on_Mailidentifiant
-    AFTER INSERT ON infoutilisateur
-    FOR EACH ROW
-    EXECUTE FUNCTION insert_MailIdentifiant_trigger();
---rollback: DROP TRIGGER insert_MailIdentifiant ON infoutilisateur;
-
---changeset mattheo:10 labels:alter-mailidentifiant context:add-unique-mail
---comment: forgotten unique
-alter table MailIdentifiant
-add constraint unique_mail unique (mail);
---rollback: alter table MailIdentifiant drop constraint unique_mail;
-
---changeset matthéo:11 labels:new-table-code context:table-codeverif
+--changeset matthéo:6 labels:new-table-code context:table-codeverif
 --comment: create table
 CREATE TABLE codeverif(
     email text not null ,
     codev integer primary key ,
     date timestamp not null ,
-    foreign key (email) references MailIdentifiant(mail)
+    foreign key (email) references infoutilisateur(mail)
 );
 --rollback: drop table codeverif
