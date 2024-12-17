@@ -5,12 +5,11 @@ use PHPMailer\PHPMailer\PHPMailer;
 require 'ConnectionBDD.php';
 include_once "../Model/Classe/Mail.php";
 
+$conn = getConnectionBDD();
 
 function sendCode($email, $code, $conn){
-//
-//    $conn = getConnectionBDD();
-    $time = strtotime("now");
-    $sql1 = 'INSERT INTO codeverif (email, codev, date) VALUES (:email, :code, :time)';
+    $time = time();
+    $sql1 = 'INSERT INTO codeverif (email, codev, date) VALUES (:email, :code, TO_TIMESTAMP(:time))';
     try {
         $result = $conn->prepare($sql1);
         $result->bindParam(':email', $email);
@@ -27,27 +26,41 @@ function sendCode($email, $code, $conn){
         $mail->setMessage($message);
         $mail->setParam();
         $mail->creerMail();
-        header('location: ../View/HTML/changeMDP.html');
-        exit();
     }catch (PDOException $e){
         echo "Erreur lors de l'envoi de l'email : ". $e->getMessage(); ;
     }
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] == "POST" and isset($_POST["email"])) {
     $email = isset($_POST["email"]) ? htmlspecialchars($_POST["email"]) : "";
     $code = rand(0,999999);
     $code = sprintf('%06d', $code);
-    $conn = getConnectionBDD();
     $listeMail = "SELECT mail FROM mailidentifiant";
     $listeMail = $conn->prepare($listeMail);
     $listeMail->execute();
-    if(in_array($email, $listeMail->fetchAll(PDO::FETCH_ASSOC))){
+    $listeMail = $listeMail->fetchAll(PDO::FETCH_ASSOC);
+    $mailAll = [];
+    foreach ($listeMail as $mail) {
+        $mailAll[] = $mail["mail"];
+    }
+    if(in_array($email, $mailAll)){
         sendCode($email, $code, $conn);
     }else{
         echo "Erreur : le mail n'existe pas";
     }
-
 }
 
+if($_SERVER["REQUEST_METHOD"] == "POST" and isset($_POST["inputCode"])){
+    $codeVerif = htmlspecialchars($_POST["inputCode"]);
+    $recupCode = "SELECT code FROM codeverif WHERE code = :code";
+    $recupCode = $conn->prepare($recupCode);
+    $recupCode->bindParam(':code', $codeVerif);
+    $recupCode->execute();
+    $recupCode = $recupCode->fetchAll(PDO::FETCH_ASSOC);
+    if($recupCode[0]["code"] !=''){
+        if($codeVerif == $recupCode[0]["code"]){
+            header("location:../View/changeMDP.php");
+        }
+    }
+}
 ?>

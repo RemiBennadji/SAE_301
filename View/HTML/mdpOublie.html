@@ -16,7 +16,7 @@
             <button id="start">Envoyer</button><br>
             <button style="display: none" id="resend">Renvoyer code</button>
         </form>
-        <form>
+        <form id="verifCode" name ="verifCode" method="post" action="../../Controller/mdpOublie.php">
             <input type="text" id="inputCode" name="code" style="display: none" required>
             <button id="accept" style="display: none" >Accepter</button>
         </form>
