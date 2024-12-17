@@ -9,8 +9,8 @@ include_once "../Model/Classe/Mail.php";
 function sendCode($email, $code, $conn){
 //
 //    $conn = getConnectionBDD();
-    $time = strtotime("now");
-    $sql1 = 'INSERT INTO codeverif (email, codev, date) VALUES (:email, :code, :time)';
+    $time = time();
+    $sql1 = 'INSERT INTO codeverif (email, codev, date) VALUES (:email, :code, TO_TIMESTAMP(:time))';
     try {
         $result = $conn->prepare($sql1);
         $result->bindParam(':email', $email);
