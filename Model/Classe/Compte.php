@@ -12,6 +12,8 @@ abstract class Compte
     private $role;
     private $nom;
     private $prenom;
+    
+    private $mail;
 
     public function __construct($role)
     {
@@ -54,7 +56,7 @@ abstract class Compte
     public function insererDonnees()
     {
 //        $req1 ="SELECT etudiants.email from etudiants where nom=$this->nom";
-        $req2 = "INSERT INTO infoutilisateur VALUES(:identifiant, :motdepasse, :role, false)";
+        $req2 = "INSERT INTO infoutilisateur VALUES(:identifiant, :motdepasse, :role, false, :mail)";
 
 
         try {
@@ -65,9 +67,8 @@ abstract class Compte
             $insert->bindParam(":identifiant", $this->identifiant);
             $insert->bindParam(":motdepasse", $this->mdp);
             $insert->bindParam(":role", $this->role);
+            $insert->bindParam(":mail", $this->mail);
             $insert->execute();
-
-
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
@@ -153,5 +154,13 @@ abstract class Compte
     public function setNom($nom){
         $this->nom = $nom;
     }
+    public function getMail()
+    {
+        return $this->mail;
+    }
 
+    public function setMail($mail)
+    {
+        $this->mail = $mail;
+    }
 }
