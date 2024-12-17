@@ -41,8 +41,12 @@ INSERT INTO infoutilisateur (identifiant, motdepasse, role, changeMDP) VALUES
 alter table infoutilisateur add column mail text;
 --rollback alter table infoutilisateur drop column mail;
 
+--changeset mattheo:6 labels:add-constraint-infoutilisateur update context:alter-table
+--comment: create new table
+alter table infoutilisateur add constraint unique_mail UNIQUE (mail);
+--rollback alter table infoutilisateur drop constraint unique_mail mail;
 
---changeset matthéo:6 labels:new-table-code context:table-codeverif
+--changeset matthéo:7 labels:new-table-code context:table-codeverif
 --comment: create table
 CREATE TABLE codeverif(
     email text not null ,
