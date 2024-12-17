@@ -42,7 +42,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $listeMail = "SELECT mail FROM mailidentifiant";
     $listeMail = $conn->prepare($listeMail);
     $listeMail->execute();
-    if(in_array($email, $listeMail->fetchAll(PDO::FETCH_ASSOC))){
+    $listeMail = $listeMail->fetchAll(PDO::FETCH_ASSOC);
+    $mailAll = [];
+    foreach ($listeMail as $mail) {
+        $mailAll[] = $mail["mail"];
+    }
+    if(in_array($email, $mailAll)){
         sendCode($email, $code, $conn);
     }else{
         echo "Erreur : le mail n'existe pas";
