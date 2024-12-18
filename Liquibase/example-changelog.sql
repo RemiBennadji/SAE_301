@@ -60,3 +60,8 @@ CREATE TABLE codeverif(
 --comment: alter new table
 alter table etudiants add column email text not null;
 --rollback alter table etudiant drop column email;
+
+--changeset mattheo:9 labels:add-column-expiration update context:alter-table-codeverif
+--comment: alter table codeverif
+alter table codeverif add column expiration timestamp not null;
+--rollback alter table codeverif drop column expiration;
