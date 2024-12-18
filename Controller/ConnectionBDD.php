@@ -6,8 +6,7 @@ function getConnectionBDD(){
             $dbname = "postgres";
             $user = "postgres";
             $password = "root";
-
-            $dsn = "pgsql:host=localhost; dbname=$dbname";
+            $dsn = "pgsql:host=localhost;dbname=$dbname";
 
 //            $dsn = "pgsql:host=2a02:842a:81db:d601:88a7:f394:4625:e9ff;dbname=sae";
 //            $user = "lecteur";

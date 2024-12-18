@@ -9,12 +9,14 @@ $conn = getConnectionBDD();
 
 function sendCode($email, $code, $conn){
     $time = time();
-    $sql1 = 'INSERT INTO codeverif (email, codev, date) VALUES (:email, :code, TO_TIMESTAMP(:time))';
+    $expiration = $time + (10*60);
+    $sql1 = 'INSERT INTO codeverif (email, codev, date, expiration) VALUES (:email, :code, TO_TIMESTAMP(:time), TO_TIMESTAMP(:expiration))';
     try {
         $result = $conn->prepare($sql1);
         $result->bindParam(':email', $email);
         $result->bindParam(':code', $code);
         $result->bindParam(':time', $time);
+        $result->bindParam(':expiration', $expiration);
         $result->execute();
 
         $mail = new Mail();
@@ -31,7 +33,7 @@ function sendCode($email, $code, $conn){
     }
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" and isset($_POST["email"])) {
+if ($_SERVER["REQUEST_METHOD"] == "POST" and isset($_POST["email"]) and !isset($_POST["inputCode"])) {
     $email = isset($_POST["email"]) ? htmlspecialchars($_POST["email"]) : "";
     $code = rand(0,999999);
     $code = sprintf('%06d', $code);
@@ -45,22 +47,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" and isset($_POST["email"])) {
     }
     if(in_array($email, $mailAll)){
         sendCode($email, $code, $conn);
+        header("location: ../View/HTML/codeVerif.html");
     }else{
-        echo "Erreur : le mail n'existe pas";
-    }
-}
-
-if($_SERVER["REQUEST_METHOD"] == "POST" and isset($_POST["inputCode"])){
-    $codeVerif = htmlspecialchars($_POST["inputCode"]);
-    $recupCode = "SELECT code FROM codeverif WHERE code = :code";
-    $recupCode = $conn->prepare($recupCode);
-    $recupCode->bindParam(':code', $codeVerif);
-    $recupCode->execute();
-    $recupCode = $recupCode->fetchAll(PDO::FETCH_ASSOC);
-    if($recupCode[0]["code"] !=''){
-        if($codeVerif == $recupCode[0]["code"]){
-            header("location:../View/changeMDP.php");
-        }
+        header("location: ../View/HTML/mdpOublie.html");
     }
 }
 ?>

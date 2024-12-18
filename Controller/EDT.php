@@ -35,6 +35,10 @@
 <?php
 include "../Controller/ConnectionBDD.php";
 
+//ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
+//error_reporting(E_ALL);
+
 // Vérifier si le cookie "groupe" existe
 if (isset($_COOKIE['groupe'])) {
     $classeActuel = $_COOKIE['groupe'];
@@ -69,7 +73,7 @@ function AfficherEdtSemaine($dateDebut, $classe, $annee) {
     }
     echo "</tr>";
 
-    $listeHorraire = ['08:00', '09:30', '11:00', '12:30', '14:00', '15:30', '17:00'];
+    $listeHorraire = ['08:00', '09:30', '11:00', '12:30', '14:00', '15:30'.'<br>'.'<br>'.'<br>'.'17:00'];
     $cellulesSautees = array_fill(0, 5, 0);
 
     for ($h = 0; $h < count($listeHorraire); $h++) {
@@ -168,9 +172,8 @@ function RecupererCoursParJour($jour, $classe, $annee): array
 {
     $semestres = ($annee == 1) ? [1, 2] : (($annee == 2) ? [3, 4] : [5, 6]);
     $semestresString = implode(",", $semestres);
-
     $sql = "
-    SELECT DISTINCT
+    SELECT
         seance.idseance, seance.typeseance, seance.duree,
         schedulesalle.salle as salles,
         collegue.prenom, collegue.nom,
@@ -188,8 +191,7 @@ function RecupererCoursParJour($jour, $classe, $annee): array
         AND semestre IN ($semestresString)
     ORDER BY horaire
     ";
-
-    $connexion = getConnectionBDDEDTIdentification();
+    $connexion = getConnectionBDD();
     $req = $connexion->prepare($sql);
     $req->execute([$jour, $classe]);
     return $req->fetchAll(PDO::FETCH_ASSOC);
@@ -247,7 +249,6 @@ echo '<div class="changerSemaine">
 echo ('<footer class="footer">
     <p>&copy; 2024 - SAE Emploi du temps. Rémi | Dorian | Matthéo | Bastien | Noah.</p>
 </footer>');
-
 AfficherEdtSemaine($dateActuel, $classeActuel, $anneeActuel);
 ?>
 

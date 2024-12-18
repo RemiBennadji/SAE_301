@@ -16,7 +16,6 @@ function secretariat() {
     document.getElementById("afficheSalles").style.display = "block";
     document.getElementById("edtCours").style.display = "block";
 }
-$listeFinal = array();
 
 function afficherElement(role) {//Fonction qui verifie le rôle de l'utilisateur
     if (role === "administrateur") {
@@ -65,8 +64,16 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log("Expiration Cookie:", expirationDate);
 
             // Enregistrement des cookies
-            document.cookie = "groupe=" + edtAdmin.value + "; expires=" + expirationDate + "; path=/";
             document.cookie = "annee=" + anneEtu(edtAdmin.value) + "; expires=" + expirationDate + "; path=/";
+
+            // Pour éviter les doublons entre 2ème et 3ème année
+            if (edtAdmin.value[0]==='2'){
+                document.cookie = "groupe=" + edtAdmin.value.slice(1) + "; expires=" + expirationDate + "; path=/";
+                }
+            else {
+                document.cookie = "groupe=" + edtAdmin.value + "; expires=" + expirationDate + "; path=/";
+            }
+
         });
     } else {
         console.error("L'élément edtAdmin n'a pas été trouvé.");
