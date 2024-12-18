@@ -73,7 +73,7 @@ function AfficherEdtSemaine($dateDebut, $classe, $annee) {
     }
     echo "</tr>";
 
-    $listeHorraire = ['08:00', '09:30', '11:00', '12:30', '14:00', '15:30', '17:00'];
+    $listeHorraire = ['08:00', '09:30', '11:00', '12:30', '14:00', '15:30'.'<br>'.'<br>'.'<br>'.'17:00'];
     $cellulesSautees = array_fill(0, 5, 0);
 
     for ($h = 0; $h < count($listeHorraire); $h++) {
