@@ -35,6 +35,10 @@
 <?php
 include "../Controller/ConnectionBDD.php";
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 // Vérifier si le cookie "groupe" existe
 if (isset($_COOKIE['groupe'])) {
     $classeActuel = $_COOKIE['groupe'];
@@ -170,7 +174,7 @@ function RecupererCoursParJour($jour, $classe, $annee): array
     $semestresString = implode(",", $semestres);
 
     $sql = "
-    SELECT DISTINCT
+    SELECT
         seance.idseance, seance.typeseance, seance.duree,
         schedulesalle.salle as salles,
         collegue.prenom, collegue.nom,
@@ -247,7 +251,6 @@ echo '<div class="changerSemaine">
 echo ('<footer class="footer">
     <p>&copy; 2024 - SAE Emploi du temps. Rémi | Dorian | Matthéo | Bastien | Noah.</p>
 </footer>');
-
 AfficherEdtSemaine($dateActuel, $classeActuel, $anneeActuel);
 ?>
 
