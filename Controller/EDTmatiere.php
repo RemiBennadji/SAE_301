@@ -35,6 +35,10 @@
 <?php
 include "../Controller/ConnectionBDD.php";
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 $dateActuel = date('Y-m-d', strtotime('monday this week'));
 $nomProf = $_POST["codeRessource"];
 

@@ -109,34 +109,35 @@ $currentHour = date('H:i', strtotime('+1 hour'));
 
 function incrementerSemaine($ancienneDate) {
     $timestamp = strtotime($ancienneDate);
-    $nouveauJour = strtotime("+1 day", $timestamp);
-    return date("Y-m-d", $nouveauJour);
+    $nouveauLundi = strtotime("+7 day", $timestamp);
+    return date("Y-m-d", $nouveauLundi);
 }
 
 function decrementerSemaine($ancienneDate) {
     $timestamp = strtotime($ancienneDate);
-    $nouveauJour = strtotime("-1 day", $timestamp);
-    return date("Y-m-d", $nouveauJour);
+    $nouveauLundi = strtotime("-7 day", $timestamp);
+    return date("Y-m-d", $nouveauLundi);
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Récupération de la date passée par POST
-    $dateActuel = $_POST["date2"] ?? $dateActuelle->format('Y-m-d');
+    if (isset($_POST["selectedDate"])) {
+        // Convertir la date sélectionnée en date du lundi de la semaine
+        $selectedDate = new DateTime($_POST["selectedDate"]);
+        $dayOfWeek = $selectedDate->format('N'); // 1 (lundi) à 7 (dimanche)
+        $daysToSubtract = $dayOfWeek - 1;
+        $selectedDate->sub(new DateInterval("P{$daysToSubtract}D"));
+        $dateActuel = $selectedDate->format('Y-m-d');
+    } else {
+        $dateActuel = $_POST["dateActuel"];
+    }
 
-    // Changer de jour si la flèche "précédent" est cliquée
     if (isset($_POST["precedent"])) {
         $dateActuel = decrementerSemaine($dateActuel);
     }
 
-    // Changer de jour si la flèche "suivant" est cliquée
     if (isset($_POST["suivant"])) {
         $dateActuel = incrementerSemaine($dateActuel);
     }
-
-    // Mettre à jour la variable $dateActuelle avec la nouvelle date
-    $dateActuelle = new DateTime($dateActuel);
-    $dateDuJour = $dateActuelle->format('d/m/Y');
-    $horaire = $dateActuelle->format('Y-m-d');
 }
 ?>
 
@@ -174,24 +175,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </nav>
 </header>
 
-<div class="changerJour">
+<div class="changerSemaine">
     <button id="download-pdf" class="btn">Télécharger en PDF</button>
-    <form action="EDTsalleLibres.php" method="post">
-        <!-- Formulaire pour les flèches de navigation -->
-        <input type="hidden" name="date2" value="<?= htmlspecialchars($dateActuelle->format('Y-m-d')) ?>">
+    <form action="EDT.php" method="post">
+        <button type="submit" name="precedent">&lt;</button>
 
-        <!-- Flèche gauche pour -1 jour -->
-        <button type="submit" name="precedent">&#8592;</button>
+        <label for="selectionnerSemaine">Semaine du</label>
+        <input type="date" id="selectionnerSemaine" name="selectedDate" onchange="this.form.submit()"
+               value="' . htmlspecialchars($dateActuel, ENT_QUOTES, 'UTF-8') . '">
 
-        <!-- Affichage de la date actuelle -->
-        <label id="labelDate">Date du jour : <?= htmlspecialchars($dateDuJour) ?></label>
+        <input type="hidden"  name="dateActuel"
+               value="' . htmlspecialchars($dateActuel, ENT_QUOTES, 'UTF-8') . '">
 
-        <!-- Flèche droite pour +1 jour -->
-        <button type="submit" name="suivant">&#8594;</button>
-
-        <!-- Sélecteur de date -->
-        <label for="date">Calendrier :</label>
-        <input type="date" id="date" name="date" value="<?= htmlspecialchars($dateActuelle->format('Y-m-d')) ?>" onchange="this.form.submit()">
+        <button type="submit" name="suivant">&gt;</button>
     </form>
 </div>
 

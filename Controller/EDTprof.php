@@ -176,7 +176,7 @@ function RecupererCoursParJour($jour, $nomProf): array
     ORDER BY horaire
     ";
 
-    $connexion = getConnectionBDDEDTIdentification();
+    $connexion = getConnectionBDD();
     $req = $connexion->prepare($sql);
     $req->execute([$jour, $nomProf]);
     return $req->fetchAll(PDO::FETCH_ASSOC);
