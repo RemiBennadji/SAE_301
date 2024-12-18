@@ -55,3 +55,8 @@ CREATE TABLE codeverif(
     foreign key (email) references infoutilisateur(mail)
 );
 --rollback: drop table codeverif
+
+--changeset mattheo:8 labels:add-column-etudiants update context:alter-table
+--comment: alter new table
+alter table etudiants add column email text not null;
+--rollback alter table etudiant drop column email;
