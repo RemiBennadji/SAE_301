@@ -73,7 +73,7 @@ function AfficherEdtSemaine($dateDebut, $classe, $annee) {
     }
     echo "</tr>";
 
-    $listeHorraire = ['08:00', '09:30', '11:00', '12:30', '14:00', '15:30', '17:00'];
+    $listeHorraire = ['08:00', '09:30', '11:00', '12:30', '14:00', '15:30'.'<br>'.'<br>'.'<br>'.'17:00'];
     $cellulesSautees = array_fill(0, 5, 0);
 
     for ($h = 0; $h < count($listeHorraire); $h++) {
@@ -170,8 +170,18 @@ function supprimerAccents($str) {
 
 function RecupererCoursParJour($jour, $classe, $annee): array
 {
-    $semestres = ($annee == 1) ? [1, 2] : (($annee == 2) ? [3, 4] : [5, 6]);
-    $semestresString = implode(",", $semestres);
+    if($annee==1){
+        $s1 = 1;
+        $s2 = 2;
+    }
+    elseif ($annee==2){
+        $s1 = 3;
+        $s2 = 4;
+    }
+    elseif ($annee==3){
+        $s1 = 5;
+        $s2 = 6;
+    }
     $sql = "
     SELECT
         seance.idseance, seance.typeseance, seance.duree,
@@ -188,12 +198,12 @@ function RecupererCoursParJour($jour, $classe, $annee): array
     WHERE DATE(horaire) = ?
         AND version = 38
         AND nomressource = ?
-        AND semestre IN ($semestresString)
+        AND semestre IN (?,?)
     ORDER BY horaire
     ";
     $connexion = getConnectionBDD();
     $req = $connexion->prepare($sql);
-    $req->execute([$jour, $classe]);
+    $req->execute([$jour, $classe, $s1, $s2]);
     return $req->fetchAll(PDO::FETCH_ASSOC);
 }
 

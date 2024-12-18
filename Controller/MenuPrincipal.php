@@ -33,7 +33,7 @@ if (!isset($_SESSION['role'])) {
             <li><a class="underline-animation" href="../View/HTML/creationCompte.html" id="creationCompte" style="display: none">Créer un compte</a></li>
             <li><a class="underline-animation" href="../Controller/EDTsalleLibres.php" id="afficheSalles">Salles disponibles</a></li>
             <li><a class="underline-animation" href="../Controller/Deconnexion.php">Déconnexion</a></li>
-            <label class="choixClasse">
+            <label class="choixClasse" id="choixClasse" style="display: none">
                 <select id="edtAdmin" class="edtAdmin">
                     <option selected disabled>Administration</option>
                     <option class="label" disabled>Année 1</option>

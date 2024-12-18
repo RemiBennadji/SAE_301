@@ -25,8 +25,8 @@ $ID = $_POST["id"];
 $PWD = $_POST["pwd"];
 
 //Requête SQL permettant de retrouver l'utilisateur dans la BDD @Noah
-$sql1 ="SELECT identifiant, motdepasse, changeMDP, role, email FROM infoutilisateur WHERE identifiant=:ID";
-$sql2 ="select groupe, semestre from etudiants where email=:EMAIL";
+$sql1 ="SELECT identifiant, motdepasse, changeMDP, role, mail FROM infoutilisateur WHERE identifiant=:ID";
+$sql2 ="select nom_ressource, semestre from etudiants where email=:EMAIL";
 
 
 //Connexion à la BDD + lancement des requêtes SQL @Noah
@@ -37,19 +37,33 @@ try {
     $result->execute();
     $result = $result->fetchAll(PDO::FETCH_ASSOC);
 
-    $res = $connection->prepare($sql2);
-    $res->bindParam(':EMAIL', $result[4]['email']);
-    $res->execute();
-    $res = $res->fetchAll(PDO::FETCH_ASSOC);
+
+    //Attribution du role @Noah
+    $role = $result[0]['role'];
+
+    if($role == "etudiant"){
+        $mail = $result[0]["mail"];
+        $res = $connection->prepare($sql2);
+        $res->bindParam(':EMAIL', $mail);
+        $res->execute();
+        $res = $res->fetchAll(PDO::FETCH_ASSOC);
+        $annee = 0;
+        if ($res[0]['semestre']==1 || $res[0]['semestre']==2){
+            $annee = 1;
+        } else if ($res[0]['semestre']==3 || $res[0]['semestre']==4){
+            $annee = 2;
+        } else if ($res[0]['semestre']==5 || $res[0]['semestre']==6){
+            $annee = 3;
+        }
+        setcookie("groupe", $res[0]['nom_ressource'], time() + (60 * 15), "/");
+        setcookie("annee", $annee, time() + (60 * 15), "/");
+    }
 
     // Si l'utilisateur n'existe pas, cela renvoie une erreur au JS @Noah
     if(!$result){
         echo json_encode(['error' => 'errorConnexion']);
         exit();
     }
-
-    //Attribution du role @Noah
-    $role = $result[0]['role'];
 
     $compte = null;
 
@@ -66,14 +80,7 @@ try {
     else if($result[0]['role'] == 'professeur'){
         $compte = new Professeur();
     }
-    $annee = 0;
-    if ($res[1]['semestre']==1 || $res[1]['semestre']==2){
-        $annee = 1;
-    } else if ($res[1]['semestre']==3 || $res[1]['semestre']==4){
-        $annee = 2;
-    } else if ($res[1]['semestre']==5 || $res[1]['semestre']==6){
-        $annee = 3;
-    }
+
 
     //Définit l'identifiant du compte @Noah
     $compte->setIdentifiant($result[0]['identifiant']);
@@ -86,8 +93,7 @@ try {
     //Début cookie
     setcookie("role", $role, time() + (60 * 15), "/");
     setcookie("ID", $ID, time() + (60 * 15), "/");
-    setcookie("groupe", $res[0]['groupe'], time() + (60 * 15), "/");
-    setcookie("annee", $annee, time() + (60 * 15), "/");
+
 
     //Vérification si c'est la première connexion @Noah
     if (!$result[0]['changemdp']) {
