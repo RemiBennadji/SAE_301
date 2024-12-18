@@ -35,9 +35,9 @@
 <?php
 include "../Controller/ConnectionBDD.php";
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+//ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
+//error_reporting(E_ALL);
 
 // Vérifier si le cookie "groupe" existe
 if (isset($_COOKIE['groupe'])) {
@@ -172,7 +172,6 @@ function RecupererCoursParJour($jour, $classe, $annee): array
 {
     $semestres = ($annee == 1) ? [1, 2] : (($annee == 2) ? [3, 4] : [5, 6]);
     $semestresString = implode(",", $semestres);
-
     $sql = "
     SELECT
         seance.idseance, seance.typeseance, seance.duree,
@@ -192,8 +191,7 @@ function RecupererCoursParJour($jour, $classe, $annee): array
         AND semestre IN ($semestresString)
     ORDER BY horaire
     ";
-
-    $connexion = getConnectionBDDEDTIdentification();
+    $connexion = getConnectionBDD();
     $req = $connexion->prepare($sql);
     $req->execute([$jour, $classe]);
     return $req->fetchAll(PDO::FETCH_ASSOC);
