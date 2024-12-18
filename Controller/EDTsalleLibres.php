@@ -158,7 +158,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </script>
 </head>
 <body>
-
+<a href="MenuPrincipal.php"><img src="../Ressource/logouphf2.png" class="logoUPHF" alt="Logo UPHF"></a>
 <header>
     <nav>
         <div class="burger">
@@ -177,7 +177,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <div class="changerSemaine">
     <button id="download-pdf" class="btn">Télécharger en PDF</button>
-    <form action="EDT.php" method="post">
+    <form action="EDTsalleLibres.php" method="post">
         <button type="submit" name="precedent">&lt;</button>
 
         <label for="selectionnerSemaine">Semaine du</label>
