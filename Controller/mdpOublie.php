@@ -9,12 +9,14 @@ $conn = getConnectionBDD();
 
 function sendCode($email, $code, $conn){
     $time = time();
-    $sql1 = 'INSERT INTO codeverif (email, codev, date) VALUES (:email, :code, TO_TIMESTAMP(:time))';
+    $expiration = $time + (10*60);
+    $sql1 = 'INSERT INTO codeverif (email, codev, date, expiration) VALUES (:email, :code, TO_TIMESTAMP(:time), TO_TIMESTAMP(:expiration))';
     try {
         $result = $conn->prepare($sql1);
         $result->bindParam(':email', $email);
         $result->bindParam(':code', $code);
         $result->bindParam(':time', $time);
+        $result->bindParam(':expiration', $expiration);
         $result->execute();
 
         $mail = new Mail();
