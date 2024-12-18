@@ -13,6 +13,10 @@ session_start();
 $conn = getConnectionBDD();
 
 if($_SERVER["REQUEST_METHOD"] == "POST" and isset($_POST["code"])) {
+    $codeExpire = "DELETE FROM codeverif WHERE expiration < NOW()";
+    $conn->prepare($codeExpire)->execute();
+
+
     $codeVerif = htmlspecialchars($_POST["code"]);
     $recupCode = "SELECT codev FROM codeverif WHERE codev = :code";
     $recupCode = $conn->prepare($recupCode);
