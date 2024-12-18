@@ -31,7 +31,6 @@ class Mail
                     $this->fonctionMail->Body = $this->message;
                     $this->fonctionMail->Subject = $this->objet;
                     $this->fonctionMail->send();
-                    echo 'E-mail envoyé avec succès.';
                 }
             } catch (Exception $e) {
                 echo 'Erreur lors de l\'envoi : ' . $this->fonctionMail->ErrorInfo;
