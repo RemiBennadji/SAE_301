@@ -40,6 +40,7 @@ if (isset($_FILES['fichier']) && $_FILES['fichier']['error'] === UPLOAD_ERR_OK) 
                         $etu = new Etudiant();
                         $etu->setPrenom($prenom);
                         $etu->setNom($nom);
+                        $etu->setMail($res[5]);
                         $etu->insererDonnees();
 
                     }
