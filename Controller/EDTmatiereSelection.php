@@ -17,7 +17,7 @@ session_start();
     <link href="../View/CSS/CSSBasique.css" rel="stylesheet">
 </head>
 <body>
-<a href="../../Controller/MenuPrincipal.php"><img src="../../Ressource/logouphf2.png" class="logoUPHF" alt="Logo de l'UPHF"></a>
+<a href="EDT.php"><img src="../../Ressource/logouphf2.png" class="logoUPHF" alt="Logo de l'UPHF"></a>
 <header>
     <nav>
         <div class="burger">
