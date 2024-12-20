@@ -36,7 +36,7 @@
 include "../Controller/ConnectionBDD.php";
 session_start();
 $dateActuel = date('Y-m-d', strtotime('monday this week'));
-$nomProf = 'Delattre';
+$nomProf = $_COOKIE['nomProf'];
 
 function AfficherEdtSemaine($dateDebut, $nomProf) {
     $timestamp = strtotime($dateDebut);

@@ -79,6 +79,18 @@ try {
     }
     else if($result[0]['role'] == 'professeur'){
         $compte = new Professeur();
+        //Recupération du nom du professeur
+        $nomProf = "";
+        $bool = false;
+        for ($i = 0; $i < strlen($ID); $i++) {
+            if($ID[$i] == "."){
+                $bool = True;
+            }
+            else if($bool){
+                $nomProf .= $ID[$i];
+            }
+        }
+        setcookie("nomProf", $nomProf, time() + (60 * 15), "/");
     }
 
 

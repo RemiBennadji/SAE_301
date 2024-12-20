@@ -1,5 +1,6 @@
 <?php
 include "ConnectionBDD.php";
+session_start();
 //$dateActuel : utilisé pour les fleches
 //$dateActuelle : utilisé pour le calendrier
 
@@ -91,7 +92,7 @@ foreach ($listeSalles as $i) {
 
 
 // Horaires et salles prédéfinis
-$horaires = ['08:00', '09:30', '11:00', '12:30', '14:00', '15:30', '17:00', '18:30'];
+$horaires = ['08:00', '09:30', '11:00', '12:30', '14:00', '15:30', '17:00'];
 $lesSalles = ['101', '103', '105', '106', '107', '108', '109', '110', '111', '112', '113', '114', '115', '117', '118', '200'];
 
 // Création de la structure du tableau final
@@ -109,17 +110,18 @@ $currentHour = date('H:i', strtotime('+1 hour'));
 
 function incrementerSemaine($ancienneDate) {
     $timestamp = strtotime($ancienneDate);
-    $nouveauLundi = strtotime("+7 day", $timestamp);
+    $nouveauLundi = strtotime("+1    day", $timestamp);
     return date("Y-m-d", $nouveauLundi);
 }
 
 function decrementerSemaine($ancienneDate) {
     $timestamp = strtotime($ancienneDate);
-    $nouveauLundi = strtotime("-7 day", $timestamp);
+    $nouveauLundi = strtotime("-1 day", $timestamp);
     return date("Y-m-d", $nouveauLundi);
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $dateActuel = 0;
     if (isset($_POST["selectedDate"])) {
         // Convertir la date sélectionnée en date du lundi de la semaine
         $selectedDate = new DateTime($_POST["selectedDate"]);
@@ -128,7 +130,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $selectedDate->sub(new DateInterval("P{$daysToSubtract}D"));
         $dateActuel = $selectedDate->format('Y-m-d');
     } else {
-        $dateActuel = $_POST["dateActuel"];
+        $dateActuel = $_POST["dateActuel"] ?? $dateActuel;
     }
 
     if (isset($_POST["precedent"])) {
@@ -139,6 +141,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $dateActuel = incrementerSemaine($dateActuel);
     }
 }
+
+echo '<div class="changerSemaine">
+    <button id="download-pdf" class="btn">Télécharger en PDF</button>
+    <form action="EDTsalleLibres.php" method="post">
+        <button type="submit" name="precedent">&lt;</button>
+        
+        <label for="selectionnerSemaine">Semaine du</label>
+        <input type="date" id="selectionnerSemaine" name="selectedDate" onchange="this.form.submit()" 
+               value="' . htmlspecialchars($dateActuel, ENT_QUOTES, 'UTF-8') . '">
+        <input type="hidden" name="role" value="' . $_POST["role"] . '">
+        <input type="hidden"  name="dateActuel" 
+               value="' . htmlspecialchars($dateActuel, ENT_QUOTES, 'UTF-8') . '">
+        
+        <button type="submit" name="suivant">&gt;</button>
+    </form>
+</div>';
 ?>
 
 <!DOCTYPE html>
@@ -175,21 +193,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </nav>
 </header>
 
-<div class="changerSemaine">
-    <button id="download-pdf" class="btn">Télécharger en PDF</button>
-    <form action="EDTsalleLibres.php" method="post">
-        <button type="submit" name="precedent">&lt;</button>
-
-        <label for="selectionnerSemaine">Semaine du</label>
-        <input type="date" id="selectionnerSemaine" name="selectedDate" onchange="this.form.submit()"
-               value="' . htmlspecialchars($dateActuel, ENT_QUOTES, 'UTF-8') . '">
-
-        <input type="hidden"  name="dateActuel"
-               value="' . htmlspecialchars($dateActuel, ENT_QUOTES, 'UTF-8') . '">
-
-        <button type="submit" name="suivant">&gt;</button>
-    </form>
-</div>
+<!--<div class="changerSemaine">-->
+<!--    <button id="download-pdf" class="btn">Télécharger en PDF</button>-->
+<!--    <form action="EDTsalleLibres.php" method="post">-->
+<!--        <button type="submit" name="precedent">&lt;</button>-->
+<!---->
+<!--        <label for="selectionnerSemaine">Semaine du</label>-->
+<!--        <input type="date" id="selectionnerSemaine" name="selectedDate" onchange="this.form.submit()"-->
+<!--               value="' . htmlspecialchars($dateActuel, ENT_QUOTES, 'UTF-8') . '">-->
+<!---->
+<!--        <input type="hidden"  name="dateActuel"-->
+<!--               value="' . htmlspecialchars($dateActuel, ENT_QUOTES, 'UTF-8') . '">-->
+<!---->
+<!--        <button type="submit" name="suivant">&gt;</button>-->
+<!--    </form>-->
+<!--</div>-->
 
 <table>
     <thead>
