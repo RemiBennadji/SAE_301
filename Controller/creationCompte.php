@@ -3,9 +3,8 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-
-include_once "Compte.php";
-include_once "Etudiant.php";
+include_once "../Model/Classe/Compte.php";
+include_once "../Model/Classe/Etudiant.php";
 
 if (isset($_FILES['fichier']) && $_FILES['fichier']['error'] === UPLOAD_ERR_OK) {
     $nomFichier = $_FILES['fichier']['name'];

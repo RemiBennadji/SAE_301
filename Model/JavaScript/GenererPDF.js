@@ -1,5 +1,5 @@
 function generation() {
-    var date = document.getElementById("labelDate").textContent
+    //var date = document.getElementById("labelDate").textContent
 
     document.getElementById('download-pdf').addEventListener('click', function () {
     const {jsPDF} = window.jspdf;
@@ -7,7 +7,7 @@ function generation() {
 
     // Titre
     doc.setFontSize(15);
-    doc.text('Emploi du Temps - ' + date, 14, 20);
+    //doc.text('Emploi du Temps - ' + date, 14, 20);
 
     // Configuration de la table avec autoTable
     doc.autoTable({

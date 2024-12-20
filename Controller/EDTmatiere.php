@@ -6,7 +6,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.22/jspdf.plugin.autotable.min.js"></script>
 </head>
 <body>
-<a href="MenuPrincipal.php"><img src="../Ressource/logouphf2.png" class="logoUPHF" alt="Logo UPHF"></a>
+<a href="EDT.php"><img src="../Ressource/logouphf2.png" class="logoUPHF" alt="Logo UPHF"></a>
 <header>
     <nav>
         <div class="burger">
@@ -34,7 +34,7 @@
 
 <?php
 include "../Controller/ConnectionBDD.php";
-
+session_start();
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -199,38 +199,42 @@ function decrementerSemaine($ancienneDate) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $dateActuel = $_POST["dateActuel"] ?? $dateActuel;
-    $nomProf = $_POST["codeRessource"];
+    if (isset($_POST["selectedDate"])) {
+        // Convertir la date sélectionnée en date du lundi de la semaine
+        $selectedDate = new DateTime($_POST["selectedDate"]);
+        $dayOfWeek = $selectedDate->format('N'); // 1 (lundi) à 7 (dimanche)
+        $daysToSubtract = $dayOfWeek - 1;
+        $selectedDate->sub(new DateInterval("P{$daysToSubtract}D"));
+        $dateActuel = $selectedDate->format('Y-m-d');
+    } else {
+        $dateActuel = $_POST["dateActuel"] ?? $dateActuel;
+    }
 
     if (isset($_POST["precedent"])) {
         $dateActuel = decrementerSemaine($dateActuel);
-        $nomProf = $_POST["codeRessource"];
     }
 
     if (isset($_POST["suivant"])) {
         $dateActuel = incrementerSemaine($dateActuel);
-        $nomProf = $_POST["codeRessource"];
     }
 }
 
-echo ('<div class="changerSemaine">
+echo '<div class="changerSemaine">
     <button id="download-pdf" class="btn">Télécharger en PDF</button>
-   <form action="EDTmatiere.php" method="post">
-       <button type="submit" name="precedent"><</button>
-       <label id="labelDate">Semaine du ' . date("d/m/Y", strtotime($dateActuel)) . '</label>
-       <input type="hidden" name="dateActuel" value="'. $dateActuel .'">
-       <input type="hidden" name="codeRessource" value="'. $nomProf .'">
-       <button type="submit" name="suivant">></button>
-       
-       <label for="selectionnerSemaine">Semaine du</label>
+    <form action="EDTmatiere.php" method="post">
+        <button type="submit" name="precedent">&lt;</button>
+        
+        <label for="selectionnerSemaine">Semaine du</label>
         <input type="date" id="selectionnerSemaine" name="selectedDate" onchange="this.form.submit()" 
                value="' . htmlspecialchars($dateActuel, ENT_QUOTES, 'UTF-8') . '">
         
+        <input type="hidden" name="codeRessource" value="' . $_POST["codeRessource"] . '">
         <input type="hidden"  name="dateActuel" 
                value="' . htmlspecialchars($dateActuel, ENT_QUOTES, 'UTF-8') . '">
         
-   </form>
-</div>');
+        <button type="submit" name="suivant">&gt;</button>
+    </form>
+</div>';
 
 echo ('<footer class="footer">
     <p>&copy; 2024 - SAE Emploi du temps. Rémi | Dorian | Matthéo | Bastien | Noah.</p>
