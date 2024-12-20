@@ -510,7 +510,7 @@ h2 {
 }
 
 table {
-    width: 100%;
+    width: 98%;
     border-collapse: collapse;
     margin: 20px auto;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -521,6 +521,12 @@ th, td {
     border: 1px solid #ddd;
     padding: 12px;
     text-align: center;
+}
+
+td {
+    height: 100px;
+    vertical-align: middle;
+    padding: 5px;
 }
 
 th {
@@ -784,13 +790,6 @@ select#edtAdmin {
 }
 /*fin CreationCompte*/
 
-
-
-
-
-
-
-
 .changerJour {
     display: flex;
     justify-content: center;
@@ -837,4 +836,55 @@ select#edtAdmin {
 
 .changerSemaine input[type="date"]::-webkit-calendar-picker-indicator {
     cursor: pointer;
+}
+
+.caseEDT {
+    border-radius: 6px;
+    height: 100%;
+    width: 100%;
+}
+
+/* Style pour l'infobulle */
+.tooltip {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    padding: 10px;
+    margin: 5px;
+    min-width: 100px;
+    min-height: 50px;
+    text-align: center;
+}
+
+.container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.tooltip .tooltiptext {
+    margin-top: -10px;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 200px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -100px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
 }

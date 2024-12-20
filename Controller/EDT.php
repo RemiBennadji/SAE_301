@@ -169,8 +169,13 @@ function AfficherEdtSemaine($dateDebut, $classe, $annee) {
                     $prenomProf = "";
                 }
 
-                $contenuHTML = "<div class='$classeCSS'>" .
+                $contenuHTML = "<div class='tooltip caseEDT $classeCSS'>" .
                     $cours['typeseance'] . "<br>" .
+                    "<span class='tooltiptext'>" .
+                    "Professeur : " . $cours['prenom'] . " " . $cours['nom'] . "<br>" .
+                    "Groupe : " . $cours['nomgroupe'] . "<br>" .
+                    "Horaire : " . date("H:i", strtotime($cours['date'])) .
+                    "</span>" .
                     $cours['code'] . " " . $cours['matiere'] . "<br>" .
                     $prenomProf . $cours['nom'] . "<br>" .
                     $sallesStr .
