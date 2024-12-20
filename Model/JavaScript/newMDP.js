@@ -31,11 +31,21 @@ document.getElementById('changeMDPForm').addEventListener('submit', function (ev
                 if (jsonData.error){
                     console.error(jsonData.error);
 
+                    if (jsonData.error === 'sessionExpired') {
+                        console.log('il y a erreur');
+                        alert("Votre session a expiré. Veuillez vous reconnecter.");
+                        window.location.href = jsonData.redirect;
+                    }
+
                     if (jsonData.error === 'errorConnexion') {
                         mdp.style.background = '#f2a19b';
                         mdp.style.border = '2px solid red';
                     }
-                }else if (jsonData.redirect) {
+                }else if(jsonData.success) {
+                    alert('Changement de mot de passe réussi !');
+                    window.location.href = jsonData.redirect;
+                }
+                else if (jsonData.redirect) {
                     // Effectue la redirection vers l'URL fournie par le PHP
                     console.log('changementMDP réussi')
                     window.location.href = jsonData.redirect;

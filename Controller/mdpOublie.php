@@ -47,6 +47,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" and isset($_POST["email"]) and !isset($
     }
     if(in_array($email, $mailAll)){
         sendCode($email, $code, $conn);
+        session_start();
+        $_SESSION['mail'] = $email;
         header("location: ../View/HTML/codeVerif.html");
     }else{
         header("location: ../View/HTML/mdpOublie.html");

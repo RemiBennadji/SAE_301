@@ -1,5 +1,5 @@
 <?php
-include_once "../../Controller/ConnectionBDD.php";
+//include "../Controller/ConnectionBDD.php";
 require_once "Administrateur.php";
 require_once "Etudiant.php";
 require_once "Secretariat.php";
@@ -35,7 +35,7 @@ abstract class Compte
             //Met à jour le mot de passe et dit à la BDD que la première connexion a été faite @Noah
             $change = "UPDATE infoutilisateur SET motdepasse = :motdepasse, changemdp = true WHERE identifiant = :identifiant;";
             try {
-                $conn = getConnectionBDDEDTIdentification();
+                $conn = getConnectionBDD();
 
                 $insertion = $conn->prepare($change);
                 $insertion->bindParam(":motdepasse", $mdp);
@@ -60,7 +60,7 @@ abstract class Compte
 
 
         try {
-            $conn = getConnectionBDDEDTIdentification();
+            $conn = getConnectionBDD();
             $this->identifiant= $this->genererIdentifiant();
 
             $insert = $conn->prepare($req2);
@@ -70,7 +70,7 @@ abstract class Compte
             $insert->bindParam(":mail", $this->mail);
             $insert->execute();
         } catch (PDOException $e) {
-            echo $e->getMessage();
+            echo json_encode(['error' => $e->getMessage()]);
         }
     }
 
