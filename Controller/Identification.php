@@ -31,7 +31,7 @@ $sql2 ="select nom_ressource, semestre from etudiants where email=:EMAIL";
 
 //Connexion à la BDD + lancement des requêtes SQL @Noah
 try {
-    $connection = getConnectionBDDEDTIdentification();
+    $connection = getConnectionBDD();
     $connect = $connection->prepare($sql1);
     $connect->bindParam(':ID', $ID);
     $connect->execute();
@@ -62,7 +62,7 @@ try {
 
     // Si l'utilisateur n'existe pas, cela renvoie une erreur au JS @Noah
     if(!$connect){
-        echo json_encode(['error' => 'errorConnexion']);
+        echo json_encode(['error' => 'error requête']);
         exit();
     }
 
@@ -115,6 +115,7 @@ try {
     }
 
     //Vérification avec le hashage @Noah
+//    echo json_encode($connect[0]['motdepasse']);
     if (password_verify($PWD,$connect[0]['motdepasse'])) {
         echo json_encode(['redirect' => '../../Controller/EDT.php']); // Retourne la redirection
         exit();

@@ -24,7 +24,7 @@ if(empty($_SESSION['ID']) && empty($_SESSION['from'])) {
 }
 $conn = getConnectionBDD();
 
-if($_SESSION[('from')]){
+if(!empty($_SESSION['from'])){
     $crea = "SELECT mail, identifiant, role FROM infoutilisateur WHERE mail=:mail";
     $recupMail = "SELECT email FROM codeverif WHERE codev =:code";
 
@@ -78,7 +78,7 @@ if($mdp == $mdpverify) {
 
     //Vérifie si le mot de passe correspond bien aux critères @Noah
     if($compte->verifMdp($mdp)){
-        if($_SESSION['from']){
+        if(!empty($_SESSION['from'])){
             echo json_encode(['success'=>'ok', 'redirect'=>'../../View/HTML/Identification.html']);
             exit();
         }else {
