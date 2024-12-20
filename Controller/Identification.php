@@ -31,7 +31,7 @@ $sql2 ="select nom_ressource, semestre from etudiants where email=:EMAIL";
 
 //Connexion à la BDD + lancement des requêtes SQL @Noah
 try {
-    $connection = getConnectionBDD();
+    $connection = getConnectionBDDEDTIdentification();
     $connect = $connection->prepare($sql1);
     $connect->bindParam(':ID', $ID);
     $connect->execute();
