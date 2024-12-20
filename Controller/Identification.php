@@ -32,27 +32,28 @@ $sql2 ="select nom_ressource, semestre from etudiants where email=:EMAIL";
 //Connexion à la BDD + lancement des requêtes SQL @Noah
 try {
     $connection = getConnectionBDDEDTIdentification();
-    $result = $connection->prepare($sql1);
-    $result->bindParam(':ID', $ID);
-    $result->execute();
-    $result = $result->fetchAll(PDO::FETCH_ASSOC);
+    $connect = $connection->prepare($sql1);
+    $connect->bindParam(':ID', $ID);
+    $connect->execute();
+    $connect = $connect->fetchAll(PDO::FETCH_ASSOC);
 
 
     //Attribution du role @Noah
-    $role = $result[0]['role'];
+    $role = $connect[0]['role'];
 
     if($role == "etudiant"){
-        $mail = $result[0]["mail"];
+        $mail = $connect[0]["mail"];
         $res = $connection->prepare($sql2);
         $res->bindParam(':EMAIL', $mail);
         $res->execute();
         $res = $res->fetchAll(PDO::FETCH_ASSOC);
         $annee = 0;
-        if ($res[0]['semestre']==1 || $res[0]['semestre']==2){
+        $semestre = $res[0]["semestre"];
+        if ($semestre==1 || $semestre==2){
             $annee = 1;
-        } else if ($res[0]['semestre']==3 || $res[0]['semestre']==4){
+        } else if ($semestre==3 || $semestre==4){
             $annee = 2;
-        } else if ($res[0]['semestre']==5 || $res[0]['semestre']==6){
+        } else if ($semestre==5 || $semestre==6){
             $annee = 3;
         }
         setcookie("groupe", $res[0]['nom_ressource'], time() + (60 * 15), "/");
@@ -60,7 +61,7 @@ try {
     }
 
     // Si l'utilisateur n'existe pas, cela renvoie une erreur au JS @Noah
-    if(!$result){
+    if(!$connect){
         echo json_encode(['error' => 'errorConnexion']);
         exit();
     }
@@ -68,16 +69,16 @@ try {
     $compte = null;
 
     //Tests pour déterminer quel type de compte créer @Noah
-    if($result[0]['role'] == 'etudiant'){
+    if($connect[0]['role'] == 'etudiant'){
         $compte = new Etudiant();
     }
-    else if($result[0]['role'] == 'administrateur'){
+    else if($connect[0]['role'] == 'administrateur'){
         $compte = new Administrateur();
     }
-    else if($result[0]['role'] == 'secretariat'){
+    else if($connect[0]['role'] == 'secretariat'){
         $compte = new Secretariat();
     }
-    else if($result[0]['role'] == 'professeur'){
+    else if($connect[0]['role'] == 'professeur'){
         $compte = new Professeur();
         //Recupération du nom du professeur
         $nomProf = "";
@@ -95,7 +96,7 @@ try {
 
 
     //Définit l'identifiant du compte @Noah
-    $compte->setIdentifiant($result[0]['identifiant']);
+    $compte->setIdentifiant($connect[0]['identifiant']);
 
     //Attribution des différentes variables dans la session @Noah
     $_SESSION['role'] = $role;
@@ -108,13 +109,13 @@ try {
 
 
     //Vérification si c'est la première connexion @Noah
-    if (!$result[0]['changemdp']) {
+    if (!$connect[0]['changemdp']) {
         echo json_encode(['redirect' => '../../View/HTML/changeMDP.html']);
         exit();
     }
 
     //Vérification avec le hashage @Noah
-    if (password_verify($PWD,$result[0]['motdepasse'])) {
+    if (password_verify($PWD,$connect[0]['motdepasse'])) {
         echo json_encode(['redirect' => '../../Controller/EDT.php']); // Retourne la redirection
         exit();
     } else{

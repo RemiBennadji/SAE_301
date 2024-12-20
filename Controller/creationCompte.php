@@ -3,7 +3,6 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-include_once "ConnectionBDD.php";
 include_once "../Model/Classe/Compte.php";
 include_once "../Model/Classe/Etudiant.php";
 
@@ -16,7 +15,7 @@ if (isset($_FILES['fichier']) && $_FILES['fichier']['error'] === UPLOAD_ERR_OK) 
 
         if ($lecture !== FALSE) {//test si le fichier est lisable
             try {
-                $conn = getConnectionBDDEDTIdentification();
+                $conn = getConnectionBDD();
                 $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
                 while (($res = fgetcsv($lecture, 1000, ";")) !== FALSE) {
