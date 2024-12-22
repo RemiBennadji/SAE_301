@@ -888,3 +888,31 @@ select#edtAdmin {
     visibility: visible;
     opacity: 1;
 }
+
+/*Version EDT : */
+
+.container-edt {
+    display: flex;
+    gap: 150px; /* Espacement entre les tableaux */
+    width: 100%;
+}
+
+.edt-table {
+    width: 40%;
+}
+
+.edt-table th, .edt-table td {
+    padding: 4px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+/* Responsivité sur des ecrans plus petits*/
+@media (max-width: 768px) {
+    .container-edt {
+        flex-direction: column;
+    }
+    .edt-table {
+        width: 100%;
+    }
+}
