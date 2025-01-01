@@ -34,11 +34,16 @@
 
 <?php
 include "../Controller/ConnectionBDD.php";
+require_once "../Model/Classe/Edt.php";
+
+$edt = new Edt();
+
 session_start();
 $dateActuel = date('Y-m-d', strtotime('monday this week'));
 $nomProf = $_COOKIE['nomProf'];
 
 function AfficherEdtSemaine($dateDebut, $nomProf) {
+    global $edt;
     $timestamp = strtotime($dateDebut);
     $lundi = date("Y-m-d", $timestamp);
 
@@ -88,7 +93,7 @@ function AfficherEdtSemaine($dateDebut, $nomProf) {
 
                 $nombreCreneaux = ceil($dureeMinutes / 90);
 
-                $discipline = strtolower(supprimerAccents($cours['discipline']));
+                $discipline = strtolower($edt->supprimerAccents($cours['discipline']));
                 $discipline = preg_replace('/[^a-z0-9]+/', '-', $discipline);
                 $discipline = trim($discipline, '-');
 
@@ -145,13 +150,6 @@ function AfficherEdtSemaine($dateDebut, $nomProf) {
     echo "</table>";
 }
 
-function supprimerAccents($str) {
-    return str_replace(
-        ['é', 'è', 'ê', 'ë', 'à', 'â', 'ä', 'ù', 'û', 'ü', 'î', 'ï', 'ô', 'ö', 'ç', 'É', 'È', 'Ê', 'Ë', 'À', ' ', 'Ä', 'Ù', 'Û', 'Ü', 'Î', 'Ï', 'Ô', 'Ö', 'Ç'],
-        ['e', 'e', 'e', 'e', 'a', 'a', 'a', 'u', 'u', 'u', 'i', 'i', 'o', 'o', 'c', 'e', 'e', 'e', 'e', 'a', 'a', 'a', 'u', 'u', 'u', 'i', 'i', 'o', 'o', 'c'],
-        $str
-    );
-}
 
 function RecupererCoursParJour($jour, $nomProf): array
 {
@@ -182,17 +180,6 @@ function RecupererCoursParJour($jour, $nomProf): array
     return $req->fetchAll(PDO::FETCH_ASSOC);
 }
 
-function incrementerSemaine($ancienneDate) {
-    $timestamp = strtotime($ancienneDate);
-    $nouveauLundi = strtotime("+7 day", $timestamp);
-    return date("Y-m-d", $nouveauLundi);
-}
-
-function decrementerSemaine($ancienneDate) {
-    $timestamp = strtotime($ancienneDate);
-    $nouveauLundi = strtotime("-7 day", $timestamp);
-    return date("Y-m-d", $nouveauLundi);
-}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST["selectedDate"])) {
@@ -207,11 +194,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if (isset($_POST["precedent"])) {
-        $dateActuel = decrementerSemaine($dateActuel);
+        $dateActuel = $edt->decrementerSemaine($dateActuel);
     }
 
     if (isset($_POST["suivant"])) {
-        $dateActuel = incrementerSemaine($dateActuel);
+        $dateActuel = $edt->incrementerSemaine($dateActuel);
     }
 }
 

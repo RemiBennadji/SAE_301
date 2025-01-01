@@ -106,6 +106,8 @@ try {
     //Début cookie
     setcookie("role", $role, time() + (60 * 15), "/");
     setcookie("ID", $ID, time() + (60 * 15), "/");
+    setcookie("groupe", "A1", time() + (60 * 15), "/");
+    setcookie("annee", 1, time() + (60 * 15), "/");
 
 
     //Vérification si c'est la première connexion @Noah
@@ -121,7 +123,6 @@ try {
             echo json_encode(['redirect' => '../../Controller/EDTprof.php']); // Retourne la redirection
         }
         else{
-            setcookie("groupe", "A1", time() + (60 * 15), "/");
             echo json_encode(['redirect' => '../../Controller/EDT.php']); // Retourne la redirection
         }
         exit();
