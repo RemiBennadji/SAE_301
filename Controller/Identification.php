@@ -117,7 +117,13 @@ try {
     //Vérification avec le hashage @Noah
 //    echo json_encode($connect[0]['motdepasse']);
     if (password_verify($PWD,$connect[0]['motdepasse'])) {
-        echo json_encode(['redirect' => '../../Controller/EDT.php']); // Retourne la redirection
+        if($connect[0]['role'] == 'professeur'){
+            echo json_encode(['redirect' => '../../Controller/EDTprof.php']); // Retourne la redirection
+        }
+        else{
+            setcookie("groupe", "A1", time() + (60 * 15), "/");
+            echo json_encode(['redirect' => '../../Controller/EDT.php']); // Retourne la redirection
+        }
         exit();
     } else{
         echo json_encode(['error' => 'errorConnexion']);

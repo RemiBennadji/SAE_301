@@ -73,6 +73,11 @@ if (isset($_COOKIE['groupe'])) {
     echo "Le cookie 'groupe' n'est pas défini.";
 }
 
+if (!isset($_SESSION['role'])) {
+    header("Location: ../View/HTML/Identification.html"); // Redirection si pas de rôle
+    exit();
+}
+
 // Vérifier si le cookie "annee" existe
 if (isset($_COOKIE['annee'])) {
     $anneeActuel = $_COOKIE['annee'];
@@ -164,7 +169,9 @@ function AfficherEdtSemaine($dateDebut, $classe, $annee, $version) {
                     }
                 }
 
-                $prenomProf = $cours['prenom'][0] . ".";
+                if(isset($cours['prenom'][0])){
+                    $prenomProf = $cours['prenom'][0] . ".";
+                }
                 if ($prenomProf == ".") {
                     $prenomProf = "";
                 }
@@ -251,6 +258,60 @@ function decrementerSemaine($ancienneDate) {
     return date("Y-m-d", $nouveauLundi);
 }
 
+
+function clearProfValidation()
+{
+    $clear = "delete from validationEDT;";
+    try {
+        $connexion = getConnectionBDD();
+        $req = $connexion->query($clear);
+        $req->execute();
+        $req->fetchAll(PDO::FETCH_ASSOC);
+    }
+    catch (PDOException $e) {
+        echo $e->getMessage();
+    }
+}
+
+function ajoutProfValidation()
+{
+    $sql = "select * from prof;";
+    $sql2 = "insert into validationEDT (nom,prenom,valider) values (?,?,?)";
+    try {
+        $connexion = getConnectionBDD();
+        $req = $connexion->query($sql);
+        $req->execute();
+        foreach ($req->fetchAll(PDO::FETCH_ASSOC) as $prof) {//Parcours la BDD @Bastien
+            $req2 = $connexion->prepare($sql2);
+            $req2->execute([$prof['nom'], $prof['prenom'], "FALSE"]);
+        }
+    }
+    catch (PDOException $e) {
+        echo $e->getMessage();
+    }
+}
+
+function genererTableau($data, $titre) {
+    echo "<h2>$titre</h2>";
+    echo "<table>
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Prénom</th>
+            </tr>
+        </thead>
+        <tbody>";
+    foreach ($data as $ligne) {
+        echo "<tr>
+            <td>" . htmlspecialchars($ligne['nom']) . "</td>
+            <td>" . htmlspecialchars($ligne['prenom']) . "</td>
+        </tr>";
+    }
+    echo "</tbody>
+    </table>";
+}
+
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST["selectedDate"])) {
         // Convertir la date sélectionnée en date du lundi de la semaine
@@ -274,39 +335,107 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 echo '<div class="changerSemaine">
     <button id="download-pdf" class="btn">Télécharger en PDF</button>
-    <form action="EDT.php" method="post">
+    <form action="ValideEdt.php" method="post">
         <button type="submit" name="precedent">&lt;</button>
         
         <label for="selectionnerSemaine">Semaine du</label>
         <input type="date" id="selectionnerSemaine" name="selectedDate" onchange="this.form.submit()" 
                value="' . htmlspecialchars($dateActuel, ENT_QUOTES, 'UTF-8') . '">
-        <input type="hidden" name="role" value="' . $_POST["role"] . '">
+        <input type="hidden" name="role" value="' . $_SESSION["role"] . '">
         <input type="hidden"  name="dateActuel" 
                value="' . htmlspecialchars($dateActuel, ENT_QUOTES, 'UTF-8') . '">
         
         <button type="submit" name="suivant">&gt;</button>
     </form>
-</div>';
+</div><br><br><br>';
 
 echo "<div class='container-edt'>
-        <div class='edt-table'>";
+        <div class='edt-table'>
+            <label>Version actuelle</label>";
 AfficherEdtSemaine($dateActuel, $classeActuel, $anneeActuel, 38);
 echo "  </div>
-        <div class='edt-table'>";
+        <div class='edt-table'>
+            <label>Nouvelle version</label>";
 AfficherEdtSemaine($dateActuel, $classeActuel, $anneeActuel, 41);
 echo "  </div>
       </div>";
+
+echo "<form id='validation' action='ValideEdt.php' method='post'>
+        <div class='DivValider'>
+            <input type='hidden' name='action' value='valider'>
+            <button type='button' class='ValiderVersion' onclick='confirmerAction()'>Valider Version Actuelle</button>
+            <button type='button' id='AnnulerValidation' onclick='annulerValidation()'>Annuler la validation</button>
+        </div>
+        <label id='validationMessage' style='display: none; color: green;'></label>
+    </form>
+";
+
+if (isset($_POST["action"])) {
+    if ($_POST["action"] === "valider") {
+        $sql = "UPDATE validationEDT SET valider = true WHERE nom ilike ?;";
+        try {
+            $nom = $_COOKIE['nomProf'];
+            $connexion = getConnectionBDD();
+            $req = $connexion->prepare($sql);
+            $req->execute([$nom]);
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+    } else if ($_POST["action"] === "annuler") {
+        $sql = "UPDATE validationEDT SET valider = false WHERE nom ilike ?;";
+        try {
+            $nom = $_COOKIE['nomProf'];
+            $connexion = getConnectionBDD();
+            $req = $connexion->prepare($sql);
+            $req->execute([$nom]);
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+    }
+}
+
+$sql = "SELECT * FROM validationEDT;";
+try {
+    $connexion = getConnectionBDD();
+    $req = $connexion->query($sql);
+    $personnes = $req->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    echo "Erreur : " . $e->getMessage();
+    exit;
+}
+
+$valides = [];
+$nonValides = [];
+
+// Séparation des données en deux groupes
+foreach ($personnes as $prof) {
+    if ($prof['valider']) {
+        $valides[] = $prof;
+    } else {
+        $nonValides[] = $prof;
+    }
+}
+
+echo "<h1>Liste des validations</h1>";
+
+genererTableau($valides, "Validés");
+genererTableau($nonValides, "Non validés");
+
+
+echo "</tbody>
+</table>";
+
+
 
 
 echo ('<footer class="footer">
     <p>&copy; 2024 - SAE Emploi du temps. Rémi | Dorian | Matthéo | Bastien | Noah.</p>
 </footer>');
-
-
-
 ?>
+
+<script src="../Model/JavaScript/ValideEdt.js"></script>
 <script src="../Model/JavaScript/MenuPrincipal.js"></script>
-<script>afficherElement("<?php echo $_SESSION['role']; ?>");</script>
+<script>afficherElement("<?php echo $_SESSION['role'] ?>")</script>
 <script src="../Model/JavaScript/CalendrierEDT.js"></script>
 <script src="../Model/JavaScript/GenererPDF.js"></script>
 </body>

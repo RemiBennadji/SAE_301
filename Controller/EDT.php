@@ -21,7 +21,6 @@
             <li><a class="underline-animation" href="#">Messagerie</a></li>
             <li><a class="underline-animation" href="../View/HTML/creationCompte.html" id="creationCompte" style="display: none">Créer un compte</a></li>
             <li><a class="underline-animation" href="../Controller/EDTsalleLibres.php" id="afficheSalles">Salles disponibles</a></li>
-            <li><a class="underline-animation" href="../Controller/Deconnexion.php">Déconnexion</a></li>
             <label class="choixClasse" id="choixClasse" style="display: none">
                 <select id="edtAdmin" class="edtAdmin">
                     <option selected disabled>Administration</option>
@@ -43,6 +42,8 @@
                     <option value="FA">FA</option>
                 </select>
             </label>
+            <li><a class="underline-animation" href="../Controller/Deconnexion.php">Déconnexion</a></li>
+            <li><a class="underline-animation" href="../Controller/ValideEdt.php">ValideEDT</a></li>
         </ul>
     </nav>
 </header>
@@ -164,7 +165,9 @@ function AfficherEdtSemaine($dateDebut, $classe, $annee) {
                     }
                 }
 
-                $prenomProf = $cours['prenom'][0] . ".";
+                if(isset($cours['prenom'][0])){
+                    $prenomProf = $cours['prenom'][0] . ".";
+                }
                 if ($prenomProf == ".") {
                     $prenomProf = "";
                 }
@@ -280,7 +283,7 @@ echo '<div class="changerSemaine">
         <label for="selectionnerSemaine">Semaine du</label>
         <input type="date" id="selectionnerSemaine" name="selectedDate" onchange="this.form.submit()" 
                value="' . htmlspecialchars($dateActuel, ENT_QUOTES, 'UTF-8') . '">
-        <input type="hidden" name="role" value="' . $_POST["role"] . '">
+        <input type="hidden" name="role" value="' . $_SESSION["role"] . '">
         <input type="hidden"  name="dateActuel" 
                value="' . htmlspecialchars($dateActuel, ENT_QUOTES, 'UTF-8') . '">
         
