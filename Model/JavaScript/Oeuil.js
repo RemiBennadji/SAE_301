@@ -31,5 +31,3 @@ function oeuil2(){
         }
     });
 }
-
-oeuil()
