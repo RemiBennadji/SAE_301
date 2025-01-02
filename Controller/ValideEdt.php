@@ -75,7 +75,7 @@ if (isset($_COOKIE['groupe'])) {
     echo "Le cookie 'groupe' n'est pas défini.";
 }
 
-if (isset($_SESSION['role'])) {
+if (!isset($_SESSION['role'])) {
     header("Location: ../View/HTML/Identification.html"); // Redirection si pas de rôle
     exit();
 }
