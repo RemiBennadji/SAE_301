@@ -59,7 +59,7 @@ $dateInf = date("Y-m-d", $timestamp).' '.$heureInf;
 //requête permettant d'accéder aux salles utilisées à l'horaire saisi
 $sql1 = "SELECT DISTINCT salle FROM schedulesalle JOIN schedule 
         USING (code, typeseance, typeformation, noseance, semestre, version)  
-        WHERE horaire = :DATE and version = 38";
+        WHERE horaire = :DATE and version = :version";
 
 //requête pour avoir toutes les salles
 $sql2 = "SELECT DISTINCT nosalle FROM listesalles";
@@ -67,7 +67,7 @@ $sql2 = "SELECT DISTINCT nosalle FROM listesalles";
 //requête pour avoir les salles utilisées pour 3h l'heure d'avant
 $sql3 = "SELECT DISTINCT salle FROM schedulesalle JOIN schedule
         USING (code, typeseance, typeformation, noseance, semestre, version)
-        WHERE horaire = :HEURE and version = 38 and duration = '0 years 0 mons 0 days 3 hours 0 mins 0.0 secs'";
+        WHERE horaire = :HEURE and version = :version and duration = :duration";
 
 //liste qui va stocker les salles utilisées
 $sallesAll = array();
@@ -75,9 +75,12 @@ $sallesAll = array();
 try {
     $connection = getConnectionBDD(); //Connexion à la base de données
 
+    $duration = '0 years 0 mons 0 days 3 hours 0 mins 0.0 secs';
     //execution de la requête 1 et ajoute les salles à la liste sallesAll
     $resultSalles = $connection->prepare($sql1);
     $resultSalles->bindParam(':DATE', $date);
+    $resultSalles->bindParam(':version', $_COOKIE["version"]);
+    $resultSalles->bindParam(':duration', $duration);
     $resultSalles->execute();
     $listeSalles = $resultSalles->fetchAll(PDO::FETCH_ASSOC);
 

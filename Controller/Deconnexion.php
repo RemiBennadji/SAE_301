@@ -6,6 +6,7 @@ setcookie("role", "", time() - 3600, "/");
 setcookie("groupe", "", time() - 3600, "/");
 setcookie("annee", "", time() - 3600, "/");
 setcookie("nomProf", "", time() - 3600, "/");
+setcookie("version", "", time() - 3600, "/");
 
 /*
 session_start();//Test

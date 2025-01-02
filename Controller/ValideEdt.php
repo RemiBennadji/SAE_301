@@ -183,11 +183,11 @@ echo '<div class="changerSemaine">
 echo "<div class='container-edt'>
         <div class='edt-table'>
             <label>Version actuelle</label>";
-$edt->AfficherEdtSemaine($dateActuel, $classeActuel, $anneeActuel, 38);
+$edt->AfficherEdtSemaine($dateActuel, $classeActuel, $anneeActuel, $_COOKIE["version"]);
 echo "  </div>
         <div class='edt-table'>
             <label>Nouvelle version</label>";
-$edt->AfficherEdtSemaine($dateActuel, $classeActuel, $anneeActuel, 41);
+$edt->AfficherEdtSemaine($dateActuel, $classeActuel, $anneeActuel, $_COOKIE["version"]);
 echo "  </div>
       </div>";
 

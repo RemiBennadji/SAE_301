@@ -169,14 +169,14 @@ function RecupererCoursParJour($jour, $nomProf): array
         JOIN ressourcegroupe rg USING (nomgroupe, typeformation, semestre)
         JOIN schedulesalle USING (code, typeseance, typeformation, nomgroupe, semestre, noseance, version)
     WHERE DATE(horaire) = ?
-        AND version = 38
+        AND version = ?
         AND nom ILIKE ?
     ORDER BY horaire
     ";
 
     $connexion = getConnectionBDD();
     $req = $connexion->prepare($sql);
-    $req->execute([$jour, $nomProf]);
+    $req->execute([$jour, $_COOKIE["version"], $nomProf]);
     return $req->fetchAll(PDO::FETCH_ASSOC);
 }
 

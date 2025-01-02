@@ -126,7 +126,7 @@ echo '<div class="changerSemaine">
 echo ('<footer class="footer">
     <p>&copy; 2024 - SAE Emploi du temps. Rémi | Dorian | Matthéo | Bastien | Noah.</p>
 </footer>');
-$edt->AfficherEdtSemaine($dateActuel, $classeActuel, $anneeActuel,38);
+$edt->AfficherEdtSemaine($dateActuel, $classeActuel, $anneeActuel,$_COOKIE["version"]);
 
 
 ?>

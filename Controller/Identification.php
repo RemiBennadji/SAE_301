@@ -27,6 +27,8 @@ $PWD = $_POST["pwd"];
 //Requête SQL permettant de retrouver l'utilisateur dans la BDD @Noah
 $sql1 ="SELECT identifiant, motdepasse, changeMDP, role, mail FROM infoutilisateur WHERE identifiant=:ID";
 $sql2 ="select nom_ressource, semestre from etudiants where email=:EMAIL";
+//Requete pour avoir la version max de l edt @Bastien
+$sql3 = "select max(version) from schedulesalle;";
 
 
 //Connexion à la BDD + lancement des requêtes SQL @Noah
@@ -36,6 +38,10 @@ try {
     $connect->bindParam(':ID', $ID);
     $connect->execute();
     $connect = $connect->fetchAll(PDO::FETCH_ASSOC);
+
+    $version = $connection->query($sql3);
+    $version->execute();
+    $version = $version->fetchColumn();
 
 
     //Attribution du role @Noah
@@ -108,6 +114,7 @@ try {
     setcookie("ID", $ID, time() + (60 * 15), "/");
     setcookie("groupe", "A1", time() + (60 * 15), "/");
     setcookie("annee", 1, time() + (60 * 15), "/");
+    setcookie("version", $version, time() + (60 * 15), "/");
 
 
     //Vérification si c'est la première connexion @Noah
