@@ -69,14 +69,13 @@ $edt = new Edt();
 
 // Vérifier si le cookie "groupe" existe
 session_start();
-
 if (isset($_COOKIE['groupe'])) {
     $classeActuel = $_COOKIE['groupe'];
 } else {
     echo "Le cookie 'groupe' n'est pas défini.";
 }
 
-if (!isset($_SESSION['role'])) {
+if (isset($_SESSION['role'])) {
     header("Location: ../View/HTML/Identification.html"); // Redirection si pas de rôle
     exit();
 }
