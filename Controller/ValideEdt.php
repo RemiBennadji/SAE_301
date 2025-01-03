@@ -1,6 +1,6 @@
 <html lang="fr">
 <head>
-    <title>EDT</title>
+    <title>EDTValidation</title>
     <link rel="stylesheet" type="text/css" href="../View/CSS/CSSBasique.css">
 </head>
 <body>

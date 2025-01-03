@@ -1,6 +1,6 @@
 <html lang="fr">
 <head>
-    <title>EDT</title>
+    <title>EDTProf</title>
     <link rel="stylesheet" type="text/css" href="../View/CSS/CSSBasique.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.22/jspdf.plugin.autotable.min.js"></script>
