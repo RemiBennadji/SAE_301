@@ -62,7 +62,7 @@ try {
         } else if ($semestre==5 || $semestre==6){
             $annee = 3;
         }
-        setcookie("groupe", $res[0]['nom_ressource'], time() + (60 * 15), "/");
+        setcookie("groupe", $res[0]['nom_ressource'], time() + (60 * 30), "/");
         setcookie("annee", $annee, time() + (60 * 15), "/");
     }
 

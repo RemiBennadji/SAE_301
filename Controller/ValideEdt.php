@@ -265,9 +265,6 @@ genererTableau($nonValides, "Non validés");
 echo "</tbody>
 </table>";
 
-
-
-
 echo ('<footer class="footer">
     <p>&copy; 2024 - SAE Emploi du temps. Rémi | Dorian | Matthéo | Bastien | Noah.</p>
 </footer>');
