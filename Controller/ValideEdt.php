@@ -121,6 +121,12 @@ function ajoutProfValidation()
     }
 }
 
+function viderValidation()
+{
+    clearProfValidation();
+    ajoutProfValidation();
+}
+
 function genererTableau($data, $titre) {
     echo "<h2>$titre</h2>";
     echo "<table>
@@ -195,6 +201,7 @@ echo "<form id='validation' action='ValideEdt.php' method='post'>
             <input type='hidden' name='action' value='valider'>
             <button type='button' class='ValiderVersion' onclick='confirmerAction()'>Valider Version Actuelle</button>
             <button type='button' id='AnnulerValidation' onclick='annulerValidation()'>Annuler la validation</button>
+            <button type='button' id='Vider' onclick='vider()'>Vider les validations</button>
         </div>
         <label id='validationMessage' style='display: none; color: green;'></label>
     </form>
@@ -221,6 +228,9 @@ if (isset($_POST["action"])) {
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
+    }
+    else if ($_POST["action"] === "vider") {
+        viderValidation();
     }
 }
 
