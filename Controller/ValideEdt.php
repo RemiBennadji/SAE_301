@@ -199,7 +199,7 @@ echo "  </div>
 echo "<form id='validation' action='ValideEdt.php' method='post'>
         <div class='DivValider'>
             <input type='hidden' name='action' value='valider'>
-            <button type='button' class='ValiderVersion' onclick='confirmerAction()'>Valider Version Actuelle</button>
+            <button type='button' class='ValiderVersion' id='ValiderVersion' onclick='confirmerAction()'>Valider Version Actuelle</button>
             <button type='button' id='AnnulerValidation' onclick='annulerValidation()'>Annuler la validation</button>
             <button type='button' id='Vider' onclick='vider()'>Vider les validations</button>
         </div>
@@ -258,8 +258,11 @@ foreach ($personnes as $prof) {
 
 echo "<h1>Liste des validations</h1>";
 
-genererTableau($valides, "Validés");
-genererTableau($nonValides, "Non validés");
+if($_COOKIE["role"] === "administrateur") {
+    genererTableau($valides, "Validés");
+    genererTableau($nonValides, "Non validés");
+}
+
 
 
 echo "</tbody>
