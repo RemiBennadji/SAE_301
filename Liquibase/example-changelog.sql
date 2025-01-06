@@ -65,3 +65,14 @@ alter table etudiants add column email text not null;
 --comment: alter table codeverif
 alter table codeverif add column expiration timestamp not null;
 --rollback alter table codeverif drop column expiration;
+
+--changeset matthéo:10 labels:new-table context:table-report
+--comment: create table
+CREATE TABLE report(
+    id serial primary key ,
+    datereport timestamp not null ,
+    raison text not null ,
+    nom text not null ,
+    prenom text not null
+);
+--rollback: drop table report
