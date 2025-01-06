@@ -33,7 +33,7 @@ $sql3 = "select max(version) from schedulesalle;";
 
 //Connexion à la BDD + lancement des requêtes SQL @Noah
 try {
-    $connection = getConnectionBDDEDTIdentification();
+    $connection = getConnectionBDD();
     $connect = $connection->prepare($sql1);
     $connect->bindParam(':ID', $ID);
     $connect->execute();
