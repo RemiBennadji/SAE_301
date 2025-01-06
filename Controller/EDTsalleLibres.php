@@ -166,7 +166,7 @@ $heureCourante = date('H:i', strtotime('+1 hour'));
         <tr>
             <td><?= htmlspecialchars($horaire) ?></td>
             <?php foreach ($salles[$index] as $cellule): ?>
-                <?php if (($heureCourante >= $horaire) && (isset($horaires[$index + 1]) && ($heureCourante < $horaires[$index + 1]))): ?>
+                <?php if (($heureCourante >= $horaire) && (isset($horaires[$index + 1]) && ($heureCourante < $horaires[$index + 1]) && ($horaire == (new DateTime())->format('Y-m-d')))): ?>
                     <td style="background-color: lightskyblue;"><?= htmlspecialchars($cellule) ?></td>
                 <?php else: ?>
                     <td><?= htmlspecialchars($cellule) ?></td>

@@ -129,6 +129,8 @@ echo '<div class="changerSemaine">
     </form>
 </div>';
 
+echo '<div><label>'." Groupe : " . $_COOKIE["groupe"] . " | Année : " . $_COOKIE["annee"] .'</label></div>';
+
 echo ('<footer class="footer">
     <p>&copy; 2024 - SAE Emploi du temps. Rémi | Dorian | Matthéo | Bastien | Noah.</p>
 </footer>');
