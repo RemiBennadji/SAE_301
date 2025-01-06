@@ -27,3 +27,16 @@ function vider(){
         document.getElementById("validation").submit();
     }
 }
+
+function cacher(){
+    const cookies = document.cookie;
+    if (!cookies.includes('administrateur')) {
+        document.getElementById('Vider').style.display = 'none';
+    }
+    else {
+        document.getElementById('ValiderVersion').style.display = 'none';
+        document.getElementById('AnnulerValidation').style.display = 'none';
+    }
+}
+
+cacher()
