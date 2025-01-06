@@ -108,6 +108,7 @@ try {
     $_SESSION['role'] = $role;
     $_SESSION['ID'] = $ID;
     $_SESSION['compte'] = $compte;
+    $_SESSION['mail'] = $connect[0]['mail'];
 
     //Début cookie
     setcookie("role", $role, time() + (60 * 15), "/");
@@ -124,7 +125,6 @@ try {
     }
 
     //Vérification avec le hashage @Noah
-//    echo json_encode($connect[0]['motdepasse']);
     if (password_verify($PWD,$connect[0]['motdepasse'])) {
         if($connect[0]['role'] == 'professeur'){
             echo json_encode(['redirect' => '../../Controller/EDTprof.php']); // Retourne la redirection
