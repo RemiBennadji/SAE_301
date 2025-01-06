@@ -18,7 +18,7 @@
             <li><a id="edtCours" class="underline-animation" href="../Controller/EDTmatiereSelection.php" style="display: none">EDT Ressource</a></li>
             <li><a id="edtProf" class="underline-animation" href="../Controller/EDTprof.php" style="display: none">EDT Professeur</a></li>
             <li><a id="edt" class="underline-animation" href="../Controller/EDT.php">Emploi du temps</a></li>
-            <li><a class="underline-animation" href="#">Messagerie</a></li>
+            <li><a class="underline-animation" href="../View/HTML/messagerie.html">Messagerie</a></li>
             <li><a class="underline-animation" href="../View/HTML/creationCompte.html" id="creationCompte" style="display: none">Créer un compte</a></li>
             <li><a class="underline-animation" href="../Controller/EDTsalleLibres.php" id="afficheSalles">Salles disponibles</a></li>
             <label class="choixClasse" id="choixClasse" style="display: none">

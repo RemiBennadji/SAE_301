@@ -132,7 +132,7 @@ $heureCourante = date('H:i', strtotime('+1 hour'));
         </div>
         <ul class="menu">
             <li><a class="underline-animation" href="../Controller/EDT.php">Emploi du temps</a></li>
-            <li><a class="underline-animation" href="#">Messagerie</a></li>
+            <li><a class="underline-animation" href="../View/HTML/messagerie.html">Messagerie</a></li>
             <li><a class="underline-animation" href="../View/HTML/creationCompte.html" id="creationCompte" style="display: none">Créer un compte</a></li>
             <li><a class="underline-animation" href="../Controller/Deconnexion.php">Déconnexion</a></li>
         </ul>
