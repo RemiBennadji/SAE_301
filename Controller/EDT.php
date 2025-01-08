@@ -23,7 +23,7 @@
             <li><a class="underline-animation" href="../Controller/EDTsalleLibres.php" id="afficheSalles">Salles disponibles</a></li>
             <label class="choixClasse" id="choixClasse" style="display: none">
                 <select id="edtAdmin" class="edtAdmin">
-                    <option selected disabled>Administration</option>
+                    <option selected disabled>Choisir Année</option>
                     <option class="label" disabled>Année 1</option>
                     <option value="A1">A1</option>
                     <option value="A2">A2</option>
@@ -129,7 +129,8 @@ echo '<div class="changerSemaine">
     </form>
 </div>';
 
-echo '<div><label>'." Groupe : " . $_COOKIE["groupe"] . " | Année : " . $_COOKIE["annee"] .'</label></div>';
+echo '<br>';
+echo '<div class="big-container3"><div class="sub-container3"><label>'." Groupe : " . $_COOKIE["groupe"] . " | Année : " . $_COOKIE["annee"] .'</label></div></div>';
 
 echo ('<footer class="footer">
     <p>&copy; 2024 - SAE Emploi du temps. Rémi | Dorian | Matthéo | Bastien | Noah.</p>
