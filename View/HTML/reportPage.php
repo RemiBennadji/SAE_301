@@ -1,9 +1,16 @@
+<?php
+include "../../Controller/report.php";
+?>
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <title>Demander un report</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="../CSS/CSSBasique.css" rel="stylesheet">
+    <?php if ($message != ""): ?>
+        <meta http-equiv="refresh" content="3; url=../../Controller/EDT.php"> <!-- Remplacez par la page où vous souhaitez rediriger l'utilisateur -->
+    <?php endif; ?>
 </head>
 <header>
   <nav>
@@ -23,11 +30,22 @@
   </nav>
 </header>
 <body>
-<form>
-  <label for="dateReport">Date du cours</label>
-  <input type="date" id="dateReport" name="dateReport" required placeholder=" ">
-  <label for="sujet">Sujet </label>
-  <input type="text" id="sujet" name="sujet" required placeholder="Raison">
+
+<div class="body-blur <?= $message != "" ? 'show' : '' ?>"></div>
+
+<?php if ($message != ""): ?>
+    <div class="messageReport <?= $typeMess ?>">
+        <?= $message ?>
+        <? header('Location: ../../Controller/EDT.php') ?>
+    </div>
+<?php endif; ?>
+
+<form action="" method="post">
+  <label for="dateReport">Date du cours</label><br>
+  <input type="date" id="dateReport" name="dateReport" required placeholder=" "><br>
+  <label for="sujet">Raison</label><br>
+  <input type="text" id="sujet" name="sujet" required placeholder="Pourquoi ?"><br>
+  <input type="submit" value="Valider">
 </form>
 
 </body>
