@@ -79,12 +79,15 @@ CREATE TABLE report(
 
 --changeset matthéo:11 labels:create-validationEDT context:table-report
 --comment: create table
-create table validationEDT
+create table validationEDT(
     id serial primary key,
     nom text not null,
     prenom text not null,
-    valider boolean not null,
-    dateValidation timestamp not null
+    valider bool default false not null,
+    dateValidation timestamp,
+    version int,
+    unique (nom,prenom)
+);
 
 --changeset matthéo:12 labels:create-versionValideEDT context:table-report
 --comment: create table
