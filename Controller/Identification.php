@@ -25,18 +25,16 @@ $ID = $_POST["id"];
 $PWD = $_POST["pwd"];
 
 //Requête SQL permettant de retrouver l'utilisateur dans la BDD @Noah
-$sql1 ="SELECT identifiant, motdepasse, changeMDP, role, mail FROM infoutilisateur WHERE identifiant=:ID";
+$sql1 ="SELECT identifiant, motdepasse, changeMDP, role, mail FROM infoutilisateur WHERE identifiant=?";
 $sql2 ="select nom_ressource, semestre from etudiants where email=:EMAIL";
 //Requete pour avoir la version max de l edt @Bastien
-$sql3 = "select max(version) from schedulesalle;";
-
+$sql3 = "select max(version) from versionValideEDT";
 
 //Connexion à la BDD + lancement des requêtes SQL @Noah
 try {
     $connection = getConnectionBDDEDTIdentification();
     $connect = $connection->prepare($sql1);
-    $connect->bindParam(':ID', $ID);
-    $connect->execute();
+    $connect->execute([$ID]);
     $connect = $connect->fetchAll(PDO::FETCH_ASSOC);
 
 
@@ -44,7 +42,6 @@ try {
     $version = $connexionEDT->prepare($sql3);
     $version->execute();
     $version = $version->fetchColumn();
-
 
     //Attribution du role @Noah
     $role = $connect[0]['role'];

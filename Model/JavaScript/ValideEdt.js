@@ -28,10 +28,22 @@ function vider(){
     }
 }
 
+function validationAdmin(){
+    var confirmation = confirm("Êtes-vous sûr(e) de vouloir valider la version de l'emploi du temps ? Cette action est irréversible.");
+    if(confirmation) {
+        document.querySelector("input[name='actionAdminValide']").value = "adminValider";
+        var message = document.getElementById('validationMessage')
+        message.innerText = "La version de l'emploi du temps a été validée avec succès.";
+        document.getElementById('ValiderVersionAdmin').style.display = 'none';
+        document.getElementById("adminValide").submit();
+    }
+}
+
 function cacher(){
     const cookies = document.cookie;
     if (!cookies.includes('administrateur')) {
         document.getElementById('Vider').style.display = 'none';
+        document.getElementById('ValiderVersionAdmin').style.display = 'none';
     }
     else {
         document.getElementById('ValiderVersion').style.display = 'none';

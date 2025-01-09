@@ -72,7 +72,7 @@ session_start();
 if (isset($_COOKIE['groupe'])) {
     $classeActuel = $_COOKIE['groupe'];
 } else {
-    echo "Le cookie 'groupe' n'est pas défini.";
+    header("Location: ../View/HTML/Identification.html"); // Redirection si pas de rôle
 }
 
 if (!isset($_SESSION['role'])) {
@@ -87,7 +87,23 @@ if (isset($_COOKIE['annee'])) {
     echo "Le cookie 'annee' n'est pas défini.";
 }
 
+date_default_timezone_set('Europe/Paris');//Fuseau horaire
 $dateActuel = date('Y-m-d', strtotime('monday this week'));
+$timestamp = date('Y-m-d H:i:s');//Date actuel pour la mettre dans la BDD
+
+//Pour avoir l'edt à valider
+try {
+    $sql2 = "select max(version) as total from schedulesalle;";
+
+    $connexion = getConnectionBDD();
+
+    $nouvelleVersion = $connexion->prepare($sql2);
+    $nouvelleVersion->execute();
+    $nouvelleVersion = $nouvelleVersion->fetch(PDO::FETCH_ASSOC)['total'];
+}
+catch (PDOException $e) {
+    echo $e->getMessage();
+}
 
 function clearProfValidation()
 {
@@ -121,6 +137,35 @@ function ajoutProfValidation()
     }
 }
 
+function adminValideVersion()//Si les profs qui ont validés > aux profs non validé, un bouton apparait pour mettre a jour la bdd avec ca version validé
+{
+    global $nouvelleVersion;
+    $sql = "select count(nom) as total from validationEDT where valider = ?;";
+    try {
+        $connexion = getConnectionBDD();
+        $accepter = $connexion->prepare($sql);
+        $accepter->execute(['true']);
+        $accepter = $accepter->fetch(PDO::FETCH_ASSOC)['total'];
+
+        $pasaccepter = $connexion->prepare($sql);
+        $pasaccepter->execute(['false']);
+        $pasaccepter = $pasaccepter->fetch(PDO::FETCH_ASSOC)['total'];
+
+        if(($accepter > $pasaccepter) && ($nouvelleVersion != $_COOKIE["version"])){
+
+            echo "<form id='adminValide' action='ValideEdt.php' method='post'>
+                    <div class='DivadminValide'>
+                        <input type='hidden' name='actionAdminValide' value=''>
+                        <button type='button' class='ValiderVersionAdmin' id='ValiderVersionAdmin' onclick='validationAdmin()'>Mise à jour version</button>
+                    </div>
+                </form>
+                ";
+        }
+    }
+    catch (PDOException $e) {
+        echo $e->getMessage();
+    }
+}
 function viderValidation()
 {
     clearProfValidation();
@@ -187,12 +232,14 @@ echo '<div class="changerSemaine">
 
 echo "<div class='container-edt'>
         <div class='edt-table'>
-            <label>Version actuelle</label>";
+            <label>Version actuelle</label><br>
+            <label>Version : ". $_COOKIE["version"] ."</label>";
 $edt->AfficherEdtSemaine($dateActuel, $classeActuel, $anneeActuel, $_COOKIE["version"]);
 echo "  </div>
         <div class='edt-table'>
-            <label>Nouvelle version</label>";
-$edt->AfficherEdtSemaine($dateActuel, $classeActuel, $anneeActuel, $_COOKIE["version"]);
+            <label>Nouvelle version</label><br>
+            <label>Version : ". $nouvelleVersion ."</label>";
+$edt->AfficherEdtSemaine($dateActuel, $classeActuel, $anneeActuel, $nouvelleVersion);
 echo "  </div>
       </div>";
 
@@ -207,30 +254,49 @@ echo "<form id='validation' action='ValideEdt.php' method='post'>
     </form>
 ";
 
+adminValideVersion();
+
 if (isset($_POST["action"])) {
     if ($_POST["action"] === "valider") {
-        $sql = "UPDATE validationEDT SET valider = true WHERE nom ilike ?;";
+        $sql = "UPDATE validationEDT SET valider = ?, dateValidation = ? WHERE nom ilike ?;";
         try {
             $nom = $_COOKIE['nomProf'];
             $connexion = getConnectionBDD();
             $req = $connexion->prepare($sql);
-            $req->execute([$nom]);
+            $req->execute([true,$timestamp,$nom]);
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
     } else if ($_POST["action"] === "annuler") {
-        $sql = "UPDATE validationEDT SET valider = false WHERE nom ilike ?;";
+        $sql = "UPDATE validationEDT SET valider = ?, dateValidation = ? WHERE nom ilike ?;";
         try {
             $nom = $_COOKIE['nomProf'];
             $connexion = getConnectionBDD();
             $req = $connexion->prepare($sql);
-            $req->execute([$nom]);
+            $req->execute([false,null,$nom]);
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
     }
     else if ($_POST["action"] === "vider") {
         viderValidation();
+    }
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST["actionAdminValide"]) && $_POST["actionAdminValide"] === "adminValider") {
+        $sql = "insert into versionValideEDT (version,dateValidation) values(?,?);";
+        try {
+            $req = $connexion->prepare($sql);
+            $req->execute([$nouvelleVersion, $timestamp]);
+            viderValidation();
+//            setcookie("version", $nouvelleVersion, time() + (60 * 15), "/",);
+//            echo "<script type='text/javascript'>window.location.href = 'ValideEdt.php';</script>";
+//            exit;
+
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
     }
 }
 

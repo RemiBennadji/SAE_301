@@ -76,3 +76,21 @@ CREATE TABLE report(
     prenom text not null
 );
 --rollback: drop table report
+
+--changeset matthéo:11 labels:create-validationEDT context:table-report
+--comment: create table
+create table validationEDT
+    id serial primary key,
+    nom text not null,
+    prenom text not null,
+    valider boolean not null,
+    dateValidation timestamp not null
+
+--changeset matthéo:12 labels:create-versionValideEDT context:table-report
+--comment: create table
+create table versionValideEDT(
+    id serial primary key,
+    version int default 1,
+    dateValidation timestamp
+);
+insert into versionValideEDT (dateValidation) values('2024-09-01');
