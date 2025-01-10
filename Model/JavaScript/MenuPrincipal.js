@@ -18,7 +18,8 @@ function secretariat() {
     document.getElementById("edtCours").style.display = "block";
 }
 
-function afficherElement(role) {//Fonction qui verifie le rôle de l'utilisateur
+//Fonction qui verifie le rôle de l'utilisateur car suivant le rôle, nous affichons ou cachons des informations
+function afficherElement(role) {
     if (role === "administrateur") {
         admin();
     } else if (role === "secretariat") {
@@ -31,6 +32,7 @@ function afficherElement(role) {//Fonction qui verifie le rôle de l'utilisateur
     console.log(role);
 }
 
+//sert à afficher le bon emploi du temps choisit par l'administrateur
 document.addEventListener('DOMContentLoaded', function () {
     const edtAdmin = document.getElementById('edtAdmin');
     if (edtAdmin) {

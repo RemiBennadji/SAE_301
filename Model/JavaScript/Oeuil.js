@@ -1,3 +1,4 @@
+//Les fonctions pour afficher ou cacher le mot de passe lorsqu'on clique sur l'image de l'oeil
 function oeuil(){
     document.getElementById('togglePassword').addEventListener('click', function () {
         var password = document.getElementById("idpsw");

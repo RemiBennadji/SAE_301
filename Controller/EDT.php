@@ -128,7 +128,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-// Affichage de la partie permettant de changer la semaine, incluant un formulaire pour la date
+// Affichage de la partie permettant de changer la semaine, incluant un calendrier
 echo '<div class="changerSemaine">
     <button id="download-pdf" class="btn">Télécharger en PDF</button>
     <form action="EDT.php" method="post">
@@ -145,7 +145,7 @@ echo '<div class="changerSemaine">
     </form>
 </div>';
 
-// Affichage du groupe et de l'année actuels via les cookies
+// Affichage du groupe et de l'année choisis par l'administrateur via les cookies
 echo '<div class="big-container3"><div class="sub-container3"><label>'." Groupe : " . $_COOKIE["groupe"] . " | Année : " . $_COOKIE["annee"] .'</label></div></div>';
 
 // Affichage du footer avec les auteurs du projet
@@ -157,7 +157,7 @@ echo ('<footer class="footer">
 $edt->AfficherEdtSemaine($dateActuel, $classeActuel, $anneeActuel,$_COOKIE["version"]);
 ?>
 
-<!-- Inclusion de scripts pour le menu, le calendrier, et la génération de PDF -->
+<!-- Inclusion de scripts pour le menu, le calendrier et la génération de PDF -->
 <script src="../Model/JavaScript/MenuPrincipal.js"></script>
 <script>afficherElement("<?php echo $_SESSION['role']; ?>");</script>
 <script src="../Model/JavaScript/CalendrierEDT.js"></script>
