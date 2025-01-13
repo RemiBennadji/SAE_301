@@ -43,6 +43,8 @@ include "../../Controller/report.php";
 <form action="" method="post">
   <label for="dateReport">Date du cours</label><br>
   <input type="date" id="dateReport" name="dateReport" required placeholder=" "><br>
+    <label for="heureReport">Heure du cours</label><br>
+    <input type="time" id="heureReport" name="heureReport" required placeholder=" "><br>
   <label for="sujet">Raison</label><br>
   <input type="text" id="sujet" name="sujet" required placeholder="Pourquoi ?"><br>
   <input type="submit" value="Valider">
