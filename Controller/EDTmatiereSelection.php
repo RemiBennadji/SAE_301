@@ -44,6 +44,7 @@ if (!isset($_SESSION['role'])) {
 });
 </script>
 
+<!-- Formulaire où on entre le nom d'une ressource, on utilise la réponse dans le fichier EDTmatiere.php -->
 <br><br><br><br><br>
 <div class="big-container">
 <div class="sub-container">
@@ -57,10 +58,7 @@ if (!isset($_SESSION['role'])) {
 </div>
 <br><br>
 
-<!--<div class="horaireActuel">-->
-<!--    <a class="salleLibreAncre" href="../../Controller/affichageSalleCurrent.php"><button class="buttonMDRForgotten">Horaire actuel</button></a>-->
-<!--</div>-->
-
+<!-- Affichage du footer avec les auteurs du projet -->
 <footer class="footer">
     <p>&copy; 2024 - SAE Emploi du temps. Rémi | Dorian | Matthéo | Bastien | Noah.</p>
 </footer>

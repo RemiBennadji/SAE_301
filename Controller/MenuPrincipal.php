@@ -18,6 +18,7 @@ if (!isset($_SESSION['role'])) {
 <body>
 <a href="MenuPrincipal.php"><img src="../Ressource/logouphf2.png" class="logoUPHF" alt="Logo UPHF"></a>
 
+<!-- Menu hamburger -->
 <header>
     <nav>
         <div class="burger">
@@ -58,7 +59,7 @@ if (!isset($_SESSION['role'])) {
     </nav>
 </header>
 
-<script><!-- script pour que les liens href soi responsive -->
+<script><!-- script pour que le menu soit responsive -->
     const burger = document.querySelector('.burger');
     const menu = document.querySelector('.menu');
 
@@ -70,27 +71,7 @@ if (!isset($_SESSION['role'])) {
 
 <br><br>
 
-<div class="container_test"><!-- container avec les inputs de l'identient, password et button submit -->
-    <div class="red-box">
-        <form>
-            <h2>Inscription</h2>
-            <label for="username">Nom d'utilisateur:</label>
-            <input type="text" id="username" name="username" required><br>
 
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required><br>
-
-            <label for="password">Mot de passe:</label>
-            <input type="password" id="password" name="password" required><br>
-
-            <button type="submit">S'inscrire</button>
-        </form>
-    </div>
-
-    <div class="blue-box">
-        <a href="change_password.html">Changer de mot de passe</a>
-    </div>
-</div>
 
 <script src="../Model/JavaScript/MenuPrincipal.js"></script>
 

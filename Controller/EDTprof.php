@@ -33,11 +33,14 @@
 <br><br><br>
 
 <?php
+// Inclusion des fichiers nécessaires pour la connexion à la base de données et la gestion de l'emploi du temps
 include "../Controller/ConnectionBDD.php";
 require_once "../Model/Classe/Edt.php";
 
+// Création d'un objet Edt pour gérer l'emploi du temps
 $edt = new Edt();
 
+// Démarrage de la session pour gérer les variables utilisateur
 session_start();
 
 // Vérification si le rôle est défini, sinon rediriger vers la page de connexion
@@ -46,7 +49,10 @@ if (!isset($_SESSION['role'])) {
     exit();
 }
 
+// Calcul de la date du début de la semaine (lundi)
 $dateActuel = date('Y-m-d', strtotime('monday this week'));
+
+//récupération du cookie du nom du professeur pour l'utiliser en condition de la requête pour afficher l'edt
 $nomProf = $_COOKIE['nomProf'];
 
 function AfficherEdtSemaine($dateDebut, $nomProf) {
@@ -57,9 +63,11 @@ function AfficherEdtSemaine($dateDebut, $nomProf) {
     echo "<table>";
     echo "<tr><th>Heure</th>";
 
+    //Liste pour afficher les jours dans l'axe des abscisses
     $joursSemaine = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi'];
     $joursData = [];
 
+    //La boucle sert à transformer en strtotime puis afficher les jours
     for ($i = 0; $i < 5; $i++) {
         $jourTimestamp = strtotime("+$i day", strtotime($lundi));
         $jour = date("Y-m-d", $jourTimestamp);
@@ -68,6 +76,7 @@ function AfficherEdtSemaine($dateDebut, $nomProf) {
     }
     echo "</tr>";
 
+    //Liste des horaires qui seront afficher sur l'axe des ordonnées
     $listeHorraire = ['08:00', '09:30', '11:00', '12:30', '14:00', '15:30', '17:00'];
     $cellulesSautees = array_fill(0, 5, 0);
 
@@ -107,17 +116,18 @@ function AfficherEdtSemaine($dateDebut, $nomProf) {
                 $typeSeance = strtolower($cours['typeseance']);
                 $salles = explode(',', $cours['salles']);
 
-
+                //on vérifie le type de séance pour adapter l'affichage
                 if ($typeSeance == 'ds') {
                     $classeCSS = "ds";
                     $sallesStr = "Amphi, Salle 110";
 
                 }
-
+                //on vérifie le type de séance pour adapter l'affichage
                 elseif ($typeSeance == 'prj') {
                     $classeCSS = "sae";
                     $sallesStr = "Salle " . implode(", ", $salles);
                 }
+                //On vérifie si c'est un cours de 1h30 ou 3h pour adapter l'affichage
                 else {
                     $classeCSS = $dureeMinutes == 180 ?
                         "cours-" . $discipline . "-" . $typeSeance . '-3' :
@@ -138,10 +148,10 @@ function AfficherEdtSemaine($dateDebut, $nomProf) {
                 $semestre = $cours['semestre'];
                 $nomRessource = $cours['ressource'];
 
+                //contenuHTML contient toutes les informations présentes dans chaques cases de l'emploi du temps
                 $contenuHTML = "<div class='$classeCSS'>" .
                     $cours['typeseance'] . "<br>" .
                     $cours['code'] . " " . $cours['matiere'] . "<br>" .
-//                    $prenomProf . $cours['nom'] . "<br>" .
                     $sallesStr . "<br>" .
                     "Semestre : ".$semestre . " | " . $nomRessource . "<br>" .
                     "</div>";
@@ -157,7 +167,7 @@ function AfficherEdtSemaine($dateDebut, $nomProf) {
     echo "</table>";
 }
 
-
+//requête permettant de récupérer toutes les informations à utiliser dans la méthode afficherEdtSemaine pour faire l'affichage dans les cases de l'emploi du temps
 function RecupererCoursParJour($jour, $nomProf): array
 {
 
@@ -187,7 +197,7 @@ function RecupererCoursParJour($jour, $nomProf): array
     return $req->fetchAll(PDO::FETCH_ASSOC);
 }
 
-
+// Gestion des actions POST, comme la sélection de la date ou le changement de semaine
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST["selectedDate"])) {
         // Convertir la date sélectionnée en date du lundi de la semaine
@@ -209,6 +219,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
+// Affichage de la partie permettant de changer la semaine, incluant un calendrier
 echo '<div class="changerSemaine">
     <button id="download-pdf" class="btn">Télécharger en PDF</button>
     <form action="EDTprof.php" method="post">
@@ -225,12 +236,15 @@ echo '<div class="changerSemaine">
     </form>
 </div>';
 
+// Affichage du footer avec les auteurs du projet
 echo ('<footer class="footer">
     <p>&copy; 2024 - SAE Emploi du temps. Rémi | Dorian | Matthéo | Bastien | Noah.</p>
 </footer>');
 
+// Appel à la fonction qui affiche l'emploi du temps du professeur choisit et pour de la semaine
 AfficherEdtSemaine($dateActuel, $nomProf);
 ?>
 
+<!-- la génération de PDF -->
 <script src="../Model/JavaScript/GenererPDF.js"></script>
 </body>
