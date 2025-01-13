@@ -11,15 +11,25 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $message = "";
 
-    $info = "SELECT ";
-    $sql = "INSERT INTO Report VALUES(dateReport=:DATEREPORT, raison=:RAISON, nom:=NOM, prenom:=PRENOM)";
+    $info = "SELECT nom, prenom FROM collegue WHERE mail =: MAIL";
+    $sql = "INSERT INTO Report VALUES(dateReport=:DATEREPORT, raison=:RAISON, nom=:NOM, prenom=:PRENOM)";
 
     try{
         $conn = getConnectionBDD();
+
+        $getInfo = $conn->prepare($info);
+        $getInfo->bindParam(":MAIL", $mail);
+        $getInfo->execute();
+        foreach($getInfo->fetchAll() as $value){
+            $nom = $value["nom"];
+            $prenom = $value["prenom"];
+        }
+
         $insertion = $conn->prepare($sql);
         $insertion->bindParam(":DATEREPORT", $date);
         $insertion->bindParam(":RAISON", $raison);
-        $insertion->bindParam(":MAIL", $mail);
+        $insertion->bindParam(":NOM", $nom);
+        $insertion->bindParam(":PRENOM", $prenom);
         $insertion->execute();
 
         $message = "Votre demande a été envoyée avec succès !";
