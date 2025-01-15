@@ -1,5 +1,5 @@
 <?php
-include "../../Controller/report.php";
+include "../../Controller/demande.php";
 ?>
 
 <!DOCTYPE html>
@@ -40,7 +40,12 @@ include "../../Controller/report.php";
     </div>
 <?php endif; ?>
 
-<form action="" method="post">
+<form action="../../Controller/demande.php" method="post">
+    <label for="typeDemande">Type de votre demande : </label>
+    <select id="typeDemande" name="typeDemande">
+        <option value="Report">Report</option>
+        <option value="Contrainte">Contrainte</option>
+    </select><br>
   <label for="dateReport">Date du cours</label><br>
   <input type="date" id="dateReport" name="dateReport" required placeholder=" "><br>
     <label for="heureReport">Heure du cours</label><br>

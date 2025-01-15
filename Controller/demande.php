@@ -7,14 +7,15 @@ session_start();
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     $date = $_POST["date"];
     $date = date("Y-m-d", $date);
-    $heureReport = $_POST["heure"];
+    $heureDemande = $_POST["heure"];
     $raison = $_POST["sujet"];
+    $type = $_POST["typeDemande"];
     $mail = $_SESSION["mail"];
 
     $message = "";
 
     $info = "SELECT nom, prenom FROM collegue WHERE mail =: MAIL";
-    $sql = "INSERT INTO Report VALUES(dateReport=:DATEREPORT, raison=:RAISON, nom=:NOM, prenom=:PRENOM, heureReport=:HEUREREPORT)";
+    $sql = "INSERT INTO Demande VALUES(dateDemande=:DATEDEMANDE, raison=:RAISON, nom=:NOM, prenom=:PRENOM, heureDemande=:HEUREDEMANDE, typeDemande=:TYPEDEMANDE)";
 
     try{
         $conn = getConnectionBDD();
@@ -28,11 +29,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         }
 
         $insertion = $conn->prepare($sql);
-        $insertion->bindParam(":DATEREPORT", $date);
+        $insertion->bindParam(":DATEDEMANDE", $date);
         $insertion->bindParam(":RAISON", $raison);
         $insertion->bindParam(":NOM", $nom);
         $insertion->bindParam(":PRENOM", $prenom);
-        $insertion->bindParam(":HEUREREPORT", $heureReport);
+        $insertion->bindParam(":HEUREDEMANDE", $heureDemande);
+        $insertion->bindParam(":TYPEDEMANDE", $type);
         $insertion->execute();
 
         $message = "Votre demande a été envoyée avec succès !";

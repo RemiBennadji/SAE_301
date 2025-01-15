@@ -10,7 +10,6 @@ if (!isset($_SESSION['role'])) {
     exit();
 }
 
-
 //récupération des données du formulaire
 $jour = $_POST["idJour"];
 $heure = $_POST["idHeure"];
