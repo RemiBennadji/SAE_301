@@ -1,6 +1,5 @@
 <?php
 include "../../Controller/demande.php";
-$message = "";
 ?>
 
 <!DOCTYPE html>
@@ -9,9 +8,6 @@ $message = "";
     <meta charset="UTF-8">
     <title>Demander un report</title>
   <link href="../CSS/CSSBasique.css" rel="stylesheet">
-    <?php if ($message != ""): ?>
-        <meta http-equiv="refresh" content="3; url=../../Controller/EDT.php"> <!-- Remplacez par la page où vous souhaitez rediriger l'utilisateur -->
-    <?php endif; ?>
 </head>
 <a href="../../Controller/EDTprof.php"><img src="../Ressource/logouphf2.png" class="logoUPHF" alt="Logo UPHF"></a>
 <header>
@@ -32,14 +28,6 @@ $message = "";
   </nav>
 </header>
 <body>
-
-<div class="body-blur <?= $message != "" ? 'show' : '' ?>"></div>
-
-<?php if ($message != ""): ?>
-    <div class="messageReport <?= $typeMess ?>">
-        <?= $message ?>
-    </div>
-<?php endif; ?>
 
 <form action="../../Controller/demande.php" method="post">
     <label for="typeDemande">Type de votre demande : </label>
