@@ -126,7 +126,7 @@ function genererTableau($data, $titre) {
             <td>" . htmlspecialchars($ligne['profs']) . "</td>
             <td>" . htmlspecialchars($ligne['enseignement']) . "</td>
             <td>" . htmlspecialchars($ligne['absence']) . "</td>";
-        if (htmlspecialchars($ligne['justification']) == 1) {
+        if ($ligne['justification'] == 'true') {
             echo "<td style='background-color: #5af45a;'>" . "Oui" . "</td>";
         } else {
             echo "<td style='background-color: #ff4141;'>" . "Non" . "</td>";
