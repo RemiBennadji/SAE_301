@@ -28,7 +28,6 @@
             <li><a class="underline-animation" href="../View/HTML/demandePage.php" id="demande" style="display: none">Faire une demande</a></li>
             <li><a id="edtCours" class="underline-animation" href="../Controller/EDTmatiereSelection.php" style="display: none">EDT Ressource</a></li>
             <li><a id="edtProf" class="underline-animation" href="../Controller/EDTprof.php" style="display: none">EDT Professeur</a></li>
-            <li><a id="edt" class="underline-animation" href="../Controller/EDT.php">Emploi du temps</a></li>
             <li><a class="underline-animation" href="../View/HTML/messagerie.html">Messagerie</a></li>
             <li><a class="underline-animation" href="../View/HTML/creationCompte.html" id="creationCompte" style="display: none">Créer un compte</a></li>
             <li><a class="underline-animation" href="../Controller/EDTsalleLibres.php" id="afficheSalles">Salles disponibles</a></li>
@@ -89,9 +88,11 @@ $edt = new Edt();
 session_start();
 
 // Vérification si le rôle est défini, sinon redirection vers la page de connexion
-if (!isset($_SESSION['role'])) {
-    header("Location: ../View/HTML/Identification.html"); // Redirection si pas de rôle
-    exit();
+if (isset($_SESSION['role'])) {
+    if($_COOKIE['role'] == 'professeur'){
+        header("Location: ./Deconnexion.php"); // Redirection si pas de rôle
+        exit();
+    }
 }
 
 // Vérification si le cookie 'groupe' existe

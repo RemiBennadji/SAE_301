@@ -1,4 +1,11 @@
 <?php
+if (!isset($_SESSION['role'])) {
+    if($_SESSION['role'] != 'administrateur'){
+        header("Location: ./Deconnexion.php"); // Redirection si pas de rôle
+        exit();
+    }
+}
+
 header('Content-Type: application/json');
 
 include "ConnectionBDD.php";

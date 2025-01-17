@@ -2,8 +2,11 @@
 $dateActuelle = new DateTime(); // Récupérer la date actuelle sous forme d'objet DateTime
 $dateActuelle->modify('monday this week'); // Définir la date sur le lundi de la semaine actuelle
 
-if (isset($_POST['dateSelection'])) {
-    $dateActuelle = new DateTime($_POST['dateSelection']);
+if (isset($_SESSION['role'])) {
+    if($_COOKIE['role'] != 'administrateur'){
+        header("Location: ./Deconnexion.php"); // Redirection si pas de rôle
+        exit();
+    }
 }
 
 // Gestion de la navigation avec les flèches

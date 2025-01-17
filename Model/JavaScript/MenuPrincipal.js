@@ -3,6 +3,7 @@ function admin() {
     document.getElementById("edtCours").style.display = "block";
     document.getElementById("choixClasse").style.display = "block";
     document.getElementById("tableauAbsence").style.display = "block";
+    document.getElementById("afficheSalles").style.display = "block";
 }
 
 function etudiant() {

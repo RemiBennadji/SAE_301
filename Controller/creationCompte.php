@@ -8,9 +8,11 @@ include_once "../Model/Classe/Etudiant.php";
 
 session_start();
 // Vérification si le rôle est défini, sinon rediriger vers la page de connexion
-if (!isset($_SESSION['role'])) {
-    header("Location: ../View/HTML/Identification.html"); // Redirection si pas de rôle
-    exit();
+if (isset($_SESSION['role'])) {
+    if($_COOKIE['role'] != 'administrateur'){
+        header("Location: ./Deconnexion.php"); // Redirection si pas de rôle
+        exit();
+    }
 }
 
 if (isset($_FILES['fichier']) && $_FILES['fichier']['error'] === UPLOAD_ERR_OK) {
