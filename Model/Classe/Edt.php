@@ -188,4 +188,16 @@ class Edt
         $nouveauLundi = strtotime("-7 day", $timestamp);
         return date("Y-m-d", $nouveauLundi);
     }
+
+    function incrementerJour($ancienneDate) {
+        $timestamp = strtotime($ancienneDate);
+        $nouveauLundi = strtotime("+1 day", $timestamp);
+        return date("Y-m-d", $nouveauLundi);
+    }
+
+    function decrementerJour($ancienneDate) {
+        $timestamp = strtotime($ancienneDate);
+        $nouveauLundi = strtotime("-1 day", $timestamp);
+        return date("Y-m-d", $nouveauLundi);
+    }
 }
