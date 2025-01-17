@@ -4,58 +4,79 @@ require "ConnectionBDD.php";
 
 session_start();
 
-if($_SERVER["REQUEST_METHOD"] == "POST"){
-    //Récupération des données du formulaire @Noah
-    $date = $_POST["date"];
-    $date = date("Y-m-d", $date);
-    $heureDemande = $_POST["heure"];
+$message = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Récupération des données du formulaire
+    $date = $_POST["dateReport"]; // Exemple : "2025-01-17"
+    $heure = $_POST["heureReport"]; // Exemple : "14:30:00"
+    $timestamp = date("Y-m-d H:i:s", strtotime("$date $heure"));
     $raison = $_POST["sujet"];
     $type = $_POST["typeDemande"];
-    $mail = $_SESSION["mail"];
+    $mail = strtolower($_SESSION["mail"]);
 
-    //Variable qui servira à afficher un message d'errreur ou de succès @Noah
-    $message = "";
 
-    //Requête pour récupérer nom et prénom du professeur @Noah
-    $info = "SELECT nom, prenom FROM collegue WHERE mail =: MAIL";
+    // Requête pour récupérer nom et prénom du professeur
+    $info = "SELECT nom, prenom FROM collegue WHERE mail = :MAIL";
 
-    //Requête pour insérer la demande dans la BDD @Noah
-    $sql = "INSERT INTO Demande VALUES(dateDemande=:DATEDEMANDE, raison=:RAISON, nom=:NOM, prenom=:PRENOM, heureDemande=:HEUREDEMANDE, typeDemande=:TYPEDEMANDE)";
+    // Requête pour insérer la demande dans la BDD
+    $sql = "INSERT INTO Demande(dateDemande, raison, nom, prenom, heureDemande, typeDemande) 
+            VALUES(:DATEDEMANDE, :RAISON, :NOM, :PRENOM, :HEUREDEMANDE, :TYPEDEMANDE)";
 
-    try{
+    try {
         $conn = getConnectionBDD();
 
-        //Requête préparée @Noah
+        // Récupérer les informations du professeur
         $getInfo = $conn->prepare($info);
         $getInfo->bindParam(":MAIL", $mail);
         $getInfo->execute();
 
-        //Récupération des valeurs @Noah
-        foreach($getInfo->fetchAll() as $value){
-            $nom = $value["nom"];
-            $prenom = $value["prenom"];
+        $res = $getInfo->fetch(PDO::FETCH_ASSOC);
+        if ($res) {
+            $nom = $res["nom"];
+            $prenom = $res["prenom"];
         }
 
-        //Insertion des données @Noah
+        // Insérer les données dans la table Demande
         $insertion = $conn->prepare($sql);
-        $insertion->bindParam(":DATEDEMANDE", $date);
+        $insertion->bindParam(":DATEDEMANDE", $timestamp);
         $insertion->bindParam(":RAISON", $raison);
         $insertion->bindParam(":NOM", $nom);
         $insertion->bindParam(":PRENOM", $prenom);
-        $insertion->bindParam(":HEUREDEMANDE", $heureDemande);
+        $insertion->bindParam(":HEUREDEMANDE", $heure);
         $insertion->bindParam(":TYPEDEMANDE", $type);
         $insertion->execute();
 
-        //Indique un message de succès @Noah
+        // Succès
         $message = "Votre demande a été envoyée avec succès !";
-        $typeMess= "success";
+        $typeMess = "success";
 
-
-
-    }catch (Exception $e){
-        //Indique un message d'erreur @Noah
+    } catch (Exception $e) {
+        // Gestion des erreurs
         $message = $e->getMessage();
-        $typeMess= "error";
-
+        $typeMess = "error";
     }
+
 }
+?>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Demander un report</title>
+    <link href="../View/CSS/CSSBasique.css" rel="stylesheet">
+    <?php if ($message != ""): ?>
+        <meta http-equiv="refresh" content="3; url=../../Controller/EDT.php">
+    <?php endif; ?>
+</head>
+<body>
+
+<!-- Affichage du message de succès ou d'erreur -->
+<?php if ($message != ""): ?>
+    <div class="messageReport <?= $typeMess ?>">
+        <?= $message ?>
+    </div>
+<?php endif; ?>
+
+</body>
+</html>

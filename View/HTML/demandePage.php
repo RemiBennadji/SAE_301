@@ -1,5 +1,6 @@
 <?php
 include "../../Controller/demande.php";
+$message = "";
 ?>
 
 <!DOCTYPE html>
@@ -12,6 +13,7 @@ include "../../Controller/demande.php";
         <meta http-equiv="refresh" content="3; url=../../Controller/EDT.php"> <!-- Remplacez par la page où vous souhaitez rediriger l'utilisateur -->
     <?php endif; ?>
 </head>
+<a href="../../Controller/EDTprof.php"><img src="../Ressource/logouphf2.png" class="logoUPHF" alt="Logo UPHF"></a>
 <header>
   <nav>
     <div class="burger">
@@ -36,7 +38,6 @@ include "../../Controller/demande.php";
 <?php if ($message != ""): ?>
     <div class="messageReport <?= $typeMess ?>">
         <?= $message ?>
-        <? header('Location: ../../Controller/EDT.php') ?>
     </div>
 <?php endif; ?>
 
