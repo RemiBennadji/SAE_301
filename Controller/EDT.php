@@ -99,7 +99,7 @@ if (isset($_SESSION['role'])) {
 if (isset($_COOKIE['groupe'])) {
     $classeActuel = $_COOKIE['groupe'];
 } else {
-    echo "Le cookie 'groupe' n'est pas défini."; // Message d'erreur si le cookie 'groupe' n'existe pas
+    header("Location: Deconnexion.php"); // Redirection si pas de rôle
 }
 
 // Vérification si le cookie 'annee' existe

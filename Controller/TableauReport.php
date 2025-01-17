@@ -1,113 +1,118 @@
+<html lang="fr">
+<head>
+    <title>EDTValidation</title>
+    <link rel="stylesheet" type="text/css" href="../View/CSS/CSSBasique.css">
+</head>
+<body>
+<a href="EDT.php"><img src="../Ressource/logouphf2.png" class="logoUPHF" alt="Logo UPHF"></a>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.22/jspdf.plugin.autotable.min.js"></script>
+<header>
+    <nav>
+        <div class="burger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <ul class="menu">
+            <li><a id="edtCours" class="underline-animation" href="../Controller/EDTmatiereSelection.php" style="display: none">EDT Ressource</a></li>
+            <li><a id="edtProf" class="underline-animation" href="../Controller/EDTprof.php" style="display: none">EDT Professeur</a></li>
+            <li><a id="edt" class="underline-animation" href="../Controller/EDT.php">Emploi du temps</a></li>
+            <li><a class="underline-animation" href="#">Messagerie</a></li>
+            <li><a class="underline-animation" href="../View/HTML/creationCompte.html" id="creationCompte" style="display: none">Créer un compte</a></li>
+            <li><a class="underline-animation" href="../Controller/EDTsalleLibres.php" id="afficheSalles">Salles disponibles</a></li>
+            <li><a class="underline-animation" href="../Controller/Deconnexion.php">Déconnexion</a></li>
+        </ul>
+    </nav>
+</header>
+<script>
+    const burger = document.querySelector('.burger');
+    const menu = document.querySelector('.menu');
+    burger.addEventListener("click", () => {
+        menu.classList.toggle("active");
+        burger.classList.toggle("toggle");
+    });
+</script>
+
+<br><br><br>
+
 <?php
-require "ConnectionBDD.php";
+include "ConnectionBDD.php";
+require_once "../Model/Classe/Edt.php";
+
+$edt = new Edt();
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+// Vérifier si le cookie "groupe" existe
 session_start();
 
-if($_SERVER["REQUEST_METHOD"] == "POST") {
-    //Récupération des données du formulaire  
-    $date = $_POST["date"];
-    $date = strtotime($date); // Conversion nécessaire pour le format correct @Dorian
-    $date = date("Y-m-d", $date);
-    $heureDemande = $_POST["heure"];
-    $raison = $_POST["sujet"];
-    $type = $_POST["typeDemande"];
-    $mail = $_SESSION["mail"];
-
-    //Variable qui servira à afficher un message d'errreur ou de succès  
-    $message = "";
-    $typeMess = "";
-
-    //Requête pour récupérer nom et prénom du professeur  
-    $info = "SELECT nom, prenom FROM collegue WHERE mail = :MAIL";
-
-    try {
-        $conn = getConnectionBDD();
-
-        //Requête préparée  
-        $getInfo = $conn->prepare($info);
-        $getInfo->bindParam(":MAIL", $mail);
-        $getInfo->execute();
-
-        // Utilisation de fetch() plutôt que fetchAll() pour plus d'efficacité @Dorian
-        $row = $getInfo->fetch(PDO::FETCH_ASSOC);
-        if ($row) {
-            $nom = $row["nom"];
-            $prenom = $row["prenom"];
-
-            // Requête d'insertion corrigée avec la bonne syntaxe SQL @Dorian
-            $sql = "INSERT INTO Demande (dateDemande, raison, nom, prenom, heureDemande, typeDemande) 
-                    VALUES (:DATEDEMANDE, :RAISON, :NOM, :PRENOM, :HEUREDEMANDE, :TYPEDEMANDE)";
-
-            //Insertion des données  
-            $insertion = $conn->prepare($sql);
-            $insertion->bindParam(":DATEDEMANDE", $date);
-            $insertion->bindParam(":RAISON", $raison);
-            $insertion->bindParam(":NOM", $nom);
-            $insertion->bindParam(":PRENOM", $prenom);
-            $insertion->bindParam(":HEUREDEMANDE", $heureDemande);
-            $insertion->bindParam(":TYPEDEMANDE", $type);
-            $insertion->execute();
-
-            //Indique un message de succès  
-            $message = "Votre demande a été envoyée avec succès !";
-            $typeMess = "success";
-        } else {
-            // Message d'erreur si le professeur n'est pas trouvé @Dorian
-            $message = "Professeur non trouvé";
-            $typeMess = "error";
-        }
-    } catch (Exception $e) {
-        //Indique un message d'erreur  
-        $message = $e->getMessage();
-        $typeMess = "error";
-    }
+if (!isset($_SESSION['role'])) {
+    header("Location: ../View/HTML/Identification.html"); // Redirection si pas de rôle
+    exit();
 }
 
-// Ajout de la partie affichage des absences @Dorian
+date_default_timezone_set('Europe/Paris');//Fuseau horaire
+
+// Connexion à la base de données
 try {
-    $conn = getConnectionBDD();
+    $connexion = getConnectionBDD();
+    $sql = "
+        SELECT *
+        FROM demande
+        ORDER BY datedemande desc
+        LIMIT 20";
 
-    // Récupération des absences du jour courant @Dorian
-    $dateAujourdhui = date("Y-m-d");
-    $sql = "SELECT d.dateDemande, d.heureDemande, d.raison, d.nom, d.prenom, d.typeDemande 
-            FROM Demande d 
-            WHERE d.dateDemande = :DATE 
-            ORDER BY d.heureDemande ASC";
+    // Utiliser la date actuelle pour la requête
+    $resReport = $connexion->prepare($sql);
+    $resReport->execute();
 
-    $stmt = $conn->prepare($sql);
-    $stmt->bindParam(":DATE", $dateAujourdhui);
-    $stmt->execute();
+    $listeReport = $resReport->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    echo "Erreur : " . $e->getMessage();
+    exit;
+}
 
-    // Affichage du message de status si présent @Dorian
-    if (isset($message)) {
-        echo "<div class='message " . $typeMess . "'>" . $message . "</div>";
-    }
+?>
 
-    // Construction du tableau HTML @Dorian
-    echo "<h2>Professeurs absents aujourd'hui</h2>";
-    echo "<table border='1'>
+<?php
+function genererTableau($data, $titre) {
+    echo "<h2>$titre</h2>";
+    echo "<table>
+        <thead>
             <tr>
                 <th>Nom</th>
-                <th>Prénom</th>
-                <th>Heure</th>
+                <th>Prenom</th>
+                <th>Date demande</th>
                 <th>Raison</th>
-                <th>Type d'absence</th>
-            </tr>";
-
-    // Boucle d'affichage avec protection XSS @Dorian
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                <th>Typedemande</th>
+            </tr>
+        </thead>
+        <tbody>";
+    foreach ($data as $ligne) {
         echo "<tr>
-                <td>" . htmlspecialchars($row['nom']) . "</td>
-                <td>" . htmlspecialchars($row['prenom']) . "</td>
-                <td>" . htmlspecialchars($row['heureDemande']) . "</td>
-                <td>" . htmlspecialchars($row['raison']) . "</td>
-                <td>" . htmlspecialchars($row['typeDemande']) . "</td>
-            </tr>";
+            <td>" . htmlspecialchars($ligne['nom']) . "</td>
+            <td>" . htmlspecialchars($ligne['prenom']) . "</td>
+            <td>" . htmlspecialchars($ligne['datedemande']) . "</td>
+            <td>" . htmlspecialchars($ligne['raison']) . "</td>
+            <td>" . htmlspecialchars($ligne['typedemande']) . "</td>";
     }
-
-    echo "</table>";
-
-} catch (Exception $e) {
-    // Affichage des erreurs potentielles lors de la récupération @Dorian
-    echo "<div class='message error'>Erreur lors de la récupération des absences : " . $e->getMessage() . "</div>";
+    echo "</tbody>
+    </table>";
 }
+
+// Appeler la fonction pour générer le tableau des absences
+genererTableau($listeReport, "Liste des reports");
 ?>
+
+<footer class="footer"><p>&copy; 2024 - SAE Emploi du temps. Rémi | Dorian | Matthéo | Bastien | Noah.</p></footer>
+
+<script src="../Model/JavaScript/ValideEdt.js"></script>
+<script src="../Model/JavaScript/MenuPrincipal.js"></script>
+<script>afficherElement("<?php echo $_SESSION['role'] ?>")</script>
+<script src="../Model/JavaScript/CalendrierEDT.js"></script>
+<script src="../Model/JavaScript/GenererPDF.js"></script>
+</body>
+</html>

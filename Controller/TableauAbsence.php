@@ -59,7 +59,7 @@ if (isset($_POST['precedent'])) {
     <form action="TableauAbsence.php" method="post">
         <button type="submit" name="precedent">&lt;</button>
 
-        <label for="selectionnerSemaine">Semaine du</label>
+        <label for="selectionnerSemaine">Jour du</label>
         <input type="date" id="selectionnerSemaine" name="dateSelection" onchange="this.form.submit()"
                value="<?= htmlspecialchars($dateActuelle->format('Y-m-d'), ENT_QUOTES, 'UTF-8') ?>">
 
@@ -129,7 +129,7 @@ function genererTableau($data, $titre) {
             <td>" . htmlspecialchars($ligne['profs']) . "</td>
             <td>" . htmlspecialchars($ligne['enseignement']) . "</td>
             <td>" . htmlspecialchars($ligne['absence']) . "</td>";
-        if (htmlspecialchars($ligne['justification']) == 1) {
+        if ($ligne['justification'] == 'true') {
             echo "<td style='background-color: #5af45a;'>" . "Oui" . "</td>";
         } else {
             echo "<td style='background-color: #ff4141;'>" . "Non" . "</td>";
