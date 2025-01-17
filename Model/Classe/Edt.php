@@ -12,6 +12,7 @@ class Edt
         $joursSemaine = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi'];
         $joursData = [];
 
+        // Pour tous les jours de la semaine @Dorian
         for ($i = 0; $i < 5; $i++) {
             $jourTimestamp = strtotime("+$i day", strtotime($lundi));
             $jour = date("Y-m-d", $jourTimestamp);
@@ -41,6 +42,7 @@ class Edt
                 if (!empty($coursDuJour)) {
                     $cours = current($coursDuJour);
 
+                    // Récupération de la durée des cours (1h30, 3h00) @Dorian
                     $dureeStr = $cours['duree'];
                     if (strpos($dureeStr, 'years') !== false) {
                         preg_match('/(\d+) hours (\d+) mins/', $dureeStr, $matches);
@@ -52,6 +54,7 @@ class Edt
 
                     $nombreCreneaux = ceil($dureeMinutes / 90);
 
+                    // Formatage du nom de la discipline pour qu'elle adaptait au CSS @Dorian
                     $discipline = strtolower($this->supprimerAccents($cours['discipline']));
                     $discipline = preg_replace('/[^a-z0-9]+/', '-', $discipline);
                     $discipline = trim($discipline, '-');
@@ -59,9 +62,12 @@ class Edt
                     $typeSeance = strtolower($cours['typeseance']);
                     $salles = explode(',', $cours['salles']);
 
+                    // Si c'est UN DS @Dorian
                     if ($typeSeance == 'ds') {
                         $classeCSS = "ds";
+                        // Et que le DS est pour les premières années
                         if ($annee == 1){
+                            // On ajoute la salle 110
                             $sallesStr = "Amphi, Salle 110";
                         }
                         else{
@@ -74,6 +80,7 @@ class Edt
                     }
                     else {
                         $classeCSS = $dureeMinutes == 180 ?
+                            // Si le cours dure 3h, alors on ajoute "-3" pour la case soit plus "large" sinon, c'est le format de base @Dorian
                             "cours-" . $discipline . "-" . $typeSeance . '-3' :
                             "cours-" . $discipline . "-" . $typeSeance;
 
@@ -84,13 +91,15 @@ class Edt
                         }
                     }
 
-                    if(isset($cours['prenom'][0])){
-                        $prenomProf = $cours['prenom'][0] . ".";
-                    }
-                    if ($prenomProf == ".") {
-                        $prenomProf = "";
+                    // Formatage du nom des professeurs (P. Nom)
+                    $nomProf = $cours['prenom'][0] . ". ". $cours['nom'];
+
+                    // Si aucun prof (On reformate en vide)
+                    if ($nomProf == ". ") {
+                        $nomProf = "";
                     }
 
+                    // On compile toutes les informations "intéressante" à afficher @Dorian
                     $contenuHTML = "<div class='tooltip caseEDT $classeCSS'>" .
                         $cours['typeseance'] . "<br>" .
                         "<span class='tooltiptext'>" .
@@ -99,7 +108,7 @@ class Edt
                         "Horaire : " . date("H:i", strtotime($cours['date'])) .
                         "</span>" .
                         $cours['code'] . " " . $cours['matiere'] . "<br>" .
-                        $prenomProf . $cours['nom'] . "<br>" .
+                        $nomProf . "<br>" .
                         $sallesStr .
                         "</div>";
 
@@ -114,6 +123,7 @@ class Edt
         echo "</table>";
     }
 
+    // Fonction pour retirer les accents (pour s'adapter avec le CSS) @Dorian
     function supprimerAccents($str) {
         return str_replace(
             ['é', 'è', 'ê', 'ë', 'à', 'â', 'ä', 'ù', 'û', 'ü', 'î', 'ï', 'ô', 'ö', 'ç', 'É', 'È', 'Ê', 'Ë', 'À', ' ', 'Ä', 'Ù', 'Û', 'Ü', 'Î', 'Ï', 'Ô', 'Ö', 'Ç'],
@@ -123,6 +133,7 @@ class Edt
     }
 
     function RecupererCoursParJour($jour, $classe, $annee, $version): array
+    // On "devine" les semestres, selon l'année de l'étudiant
     {
         if($annee==1){
             $s1 = 1;
@@ -155,6 +166,7 @@ class Edt
         AND semestre IN (?,?)
     ORDER BY horaire
     ";
+        // On se connecte pour récupérer les valeurs
         $connexion = getConnectionBDD();
         $req = $connexion->prepare($sql);
         $req->execute([$jour,$version, $classe, $s1, $s2]);
