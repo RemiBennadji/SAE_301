@@ -24,6 +24,7 @@
         </div>
         <ul class="menu">
             <!-- Lien vers différentes sections du site, avec affichage conditionnel -->
+            <li><a class="underline-animation" href="../View/HTML/demandePage.php" id="demande" style="display: none">Faire une demande</a></li>
             <li><a id="edtCours" class="underline-animation" href="../Controller/EDTmatiereSelection.php" style="display: none">EDT Ressource</a></li>
             <li><a id="edtProf" class="underline-animation" href="../Controller/EDTprof.php" style="display: none">EDT Professeur</a></li>
             <li><a id="edt" class="underline-animation" href="../Controller/EDT.php">Emploi du temps</a></li>
@@ -75,6 +76,10 @@
 // Inclusion des fichiers nécessaires pour la connexion à la base de données et la gestion de l'emploi du temps
 include "../Controller/ConnectionBDD.php";
 require_once "../Model/Classe/Edt.php";
+
+//ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
+//error_reporting(E_ALL);
 
 // Création d'un objet Edt pour gérer l'emploi du temps
 $edt = new Edt();

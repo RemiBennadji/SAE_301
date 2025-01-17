@@ -10,6 +10,7 @@ function etudiant() {
 function professeur() {
     document.getElementById("edtCours").style.display = "block";
     document.getElementById("edtProf").style.display = "block";
+    document.getElementById("demande").style.display = "block";
     document.getElementById("edt").style.display = "none";
 }
 

@@ -46,6 +46,7 @@ try {
     //Attribution du role @Noah
     $role = $connect[0]['role'];
 
+    setcookie("groupe", "A1", time() + (60 * 15), "/");
     if($role == "etudiant"){
         $mail = $connect[0]["mail"];
         $res = $connection->prepare($sql2);
@@ -112,7 +113,6 @@ try {
     //Début cookie
     setcookie("role", $role, time() + (60 * 15), "/");
     setcookie("ID", $ID, time() + (60 * 15), "/");
-    setcookie("groupe", "A1", time() + (60 * 15), "/");
     setcookie("annee", 1, time() + (60 * 15), "/");
     setcookie("version", $version, time() + (60 * 15), "/");
 

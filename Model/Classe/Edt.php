@@ -2,7 +2,9 @@
 
 class Edt
 {
+
     function AfficherEdtSemaine($dateDebut, $classe, $annee, $version) {
+
         $timestamp = strtotime($dateDebut);
         $lundi = date("Y-m-d", $timestamp);
 
@@ -91,8 +93,10 @@ class Edt
                         }
                     }
 
-                    // Formatage du nom des professeurs (P. Nom)
-                    $nomProf = $cours['prenom'][0] . ". ". $cours['nom'];
+                    if(isset($cours['prenom'])){
+                        // Formatage du nom des professeurs (P. Nom)
+                        $nomProf = $cours['prenom'][0] . ". ". $cours['nom'];
+                    }
 
                     // Si aucun prof (On reformate en vide)
                     if ($nomProf == ". ") {
@@ -126,8 +130,8 @@ class Edt
     // Fonction pour retirer les accents (pour s'adapter avec le CSS) @Dorian
     function supprimerAccents($str) {
         return str_replace(
-            ['é', 'è', 'ê', 'ë', 'à', 'â', 'ä', 'ù', 'û', 'ü', 'î', 'ï', 'ô', 'ö', 'ç', 'É', 'È', 'Ê', 'Ë', 'À', 'Ä', 'Ù', 'Û', 'Ü', 'Î', 'Ï', 'Ô', 'Ö', 'Ç'],
-            ['e', 'e', 'e', 'e', 'a', 'a', 'a', 'u', 'u', 'u', 'i', 'i', 'o', 'o', 'c', 'e', 'e', 'e', 'e', 'a', 'a', 'u', 'u', 'u', 'i', 'i', 'o', 'o', 'c'],
+            ['é', 'è', 'ê', 'ë', 'à', 'â', 'ä', 'ù', 'û', 'ü', 'î', 'ï', 'ô', 'ö', 'ç', 'É', 'È', 'Ê', 'Ë', 'À', ' ', 'Ä', 'Ù', 'Û', 'Ü', 'Î', 'Ï', 'Ô', 'Ö', 'Ç'],
+            ['e', 'e', 'e', 'e', 'a', 'a', 'a', 'u', 'u', 'u', 'i', 'i', 'o', 'o', 'c', 'e', 'e', 'e', 'e', 'a', 'a', 'a', 'u', 'u', 'u', 'i', 'i', 'o', 'o', 'c'],
             $str
         );
     }
@@ -157,9 +161,9 @@ class Edt
     FROM seance
         LEFT JOIN collegue ON seance.collegue = collegue.id
         JOIN enseignement USING (code, semestre)
-        JOIN schedule USING (code, typeseance, typeformation, nomgroupe, semestre, noseance)
-        JOIN ressourcegroupe rg USING (nomgroupe, typeformation, semestre)
-        JOIN schedulesalle USING (code, typeseance, typeformation, nomgroupe, semestre, noseance, version)
+        JOIN schedule USING (code, typeseance, nomgroupe, semestre, noseance)
+        JOIN ressourcegroupe rg USING (nomgroupe, semestre)
+        JOIN schedulesalle USING (code, typeseance, nomgroupe, semestre, noseance, version)
     WHERE DATE(horaire) = ?
         AND version = ?
         AND nomressource = ?
