@@ -31,7 +31,7 @@ $dateDuJour = $dateActuelle->format('d/m/Y');
 $horaire = $dateActuelle->format('Y-m-d');
 
 try {
-    $version = 39;
+    $version = $_COOKIE["version"];
 
     // Requête pour récupérer les données
     $connection = getConnectionBDD();

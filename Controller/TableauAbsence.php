@@ -1,42 +1,30 @@
 <html lang="fr">
 <head>
-    <!-- Titre de la page -->
-    <title>EDT</title>
-    <!-- Lien vers la feuille de style CSS de base -->
+    <title>EDTValidation</title>
     <link rel="stylesheet" type="text/css" href="../View/CSS/CSSBasique.css">
 </head>
 <body>
-<!-- Logo avec un lien vers la page EDT.php -->
 <a href="EDT.php"><img src="../Ressource/logouphf2.png" class="logoUPHF" alt="Logo UPHF"></a>
-
-<!-- Inclusion de bibliothèques JavaScript pour la génération de PDF -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.22/jspdf.plugin.autotable.min.js"></script>
-
 <header>
-    <!-- Menu de navigation principal -->
     <nav>
-        <!-- Menu burger (pour affichage mobile) -->
         <div class="burger">
             <span></span>
             <span></span>
             <span></span>
         </div>
         <ul class="menu">
-            <!-- Lien vers différentes sections du site, avec affichage conditionnel -->
-            <li><a id="tableauAbsence" class="underline-animation" href="../Controller/TableauAbsence.php" style="display: none">Tableau Absence</a></li>
-            <li><a class="underline-animation" href="../View/HTML/demandePage.php" id="demande" style="display: none">Faire une demande</a></li>
             <li><a id="edtCours" class="underline-animation" href="../Controller/EDTmatiereSelection.php" style="display: none">EDT Ressource</a></li>
             <li><a id="edtProf" class="underline-animation" href="../Controller/EDTprof.php" style="display: none">EDT Professeur</a></li>
             <li><a id="edt" class="underline-animation" href="../Controller/EDT.php">Emploi du temps</a></li>
-            <li><a class="underline-animation" href="../View/HTML/messagerie.html">Messagerie</a></li>
+            <li><a class="underline-animation" href="#">Messagerie</a></li>
             <li><a class="underline-animation" href="../View/HTML/creationCompte.html" id="creationCompte" style="display: none">Créer un compte</a></li>
             <li><a class="underline-animation" href="../Controller/EDTsalleLibres.php" id="afficheSalles">Salles disponibles</a></li>
-            <!-- Sélecteur d'année scolaire, affiché conditionnellement -->
+            <li><a class="underline-animation" href="../Controller/Deconnexion.php">Déconnexion</a></li>
             <label class="choixClasse" id="choixClasse" style="display: none">
                 <select id="edtAdmin" class="edtAdmin">
-                    <option selected disabled>Choisir Année</option>
-                    <!-- Options pour l'année scolaire -->
+                    <option selected disabled>Administration</option>
                     <option class="label" disabled>Année 1</option>
                     <option value="A1">A1</option>
                     <option value="A2">A2</option>
@@ -55,13 +43,9 @@
                     <option value="FA">FA</option>
                 </select>
             </label>
-            <li><a class="underline-animation" href="../Controller/Deconnexion.php">Déconnexion</a></li>
-            <li><a class="underline-animation" href="../Controller/ValideEdt.php">ValideEDT</a></li>
         </ul>
     </nav>
 </header>
-
-<!-- Script pour faire fonctionner le menu burger (affichage mobile) -->
 <script>
     const burger = document.querySelector('.burger');
     const menu = document.querySelector('.menu');
@@ -71,60 +55,83 @@
     });
 </script>
 
-<br><br>
+<br><br><br>
 
 <?php
-// Inclusion des fichiers nécessaires pour la connexion à la base de données et la gestion de l'emploi du temps
 include "../Controller/ConnectionBDD.php";
 require_once "../Model/Classe/Edt.php";
 
-//ini_set('display_errors', 1);
-//ini_set('display_startup_errors', 1);
-//error_reporting(E_ALL);
-
-// Création d'un objet Edt pour gérer l'emploi du temps
 $edt = new Edt();
 
-// Démarrage de la session pour gérer les variables utilisateur
-session_start();
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-// Vérification si le rôle est défini, sinon redirection vers la page de connexion
+// Vérifier si le cookie "groupe" existe
+session_start();
+if (isset($_COOKIE['groupe'])) {
+    $classeActuel = $_COOKIE['groupe'];
+} else {
+    header("Location: ../View/HTML/Identification.html"); // Redirection si pas de rôle
+}
+
 if (!isset($_SESSION['role'])) {
     header("Location: ../View/HTML/Identification.html"); // Redirection si pas de rôle
     exit();
 }
 
-// Vérification si le cookie 'groupe' existe
-if (isset($_COOKIE['groupe'])) {
-    $classeActuel = $_COOKIE['groupe'];
-} else {
-    echo "Le cookie 'groupe' n'est pas défini."; // Message d'erreur si le cookie 'groupe' n'existe pas
-}
-
-// Vérification si le cookie 'annee' existe
+// Vérifier si le cookie "annee" existe
 if (isset($_COOKIE['annee'])) {
     $anneeActuel = $_COOKIE['annee'];
 } else {
-    echo "Le cookie 'annee' n'est pas défini."; // Message d'erreur si le cookie 'annee' n'existe pas
+    echo "Le cookie 'annee' n'est pas défini.";
 }
 
-// Calcul de la date du début de la semaine (lundi)
+date_default_timezone_set('Europe/Paris');//Fuseau horaire
 $dateActuel = date('Y-m-d', strtotime('monday this week'));
+$timestamp = date('Y-m-d H:i:s');//Date actuel pour la mettre dans la BDD
 
-// Gestion des actions POST, comme la sélection de la date ou le changement de semaine
+function genererTableau($data, $titre) {
+    echo "<h2>$titre</h2>";
+    echo "<table>
+        <thead>
+            <tr>
+                <th>Professeur</th>
+                <th>Enseignement</th>
+                <th>Type absence</th>
+                <th>Justification</th>
+                <th>Horaire</th>
+                <th>Durée (min)</th>
+            </tr>
+        </thead>
+        <tbody>";
+    foreach ($data as $ligne) {
+        echo "<tr>
+            <td>" . htmlspecialchars($ligne['profs']) . "</td>
+            <td>" . htmlspecialchars($ligne['enseignement']) . "</td>
+            <td>" . htmlspecialchars($ligne['absence']) . "</td>
+            <td>" . htmlspecialchars($ligne['justification']) . "</td>
+            <td>" . htmlspecialchars($ligne['timestamp']) . "</td>
+            <td>" . htmlspecialchars($ligne['duree']) . "</td>
+        </tr>";
+    }
+    echo "</tbody>
+    </table>";
+}
+
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST["selectedDate"])) {
-        // Traitement de la date sélectionnée et ajustement pour le lundi de la semaine
+        // Convertir la date sélectionnée en date du lundi de la semaine
         $selectedDate = new DateTime($_POST["selectedDate"]);
         $dayOfWeek = $selectedDate->format('N'); // 1 (lundi) à 7 (dimanche)
         $daysToSubtract = $dayOfWeek - 1;
         $selectedDate->sub(new DateInterval("P{$daysToSubtract}D"));
         $dateActuel = $selectedDate->format('Y-m-d');
     } else {
-        $dateActuel = $_POST["dateActuel"] ?? $dateActuel; // Utilisation de la date actuelle si aucune date n'est sélectionnée
+        $dateActuel = $_POST["dateActuel"] ?? $dateActuel;
     }
 
-    // Gestion des boutons pour naviguer entre les semaines
     if (isset($_POST["precedent"])) {
         $dateActuel = $edt->decrementerSemaine($dateActuel);
     }
@@ -134,10 +141,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-// Affichage de la partie permettant de changer la semaine, incluant un calendrier
 echo '<div class="changerSemaine">
     <button id="download-pdf" class="btn">Télécharger en PDF</button>
-    <form action="EDT.php" method="post">
+    <form action="TableauAbsence.php" method="post">
         <button type="submit" name="precedent">&lt;</button>
         
         <label for="selectionnerSemaine">Semaine du</label>
@@ -149,23 +155,40 @@ echo '<div class="changerSemaine">
         
         <button type="submit" name="suivant">&gt;</button>
     </form>
-</div>';
+</div><br><br><br>';
 
-// Affichage du groupe et de l'année choisis par l'administrateur via les cookies
-echo '<div class="big-container3"><div class="sub-container3"><label>'." Groupe : " . $_COOKIE["groupe"] . " | Année : " . $_COOKIE["annee"] .'</label></div></div>';
+$sql = "
+        SELECT absences.enseignement, absences.profs, absences.absence, absences.justification, absences.timestamp, absences.duree
+        FROM absences
+        WHERE DATE(absences.timestamp) = ?
+        ORDER BY absences.timestamp";
+try {
+    $connexion = getConnectionBDD();
+    $resAbsence = $connexion->prepare($sql);
+    $resAbsence->execute(['2024-09-18']);
 
-// Affichage du footer avec les auteurs du projet
-echo ('<footer class="footer">
-    <p>&copy; 2024 - SAE Emploi du temps. Rémi | Dorian | Matthéo | Bastien | Noah.</p>
-</footer>');
+    $listeAbsences = $resAbsence->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    echo "Erreur : " . $e->getMessage();
+    exit;
+}
 
-// Appel à la fonction qui affiche l'emploi du temps de la semaine
-$edt->AfficherEdtSemaine($dateActuel, $classeActuel, $anneeActuel,$_COOKIE["version"]);
+echo "<h1>Liste des validations</h1>";
+
+if($_COOKIE["role"] === "administrateur") {
+    genererTableau($listeAbsences, "Validés");
+}
+
+
+
+echo "</tbody>
+</table>";
 ?>
+<footer class="footer"><p>&copy; 2024 - SAE Emploi du temps. Rémi | Dorian | Matthéo | Bastien | Noah.</p></footer>')
 
-<!-- Inclusion de scripts pour le menu, le calendrier et la génération de PDF -->
+<script src="../Model/JavaScript/ValideEdt.js"></script>
 <script src="../Model/JavaScript/MenuPrincipal.js"></script>
-<script>afficherElement("<?php echo $_SESSION['role']; ?>");</script>
+<script>afficherElement("<?php echo $_SESSION['role'] ?>")</script>
 <script src="../Model/JavaScript/CalendrierEDT.js"></script>
 <script src="../Model/JavaScript/GenererPDF.js"></script>
 </body>

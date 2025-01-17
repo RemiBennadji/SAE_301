@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const selectionnerSemaine = document.getElementById('selectionnerSemaine');
-    const dateActuel = document.querySelector('input[name="dateActuel"]');
+    const selectionnerSemaine = document.getElementById('date');
+    const dateActuel = document.querySelector('input[name="dateActuelle"]');
 
     selectionnerSemaine.addEventListener('change', function(e) {
         // Obtenir la date sélectionnée

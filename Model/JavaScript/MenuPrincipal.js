@@ -2,6 +2,7 @@ function admin() {
     document.getElementById("creationCompte").style.display = "block";
     document.getElementById("edtCours").style.display = "block";
     document.getElementById("choixClasse").style.display = "block";
+    document.getElementById("tableauAbsence").style.display = "block";
 }
 
 function etudiant() {

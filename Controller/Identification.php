@@ -38,7 +38,7 @@ try {
     $connect = $connect->fetchAll(PDO::FETCH_ASSOC);
 
 
-    $connexionEDT = getConnectionBDD();
+    $connexionEDT = getConnectionBDDEDTIdentification();
     $version = $connexionEDT->prepare($sql3);
     $version->execute();
     $version = $version->fetchColumn();

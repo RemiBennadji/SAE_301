@@ -333,11 +333,8 @@ if($_COOKIE["role"] === "administrateur") {
 
 echo "</tbody>
 </table>";
-
-echo ('<footer class="footer">
-    <p>&copy; 2024 - SAE Emploi du temps. Rémi | Dorian | Matthéo | Bastien | Noah.</p>
-</footer>');
 ?>
+<footer class="footer"><p>&copy; 2024 - SAE Emploi du temps. Rémi | Dorian | Matthéo | Bastien | Noah.</p></footer>')
 
 <script src="../Model/JavaScript/ValideEdt.js"></script>
 <script src="../Model/JavaScript/MenuPrincipal.js"></script>
