@@ -56,7 +56,7 @@ if (isset($_POST['precedent'])) {
     <form action="TableauAbsence.php" method="post">
         <button type="submit" name="precedent">&lt;</button>
 
-        <label for="selectionnerSemaine">Semaine du</label>
+        <label for="selectionnerSemaine">Jour du</label>
         <input type="date" id="selectionnerSemaine" name="dateSelection" onchange="this.form.submit()"
                value="<?= htmlspecialchars($dateActuelle->format('Y-m-d'), ENT_QUOTES, 'UTF-8') ?>">
 
