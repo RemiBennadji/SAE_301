@@ -5,15 +5,15 @@ require_once "../Model/Classe/Edt.php";
 $edt = new Edt();
 session_start();
 
-// Vérification si le rôle est défini, sinon rediriger vers la page de connexion
+
+//Vérification si le rôle est défini, sinon rediriger vers la page de connexion
 if (isset($_SESSION['role'])) {
-    if($_COOKIE['role'] != 'administrateur' || $_COOKIE['role'] != 'secretariat'){
+    if($_COOKIE['role'] != 'administrateur' && $_COOKIE['role'] != 'secretariat'){
         header("Location: ./Deconnexion.php"); // Redirection si pas de rôle
         exit();
     }
 }
 
-date_default_timezone_set('Europe/Paris');
 
 // Gestion de la date actuelle ou sélectionnée
 if (isset($_POST['dateSelection'])) {

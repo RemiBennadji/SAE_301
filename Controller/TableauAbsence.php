@@ -82,7 +82,7 @@ error_reporting(E_ALL);
 session_start();
 
 if (!isset($_SESSION['role'])) {
-    header("Location: ../View/HTML/Identification.html"); // Redirection si pas de rôle
+    header("Location: ../View/HTML/Deconnexion.html"); // Redirection si pas de rôle
     exit();
 }
 

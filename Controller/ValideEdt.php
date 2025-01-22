@@ -72,11 +72,11 @@ session_start();
 if (isset($_COOKIE['groupe'])) {
     $classeActuel = $_COOKIE['groupe'];
 } else {
-    header("Location: ../View/HTML/Identification.html"); // Redirection si pas de rôle
+    header("Location: ../View/HTML/Deconnexion.html"); // Redirection si pas de rôle
 }
 
 if (!isset($_SESSION['role'])) {
-    header("Location: ../View/HTML/Identification.html"); // Redirection si pas de rôle
+    header("Location: ../View/HTML/Deconnexion.html"); // Redirection si pas de rôle
     exit();
 }
 
@@ -85,6 +85,14 @@ if (isset($_COOKIE['annee'])) {
     $anneeActuel = $_COOKIE['annee'];
 } else {
     echo "Le cookie 'annee' n'est pas défini.";
+}
+
+//Vérification si le rôle est défini, sinon rediriger vers la page de connexion
+if (isset($_SESSION['role'])) {
+    if($_COOKIE['role'] != 'professeur' && $_COOKIE['role'] != 'administrateur'){
+        header("Location: ./Deconnexion.php"); // Redirection si pas de rôle
+        exit();
+    }
 }
 
 date_default_timezone_set('Europe/Paris');//Fuseau horaire

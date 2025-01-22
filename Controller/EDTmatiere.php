@@ -48,7 +48,7 @@ error_reporting(E_ALL);
 
 // Vérification si le rôle est défini, sinon rediriger vers la page de connexion
 if (isset($_SESSION['role'])) {
-    if($_COOKIE['role'] != 'administrateur' || $_COOKIE['role'] != 'professeur' || $_COOKIE['role'] != 'secretariat'){
+    if($_COOKIE['role'] != 'administrateur' && $_COOKIE['role'] != 'professeur' && $_COOKIE['role'] != 'secretariat'){
         header("Location: ./Deconnexion.php"); // Redirection si pas de rôle
         exit();
     }

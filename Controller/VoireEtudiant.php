@@ -49,9 +49,12 @@ error_reporting(E_ALL);
 // Vérifier si le cookie "groupe" existe
 session_start();
 
-if (!isset($_SESSION['role'])) {
-    header("Location: ../View/HTML/Deconnexion.html"); // Redirection si pas de rôle
-    exit();
+//Vérification si le rôle est défini, sinon rediriger vers la page de connexion
+if (isset($_SESSION['role'])) {
+    if($_COOKIE['role'] != 'administrateur' && $_COOKIE['role'] != 'secretariat' && $_COOKIE['role'] != 'professeur'){
+        header("Location: ./Deconnexion.php"); // Redirection si pas de rôle
+        exit();
+    }
 }
 
 date_default_timezone_set('Europe/Paris');//Fuseau horaire
@@ -59,11 +62,7 @@ date_default_timezone_set('Europe/Paris');//Fuseau horaire
 // Connexion à la base de données
 try {
     $connexion = getConnectionBDD();
-    $sql = "
-        SELECT *
-        FROM demande
-        ORDER BY datedemande desc
-        LIMIT 20";
+    $sql = "select * from etudiants order by nom;";
 
     // Utiliser la date actuelle pour la requête
     $resReport = $connexion->prepare($sql);
@@ -85,9 +84,7 @@ function genererTableau($data, $titre) {
             <tr>
                 <th>Nom</th>
                 <th>Prenom</th>
-                <th>Date demande</th>
-                <th>Raison</th>
-                <th>Typedemande</th>
+                <th>Email</th>
             </tr>
         </thead>
         <tbody>";
@@ -95,16 +92,14 @@ function genererTableau($data, $titre) {
         echo "<tr>
             <td>" . htmlspecialchars($ligne['nom']) . "</td>
             <td>" . htmlspecialchars($ligne['prenom']) . "</td>
-            <td>" . htmlspecialchars($ligne['datedemande']) . "</td>
-            <td>" . htmlspecialchars($ligne['raison']) . "</td>
-            <td>" . htmlspecialchars($ligne['typedemande']) . "</td>";
+            <td>" . htmlspecialchars($ligne['email']) . "</td>";
     }
     echo "</tbody>
     </table>";
 }
 
 // Appeler la fonction pour générer le tableau des absences
-genererTableau($listeReport, "Liste des reports");
+genererTableau($listeReport, "Liste des etudiants");
 ?>
 
 <footer class="footer"><p>&copy; 2024 - SAE Emploi du temps. Rémi | Dorian | Matthéo | Bastien | Noah.</p></footer>
