@@ -8,8 +8,8 @@ function getConnectionBDD(){
 //            $password = "YAH+rfI3";
 //            $dsn = "pgsql:host=iutinfo-sgbd.uphf.fr;dbname=$dbname";
 
-            $dsn = "jdbc:postgresql://192.168.38.45:5432/sae301";
-	    $dbname="sae301";
+            $dsn = "pgsql:host=192.168.38.45";
+            $dbname= "sae301";
             $user = "postgres";
             $password = "root";
 
@@ -26,10 +26,10 @@ function getConnectionBDD(){
 function getConnectionBDDEDTIdentification()
     {
         try {
-            $dbname = "iutinfo301";
-            $user = "iutinfo301";
-            $password = "YAH+rfI3";
-            $dsn = "pgsql:host=iutinfo-sgbd.uphf.fr;dbname=$dbname";
+            $dbname = "sae301";
+            $user = "postgres";
+            $password = "root";
+            $dsn = "pgsql:host=192.168.38.45";
 
             //$dsn = "pgsql:host=2a02:842a:81db:d601:88a7:f394:4625:e9ff;dbname=sae";
             //$user = "lecteur";
