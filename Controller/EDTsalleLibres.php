@@ -8,7 +8,7 @@ session_start();
 
 //Vérification si le rôle est défini, sinon rediriger vers la page de connexion
 if (isset($_SESSION['role'])) {
-    if($_COOKIE['role'] != 'administrateur' && $_COOKIE['role'] != 'secretariat'){
+    if($_COOKIE['role'] != 'administrateur' && $_COOKIE['role'] != 'secretariat' && $_COOKIE['role'] != 'professeur'){
         header("Location: ./Deconnexion.php"); // Redirection si pas de rôle
         exit();
     }
