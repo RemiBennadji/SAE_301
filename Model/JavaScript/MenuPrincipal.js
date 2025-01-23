@@ -5,6 +5,7 @@ function admin() {
     document.getElementById("tableauAbsence").style.display = "block";
     document.getElementById("creationCompte").style.display = "block";
     document.getElementById("tableauAbsence").style.display = "block";
+    document.getElementById("tableauReport").style.display = "block";
     document.getElementById("valideEDT").style.display = "block";
     document.getElementById("choixClasse").style.display = "block";
 }

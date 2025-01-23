@@ -8,7 +8,7 @@ session_start();
 
 //Vérification si le rôle est défini, sinon rediriger vers la page de connexion
 if (isset($_SESSION['role'])) {
-    if($_COOKIE['role'] != 'administrateur' && $_COOKIE['role'] != 'secretariat' && $_COOKIE['role'] != 'professeur'){
+    if($_COOKIE['role'] != 'administrateur' && $_COOKIE['role'] != 'secretariat' && $_COOKIE['role'] != 'professeur' && $_COOKIE['role'] != 'etudiant'){
         header("Location: ./Deconnexion.php"); // Redirection si pas de rôle
         exit();
     }
@@ -142,8 +142,9 @@ $heureCourante = date('H:i', strtotime('+1 hour'));
             <li><a class="underline-animation" href="../Controller/EDTsalleLibres.php" id="afficheSalles">Salles disponibles</a></li>
             <li><a id="tableauEtudiant" class="underline-animation" href="../Controller/VoireEtudiant.php" style="display: none">Listes Étudiants</a></li>
             <li><a id="tableauAbsence" class="underline-animation" href="../Controller/TableauAbsence.php" style="display: none">Tableau Absence</a></li>
+            <li><a id="tableauReport" class="underline-animation" href="../Controller/TableauReport.php" style="display: none">Tableau Report</a></li>
             <li><a class="underline-animation" href="../View/HTML/demandePage.php" id="demande" style="display: none">Faire une demande</a></li>
-            <li><a class="underline-animation" href="../View/HTML/creationCompte.html" id="creationCompte" style="display: none">Créer un compte</a></li>
+            <li><a class="underline-animation" href="../View/HTML/creationCompte.php" id="creationCompte" style="display: none">Créer un compte</a></li>
             <li><a id ="valideEDT" class="underline-animation" href="../Controller/ValideEdt.php" style="display: none">ValideEDT</a></li>
             <!-- Sélecteur d'année scolaire, affiché conditionnellement -->
             <label class="choixClasse" id="choixClasse" style="display: none">

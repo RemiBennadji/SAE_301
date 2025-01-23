@@ -21,14 +21,15 @@ include "../../Controller/demande.php";
         </div>
         <ul class="menu">
             <!-- Lien vers différentes sections du site, avec affichage conditionnel -->
-            <li><a id="edtProf" class="underline-animation" href="../../Controller/EDTprof.php" style="display: none">EDT Professeur</a></li>
-            <li><a id="edtCours" class="underline-animation" href="../../Controller/EDTmatiereSelection.php" style="display: none">EDT Ressource</a></li>
-            <li><a class="underline-animation" href="../../Controller/EDTsalleLibres.php" id="afficheSalles">Salles disponibles</a></li>
-            <li><a id="tableauEtudiant" class="underline-animation" href="../../Controller/VoireEtudiant.php" style="display: none">Listes Étudiants</a></li>
-            <li><a id="tableauAbsence" class="underline-animation" href="../../Controller/TableauAbsence.php" style="display: none">Tableau Absence</a></li>
-            <li><a class="underline-animation" href="../../View/HTML/demandePage.php" id="demande" style="display: none">Faire une demande</a></li>
-            <li><a class="underline-animation" href="../../View/HTML/creationCompte.html" id="creationCompte" style="display: none">Créer un compte</a></li>
-            <li><a id ="valideEDT" class="underline-animation" href="../../Controller/ValideEdt.php" style="display: none">ValideEDT</a></li>
+            <li><a id="edtProf" class="underline-animation" href="../Controller/EDTprof.php" style="display: none">EDT Professeur</a></li>
+            <li><a id="edtCours" class="underline-animation" href="../Controller/EDTmatiereSelection.php" style="display: none">EDT Ressource</a></li>
+            <li><a class="underline-animation" href="../Controller/EDTsalleLibres.php" id="afficheSalles">Salles disponibles</a></li>
+            <li><a id="tableauEtudiant" class="underline-animation" href="../Controller/VoireEtudiant.php" style="display: none">Listes Étudiants</a></li>
+            <li><a id="tableauAbsence" class="underline-animation" href="../Controller/TableauAbsence.php" style="display: none">Tableau Absence</a></li>
+            <li><a id="tableauReport" class="underline-animation" href="../Controller/TableauReport.php" style="display: none">Tableau Report</a></li>
+            <li><a class="underline-animation" href="../View/HTML/demandePage.php" id="demande" style="display: none">Faire une demande</a></li>
+            <li><a class="underline-animation" href="../View/HTML/creationCompte.html" id="creationCompte" style="display: none">Créer un compte</a></li>
+            <li><a id ="valideEDT" class="underline-animation" href="../Controller/ValideEdt.php" style="display: none">ValideEDT</a></li>
             <!-- Sélecteur d'année scolaire, affiché conditionnellement -->
             <label class="choixClasse" id="choixClasse" style="display: none">
                 <select id="edtAdmin" class="edtAdmin">
@@ -52,7 +53,7 @@ include "../../Controller/demande.php";
                     <option value="FA">FA</option>
                 </select>
             </label>
-            <li><a class="underline-animation" href="../../Controller/Deconnexion.php">Déconnexion</a></li>
+            <li><a class="underline-animation" href="../Controller/Deconnexion.php">Déconnexion</a></li>
         </ul>
     </nav>
 </header>

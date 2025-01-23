@@ -20,23 +20,30 @@ if (!isset($_SESSION['role'])) {
 
 <!-- Menu hamburger -->
 <header>
+    <!-- Menu de navigation principal -->
     <nav>
+        <!-- Menu burger (pour affichage mobile) -->
         <div class="burger">
             <span></span>
             <span></span>
             <span></span>
         </div>
         <ul class="menu">
-            <li><a id="edtCours" class="underline-animation" href="../Controller/EDTmatiereSelection.php" style="display: none">EDT Ressource</a></li>
+            <!-- Lien vers différentes sections du site, avec affichage conditionnel -->
             <li><a id="edtProf" class="underline-animation" href="../Controller/EDTprof.php" style="display: none">EDT Professeur</a></li>
-            <li><a id="edt" class="underline-animation" href="../Controller/EDT.php">Emploi du temps</a></li>
-            <li><a class="underline-animation" href="../View/HTML/messagerie.html">Messagerie</a></li>
-            <li><a class="underline-animation" href="../View/HTML/creationCompte.html" id="creationCompte" style="display: none">Créer un compte</a></li>
+            <li><a id="edtCours" class="underline-animation" href="../Controller/EDTmatiereSelection.php" style="display: none">EDT Ressource</a></li>
             <li><a class="underline-animation" href="../Controller/EDTsalleLibres.php" id="afficheSalles">Salles disponibles</a></li>
-            <li><a class="underline-animation" href="../Controller/Deconnexion.php">Déconnexion</a></li>
+            <li><a id="tableauEtudiant" class="underline-animation" href="../Controller/VoireEtudiant.php" style="display: none">Listes Étudiants</a></li>
+            <li><a id="tableauAbsence" class="underline-animation" href="../Controller/TableauAbsence.php" style="display: none">Tableau Absence</a></li>
+            <li><a id="tableauReport" class="underline-animation" href="../Controller/TableauReport.php" style="display: none">Tableau Report</a></li>
+            <li><a class="underline-animation" href="../View/HTML/demandePage.php" id="demande" style="display: none">Faire une demande</a></li>
+            <li><a class="underline-animation" href="../View/HTML/creationCompte.php" id="creationCompte" style="display: none">Créer un compte</a></li>
+            <li><a id ="valideEDT" class="underline-animation" href="../Controller/ValideEdt.php" style="display: none">ValideEDT</a></li>
+            <!-- Sélecteur d'année scolaire, affiché conditionnellement -->
             <label class="choixClasse" id="choixClasse" style="display: none">
                 <select id="edtAdmin" class="edtAdmin">
-                    <option selected disabled>Administration</option>
+                    <option selected disabled>Choisir Année</option>
+                    <!-- Options pour l'année scolaire -->
                     <option class="label" disabled>Année 1</option>
                     <option value="A1">A1</option>
                     <option value="A2">A2</option>
@@ -55,14 +62,15 @@ if (!isset($_SESSION['role'])) {
                     <option value="FA">FA</option>
                 </select>
             </label>
+            <li><a class="underline-animation" href="../Controller/Deconnexion.php">Déconnexion</a></li>
         </ul>
     </nav>
 </header>
 
-<script><!-- script pour que le menu soit responsive -->
+<!-- Script pour faire fonctionner le menu burger (affichage mobile) -->
+<script>
     const burger = document.querySelector('.burger');
     const menu = document.querySelector('.menu');
-
     burger.addEventListener("click", () => {
         menu.classList.toggle("active");
         burger.classList.toggle("toggle");
