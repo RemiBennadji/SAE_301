@@ -1,6 +1,6 @@
 <html lang="fr">
 <head>
-    <title>EDTValidation</title>
+    <title>VoireEtudiant</title>
     <link rel="stylesheet" type="text/css" href="../View/CSS/CSSBasique.css">
 </head>
 <body>

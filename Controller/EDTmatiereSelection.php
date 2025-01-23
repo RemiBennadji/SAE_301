@@ -14,7 +14,7 @@ if (isset($_SESSION['role'])) {
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>affichageSalle</title>
+    <title>Matiere</title>
     <link href="../View/CSS/CSSBasique.css" rel="stylesheet">
 </head>
 <body>
