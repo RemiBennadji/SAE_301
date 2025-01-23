@@ -9,6 +9,13 @@ if (isset($_SESSION['role'])) {
     }
 }
 
+// Gestion de la date actuelle ou sélectionnée
+if (isset($_POST['dateSelection'])) {
+    $dateActuelle = new DateTime($_POST['dateSelection']);
+} else {
+    $dateActuelle = new DateTime();
+}
+
 // Gestion de la navigation avec les flèches
 if (isset($_POST['precedent'])) {
     $dateActuelle->modify('-1 day');

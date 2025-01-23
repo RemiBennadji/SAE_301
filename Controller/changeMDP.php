@@ -1,10 +1,4 @@
 <?php
-if (!isset($_SESSION['role'])) {
-    if($_SESSION['role'] != 'administrateur'){
-        header("Location: ./Deconnexion.php"); // Redirection si pas de rôle
-        exit();
-    }
-}
 
 header('Content-Type: application/json');
 
@@ -67,7 +61,8 @@ if(!empty($_SESSION['from'])){
         $compte->setIdentifiant($connect[0]['identifiant']);
         $compte->setRole($connect[0]['role']);
     }catch (Exception $e){
-        json_encode(['error'=>$e->getMessage()]);
+        echo json_encode(['error'=>$e->getMessage()]);
+        exit();
     }
 }else{
     $compte = $_SESSION['compte'];

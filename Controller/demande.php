@@ -4,6 +4,13 @@ require "ConnectionBDD.php";
 
 session_start();
 
+if (isset($_SESSION['role'])) {
+    if($_COOKIE['role'] != 'professeur'){
+        header("Location: ./Deconnexion.php"); // Redirection si pas de rôle
+        exit();
+    }
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Récupération des données du formulaire
     $date = $_POST["dateReport"]; // Exemple : "2025-01-17"
