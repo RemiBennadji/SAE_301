@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $info = "SELECT nom, prenom FROM collegue WHERE mail = :MAIL";
 
     // Requête pour insérer la demande dans la BDD
-    $sql = "INSERT INTO Demande(dateDemande, raison, nom, prenom, typeDemande) 
+    $sql = "INSERT INTO demande(dateDemande, raison, nom, prenom, typeDemande) 
             VALUES(:DATEDEMANDE, :RAISON, :NOM, :PRENOM, :TYPEDEMANDE)";
 
     try {
@@ -55,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     } catch (Exception $e) {
         // Gestion des erreurs
-        $message = $e->getMessage();
+        echo $e->getMessage();
     }
 
 }

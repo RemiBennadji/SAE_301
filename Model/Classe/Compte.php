@@ -163,4 +163,8 @@ abstract class Compte
     {
         $this->mail = $mail;
     }
+
+    public function getRole(){
+        return $this->role;
+    }
 }
