@@ -8,7 +8,7 @@ session_start();
 
 //Vérification si le rôle est défini, sinon rediriger vers la page de connexion
 if (isset($_SESSION['role'])) {
-    if($_COOKIE['role'] != 'administrateur' && $_COOKIE['role'] != 'secretariat'){
+    if($_COOKIE['role'] != 'administrateur' && $_COOKIE['role'] != 'secretariat' && $_COOKIE['role'] != 'professeur'){
         header("Location: ./Deconnexion.php"); // Redirection si pas de rôle
         exit();
     }
@@ -46,9 +46,9 @@ try {
         FROM seance
         LEFT JOIN collegue ON seance.collegue = collegue.id
         JOIN enseignement USING (code, semestre)
-        RIGHT JOIN schedule USING (code, typeseance, typeformation, nomgroupe, semestre, noseance)
-        JOIN ressourcegroupe rg USING (nomgroupe, typeformation, semestre)
-        JOIN schedulesalle USING (code, typeseance, typeformation, nomgroupe, semestre, noseance, version)
+        RIGHT JOIN schedule USING (code, typeseance, nomgroupe, semestre, noseance)
+        JOIN ressourcegroupe rg USING (nomgroupe, semestre)
+        JOIN schedulesalle USING (code, typeseance, nomgroupe, semestre, noseance, version)
         WHERE date(horaire) = :horaire
           AND version = :version
         ORDER BY horaire, salle";
