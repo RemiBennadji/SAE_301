@@ -118,14 +118,14 @@ try {
 
 
     //Vérification si c'est la première connexion @Noah
-    if (!$connect[0]['changemdp']) {
+    if ($connect[0]['changemdp'] == "false") {
         echo json_encode(['redirect' => '../../View/HTML/changeMDP.html']);
         exit();
     }
 
     //Vérification avec le hashage @Noah
     if (password_verify($PWD,$connect[0]['motdepasse'])) {
-        if($connect[0]['role'] == 'professeur'){
+        if($compte->getRole() == "professeur"){
             echo json_encode(['redirect' => '../../Controller/EDTprof.php']); // Retourne la redirection
         }
         else{
