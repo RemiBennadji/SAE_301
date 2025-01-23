@@ -1,9 +1,12 @@
 function admin() {
-    document.getElementById("creationCompte").style.display = "block";
     document.getElementById("edtCours").style.display = "block";
-    document.getElementById("choixClasse").style.display = "block";
-    document.getElementById("tableauAbsence").style.display = "block";
     document.getElementById("afficheSalles").style.display = "block";
+    document.getElementById("tableauEtudiant").style.display = "block";
+    document.getElementById("tableauAbsence").style.display = "block";
+    document.getElementById("creationCompte").style.display = "block";
+    document.getElementById("tableauAbsence").style.display = "block";
+    document.getElementById("valideEDT").style.display = "block";
+    document.getElementById("choixClasse").style.display = "block";
 }
 
 function etudiant() {
@@ -12,13 +15,18 @@ function etudiant() {
 function professeur() {
     document.getElementById("edtCours").style.display = "block";
     document.getElementById("edtProf").style.display = "block";
+    document.getElementById("afficheSalles").style.display = "block";
+    document.getElementById("valideEDT").style.display = "block";
     document.getElementById("demande").style.display = "block";
     document.getElementById("edt").style.display = "none";
 }
 
 function secretariat() {
-    document.getElementById("afficheSalles").style.display = "block";
     document.getElementById("edtCours").style.display = "block";
+    document.getElementById("afficheSalles").style.display = "block";
+    document.getElementById("tableauEtudiant").style.display = "block";
+    document.getElementById("tableauAbsence").style.display = "block";
+    document.getElementById("choixClasse").style.display = "block";
 }
 
 //Fonction qui verifie le rôle de l'utilisateur car suivant le rôle, nous affichons ou cachons des informations
