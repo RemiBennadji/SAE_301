@@ -216,9 +216,9 @@ function RecupererCoursParJour($jour, $nomProf): array
     FROM seance
         LEFT JOIN collegue ON seance.collegue = collegue.id
         JOIN enseignement USING (code, semestre)
-        JOIN schedule USING (code, typeseance, typeformation, nomgroupe, semestre, noseance)
-        JOIN ressourcegroupe rg USING (nomgroupe, typeformation, semestre)
-        JOIN schedulesalle USING (code, typeseance, typeformation, nomgroupe, semestre, noseance, version)
+        JOIN schedule USING (code, typeseance, nomgroupe, semestre, noseance)
+        JOIN ressourcegroupe rg USING (nomgroupe, semestre)
+        JOIN schedulesalle USING (code, typeseance, nomgroupe, semestre, noseance, version)
     WHERE DATE(horaire) = ?
         AND version = ?
         AND nom ILIKE ?
