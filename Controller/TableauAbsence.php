@@ -29,7 +29,7 @@ if (isset($_POST['precedent'])) {
 
 <html lang="fr">
 <head>
-    <title>EDTValidation</title>
+    <title>EDTAbsence</title>
     <link rel="stylesheet" type="text/css" href="../View/CSS/CSSBasique.css">
 </head>
 <body>
