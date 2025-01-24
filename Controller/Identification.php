@@ -118,7 +118,7 @@ try {
 
 
     //Vérification si c'est la première connexion @Noah
-    if ($connect[0]['changemdp'] == "false") {
+    if (!$connect[0]['changemdp']) {
         echo json_encode(['redirect' => '../../View/HTML/changeMDP.html']);
         exit();
     }
