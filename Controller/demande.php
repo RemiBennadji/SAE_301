@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $timestamp = date("Y-m-d H:i:s", strtotime("$date $heure"));
     $raison = $_POST["sujet"];
     $type = $_POST["typeDemande"];
-    $mail = $_SESSION["mail"];
+    $mail = strtolower($_SESSION["mail"]);
 
 
     // Requête pour récupérer nom et prénom du professeur
@@ -38,8 +38,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $res = $getInfo->fetch(PDO::FETCH_ASSOC);
         if ($res) {
-            $nom = $res["nom"];
-            $prenom = $res["prenom"];
+            $nom = $res[0]["nom"];
+            $prenom = $res[0]["prenom"];
+            echo $nom . " " . $prenom;
         }
 
         // Insérer les données dans la table Demande
