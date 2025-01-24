@@ -5,7 +5,7 @@ $dateActuelle = new DateTime(); // Récupérer la date actuelle sous forme d'obj
 $dateActuelle->modify('monday this week'); // Définir la date sur le lundi de la semaine actuelle
 
 if (isset($_SESSION['role'])) {
-    if($_COOKIE['role'] != 'administrateur'){
+    if($_COOKIE['role'] != 'administrateur' && $_COOKIE['role'] != 'secretariat') {
         header("Location: ./Deconnexion.php"); // Redirection si pas de rôle
         exit();
     }
