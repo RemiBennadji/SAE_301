@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $timestamp = date("Y-m-d H:i:s", strtotime("$date $heure"));
     $raison = $_POST["sujet"];
     $type = $_POST["typeDemande"];
-    $mail = strtolower($_SESSION["mail"]);
+    $mail = $_SESSION["mail"];
 
 
     // Requête pour récupérer nom et prénom du professeur
