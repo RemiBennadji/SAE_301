@@ -38,8 +38,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $res = $getInfo->fetch(PDO::FETCH_ASSOC);
         if ($res) {
-            $nom = $res["nom"];
-            $prenom = $res["prenom"];
+            $nom = $res[0]["nom"];
+            $prenom = $res[0]["prenom"];
+            echo $nom . " " . $prenom;
         }
 
         // Insérer les données dans la table Demande
