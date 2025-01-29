@@ -74,7 +74,7 @@ require_once "../Model/Classe/Edt.php";
 $edt = new Edt();
 
 // Démarrage de la session pour gérer les variables utilisateur
-session_start();
+//session_start();
 
 // Vérification si le rôle est défini, sinon rediriger vers la page de connexion
 if (isset($_SESSION['role'])) {
@@ -91,7 +91,7 @@ $dateActuel = date('Y-m-d', strtotime('monday this week'));
 $nomProf = $_COOKIE['nomProf'];
 
 function AfficherEdtSemaine($dateDebut, $nomProf) {
-    global $edt;
+    global $edt, $dateActuel;
     $timestamp = strtotime($dateDebut);
     $lundi = date("Y-m-d", $timestamp);
 
@@ -124,6 +124,10 @@ function AfficherEdtSemaine($dateDebut, $nomProf) {
                 $cellulesSautees[$j]--;
                 continue;
             }
+
+            $dateSTR = $dateActuel; // Date spécifique du jour
+            $jourSTR = $joursSemaine[$j]; // Date actuelle
+            $heureSTR = date("H:i:s", strtotime($listeHorraire[$h])); // Heure
 
             $horaireCourant = date("H:i:s", strtotime($listeHorraire[$h]));
             $coursDuJour = array_filter($joursData[$j], function($cours) use ($horaireCourant) {
@@ -183,8 +187,11 @@ function AfficherEdtSemaine($dateDebut, $nomProf) {
                 $semestre = $cours['semestre'];
                 $nomRessource = $cours['ressource'];
 
+                //$report = [date('m-Y', strtotime($dateActuel)),$joursData[$j],$listeHorraire[$h]];//[Date,jour,heure] de la cellule
+
                 //contenuHTML contient toutes les informations présentes dans chaques cases de l'emploi du temps
-                $contenuHTML = "<div class='$classeCSS'>" .
+
+                $contenuHTML = "<div class='$classeCSS' onclick=\"setCookie('$dateSTR','$jourSTR','$heureSTR');\">" .//[Date,jour,heure] de la cellule
                     $cours['typeseance'] . "<br>" .
                     $cours['code'] . " " . $cours['matiere'] . "<br>" .
                     $sallesStr . "<br>" .
@@ -194,7 +201,7 @@ function AfficherEdtSemaine($dateDebut, $nomProf) {
                 echo "<td rowspan='$nombreCreneaux'>$contenuHTML</td>";
                 $cellulesSautees[$j] = $nombreCreneaux - 1;
             } else {
-                echo "<td></td>";
+                echo "<td></td>";//[Date,jour,heure] de la cellule
             }
         }
         echo "</tr>";
@@ -283,5 +290,6 @@ AfficherEdtSemaine($dateActuel, $nomProf);
 <!-- la génération de PDF -->
 <script src="../Model/JavaScript/GenererPDF.js"></script>
 <script src="../Model/JavaScript/MenuPrincipal.js"></script>
-<script>afficherElement("<?php echo $_SESSION['role']; ?>");</script>
+<script>afficherElement("<?php echo $_COOKIE['role']; ?>");</script>
+<script src="../Model/JavaScript/EdtProf.js"></script>
 </body>
