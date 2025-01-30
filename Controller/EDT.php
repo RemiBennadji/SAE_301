@@ -22,7 +22,7 @@
             <span></span>
             <span></span>
         </div>
-        <ul class="menu">
+        <ul class="menu" id="menu">
             <!-- Lien vers différentes sections du site, avec affichage conditionnel -->
             <li><a id="edtProf" class="underline-animation" href="../Controller/EDTprof.php" style="display: none">EDT Professeur</a></li>
             <li><a id="edtCours" class="underline-animation" href="../Controller/EDTmatiereSelection.php" style="display: none">EDT Ressource</a></li>

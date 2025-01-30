@@ -20,6 +20,9 @@ function professeur() {
     document.getElementById("valideEDT").style.display = "block";
     document.getElementById("demande").style.display = "block";
     document.getElementById("edt").style.display = "none";
+    let element = document.getElementById('menu');
+    element.classList.remove('menu');
+    element.classList.add('menuProf');
 }
 
 function secretariat() {

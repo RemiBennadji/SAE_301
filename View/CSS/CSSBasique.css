@@ -94,8 +94,40 @@ nav {
     color: #f39c12;
 }
 
+.menuProf {
+    z-index: 1000;
+    position: absolute;
+    /*top: 1%;*/
+    right: 1%;
+    list-style: none;
+    background-color: #0081a1;
+    padding: 5px;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+}
+
+.menuProf.active {
+    display: flex;
+    top: 200%;
+}
+
+.menuProf li {
+    margin: 10px 0;
+}
+
+.menuProf li a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 18px;
+}
+
+.menuProf li a:hover {
+    color: #f39c12;
+}
+
 /* Media queries pour mobile */
-@media (min-width: 900px) {
+@media (min-width: 1650px) {
     .burger {
         display: none;
     }
@@ -107,6 +139,22 @@ nav {
     }
 
     .menu li {
+        margin: 0 15px;
+    }
+}
+
+@media (min-width: 800px) {
+    .burgerProf {
+        display: none;
+    }
+
+    .menuProf {
+        display: flex;
+        flex-direction: row;
+        position: static;
+    }
+
+    .menuProf li {
         margin: 0 15px;
     }
 }

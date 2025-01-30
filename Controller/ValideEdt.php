@@ -169,7 +169,7 @@ function adminValideVersion()//Si les profs qui ont validés > aux profs non val
         $pasaccepter->execute(['false']);
         $pasaccepter = $pasaccepter->fetch(PDO::FETCH_ASSOC)['total'];
 
-        if(($accepter > $pasaccepter) && ($nouvelleVersion != $_COOKIE["version"])){
+        if(($pasaccepter > 0) && ($nouvelleVersion != $_COOKIE["version"])){
 
             echo "<form id='adminValide' action='ValideEdt.php' method='post'>
                     <div class='DivadminValide'>
@@ -352,7 +352,7 @@ if($_COOKIE["role"] === "administrateur") {
 echo "</tbody>
 </table>";
 ?>
-<footer class="footer"><p>&copy; 2024 - SAE Emploi du temps. Rémi | Dorian | Matthéo | Bastien | Noah.</p></footer>')
+<footer class="footer"><p>&copy; 2024 - SAE Emploi du temps. Rémi | Dorian | Matthéo | Bastien | Noah.</p></footer>
 
 <script src="../Model/JavaScript/ValideEdt.js"></script>
 <script src="../Model/JavaScript/MenuPrincipal.js"></script>
