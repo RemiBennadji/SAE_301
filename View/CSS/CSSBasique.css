@@ -999,3 +999,72 @@ select#edtAdmin {
 .body-blur.show {
     display: block;
 }
+
+/* Formulaire de demande spécifique */
+.form-demande {
+    max-width: 600px;
+    margin: 40px auto;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Étiquette du formulaire */
+.form-demande label {
+    font-size: 16px;
+    margin-bottom: 8px;
+    display: block;
+    border-radius: 7px;
+    color: #333;
+}
+
+/* Champs du formulaire (input, select) */
+.form-demande input, .form-demande select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+    font-size: 16px;
+    background-color: #fafafa;
+}
+
+/* Champs de texte (pour le champ raison) */
+.form-demande input[type="text"], .form-demande input[type="date"], .form-demande input[type="time"] {
+    background-color: #fff;
+}
+
+/* Bouton de soumission */
+.form-demande input[type="submit"] {
+    background-color: #003366;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 12px;
+    border-radius:7px;
+    transition: background-color 0.3s ease;
+}
+
+.form-demande input[type="submit"]:hover {
+    background-color: #347e8f;
+}
+
+/* Sélecteur d'option (type de demande) */
+.form-demande select {
+    background-color: #fff;
+    border: 1px solid #ccc;
+}
+
+/* Espace entre les champs */
+.form-demande input, .form-demande select {
+    margin-bottom: 20px;
+}
+
+/* Pour les labels de formulaire */
+.form-demande label {
+    color: #333;
+    font-weight: bold;
+}
+

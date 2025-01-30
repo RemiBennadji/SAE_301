@@ -69,7 +69,7 @@ include "../../Controller/demande.php";
 </script>
 <body>
 
-<form action="../../Controller/demande.php" method="post">
+<form action="../../Controller/demande.php" method="post" class="form-demande">
     <label for="typeDemande">Type de votre demande : </label>
     <select id="typeDemande" name="typeDemande">
         <option value="Report">Report</option>
