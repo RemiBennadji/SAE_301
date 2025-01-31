@@ -235,7 +235,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 echo '<div class="changerSemaine">
     <button id="download-pdf" class="btn">Télécharger en PDF</button>
     <form action="ValideEdt.php" method="post">
-        <button type="submit" name="precedent">&lt;</button>
+        <button type="submit" name="precedent">Précédent</button>
         
         <label for="selectionnerSemaine">Semaine du</label>
         <input type="date" id="selectionnerSemaine" name="selectedDate" onchange="this.form.submit()" 
@@ -244,7 +244,7 @@ echo '<div class="changerSemaine">
         <input type="hidden"  name="dateActuel" 
                value="' . htmlspecialchars($dateActuel, ENT_QUOTES, 'UTF-8') . '">
         
-        <button type="submit" name="suivant">&gt;</button>
+        <button type="submit" name="suivant">Suivant</button>
     </form>
 </div><br><br><br>';
 
