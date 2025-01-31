@@ -26,8 +26,8 @@ if(empty($_SESSION['ID']) && empty($_SESSION['from'])) {
 $conn = getConnectionBDD();
 
 if(!empty($_SESSION['from'])){
-    $crea = "SELECT mail, identifiant, role FROM infoutilisateur WHERE mail=:mail";
-    $recupMail = "SELECT email FROM codeverif WHERE codev =:code";
+    $crea = recupererInfo();
+    $recupMail = getMail();
 
     try{
 //        $recup = $conn->prepare($recupMail);

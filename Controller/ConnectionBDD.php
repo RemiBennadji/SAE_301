@@ -23,8 +23,7 @@ function getConnectionBDD(){
         }
     }
 }
-function getConnectionBDDEDTIdentification()
-    {
+function getConnectionBDDEDTIdentification(){
         try {
             $dbname = "sae301";
             $user = "postgres";
@@ -43,4 +42,26 @@ function getConnectionBDDEDTIdentification()
             echo "Erreur de connexion : " . $e->getMessage();
             exit();
         }
-    }
+}
+function recupererInfo(){
+    return "SELECT mail, identifiant, role FROM infoutilisateur WHERE mail=:mail";
+}
+
+function getMail(){
+    return "SELECT email FROM codeverif WHERE codev =:code";
+}
+
+function codeExpire(){
+    return "DELETE FROM codeverif WHERE expiration < NOW()";
+}
+
+function recupererCode(){
+    return "SELECT codev, email FROM codeverif WHERE codev = :code";
+}
+
+function suppCode(){
+    return "DELETE FROM codeverif WHERE codev = :code";
+}
+
+
+
