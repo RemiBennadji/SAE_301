@@ -43,22 +43,28 @@ function getConnectionBDDEDTIdentification(){
             exit();
         }
 }
+
+//changeMDP
 function recupererInfo(){
     return "SELECT mail, identifiant, role FROM infoutilisateur WHERE mail=:mail";
 }
 
+//changeMDP
 function getMail(){
     return "SELECT email FROM codeverif WHERE codev =:code";
 }
 
+//codeVerif
 function codeExpire(){
     return "DELETE FROM codeverif WHERE expiration < NOW()";
 }
 
+//codeVerif
 function recupererCode(){
     return "SELECT codev, email FROM codeverif WHERE codev = :code";
 }
 
+//codeVerif
 function suppCode(){
     return "DELETE FROM codeverif WHERE codev = :code";
 }
