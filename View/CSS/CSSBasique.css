@@ -13,7 +13,6 @@ body {
 
 * {
     margin: 0;
-    padding: 0;
     box-sizing: border-box;
 }
 
@@ -583,7 +582,6 @@ table {
 th, td {
     border: 1px solid #ddd;
     padding: 12px;
-    text-align: center;
 }
 
 td {
@@ -624,9 +622,6 @@ caption {
     margin-bottom: 10px;
 }
 
-div {
-    border-radius: 6px;
-}
 
 /* Anglais */
 .cours-anglais-cm {
@@ -903,17 +898,14 @@ select#edtAdmin {
 
 .caseEDT {
     border-radius: 6px;
-    height: 100%;
     width: 100%;
 }
 
 /* Style pour l'infobulle */
 .tooltip {
-    position: relative;
     display: inline-block;
     cursor: pointer;
     padding: 10px;
-    margin: 5px;
     min-width: 100px;
     min-height: 50px;
     text-align: center;
