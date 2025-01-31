@@ -1116,3 +1116,50 @@ select#edtAdmin {
     font-weight: bold;
 }
 
+td, th {
+    height: auto;
+    word-wrap: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    min-height: 50px;
+}
+
+@media (max-width: 800px) {
+    div{
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .caseEDT {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: normal;
+    }
+
+    td, th {
+        height: auto;
+        word-wrap: break-word;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: normal;
+        min-height: 50px;
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+    }
+
+    table {
+        height: 100%;
+        width: 100%;
+        table-layout: fixed;
+    }
+
+}
+
+
+
