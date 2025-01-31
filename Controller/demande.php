@@ -52,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $insertion->bindParam(":TYPEDEMANDE", $type);
         $insertion->execute();
 
-        header('Location: EDTprof.php');
+        header('Location: ../View/Pages/EDTprof.php');
 
     } catch (Exception $e) {
         // Gestion des erreurs

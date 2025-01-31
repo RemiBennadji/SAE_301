@@ -34,7 +34,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST" and isset($_POST["code"])) {
             session_start();
             $_SESSION['from'] = true;
             $_SESSION['mail'] = $mail;
-            ECHO json_encode(["redirect" => "../../View/HTML/changeMDP.html"]);
+            ECHO json_encode(["redirect" => "../../View/Pages/changeMDP.html"]);
         } else {
             echo json_encode(['error' => 'errorConnexion']);
         }

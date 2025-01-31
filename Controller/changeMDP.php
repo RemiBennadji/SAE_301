@@ -20,7 +20,7 @@ if(empty($_POST['mdp'])) {
 }
 
 if(empty($_SESSION['ID']) && empty($_SESSION['from'])) {
-    echo json_encode(['error'=>'sessionExpired', 'redirect'=>'../../View/HTML/Identification.html']);
+    echo json_encode(['error'=>'sessionExpired', 'redirect'=>'../../View/Pages/Identification.html']);
     exit();
 }
 $conn = getConnectionBDD();
@@ -81,10 +81,10 @@ if($mdp == $mdpverify) {
     //Vérifie si le mot de passe correspond bien aux critères @Noah
     if($compte->verifMdp($mdp)){
         if(!empty($_SESSION['from'])){
-            echo json_encode(['success'=>'ok', 'redirect'=>'../../View/HTML/Identification.html']);
+            echo json_encode(['success'=>'ok', 'redirect'=>'../../View/Pages/Identification.html']);
             exit();
         }else {
-            echo json_encode(['redirect' => '../../Controller/EDT.php']);
+            echo json_encode(['redirect' => '../../View/Pages/EDT.php']);
             exit();
         }
     }

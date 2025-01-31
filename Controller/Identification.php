@@ -119,17 +119,17 @@ try {
 
     //Vérification si c'est la première connexion @Noah
     if (!$connect[0]['changemdp']) {
-        echo json_encode(['redirect' => '../../View/HTML/changeMDP.html']);
+        echo json_encode(['redirect' => '../../View/Pages/changeMDP.html']);
         exit();
     }
 
     //Vérification avec le hashage @Noah
     if (password_verify($PWD,$connect[0]['motdepasse'])) {
         if($compte->getRole() == "professeur"){
-            echo json_encode(['redirect' => '../../Controller/EDTprof.php']); // Retourne la redirection
+            echo json_encode(['redirect' => '../../View/Pages/EDTprof.php']); // Retourne la redirection
         }
         else{
-            echo json_encode(['redirect' => '../../Controller/EDT.php']); // Retourne la redirection
+            echo json_encode(['redirect' => '../../View/Pages/EDT.php']); // Retourne la redirection
         }
         exit();
     } else{
