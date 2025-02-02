@@ -26,7 +26,7 @@ if(empty($_SESSION['ID']) && empty($_SESSION['from'])) {
 $conn = getConnectionBDD();
 
 if(!empty($_SESSION['from'])){
-    $crea = recupererInfo();
+    //$crea = recupererInfo();
     $recupMail = getMail();
 
     try{
@@ -35,10 +35,14 @@ if(!empty($_SESSION['from'])){
 //        $recup->execute();
 //        $recup = $recup->fetchAll(PDO::FETCH_ASSOC);
 
-        $connect = $conn->prepare($crea);
-        $connect->bindParam(':mail', $_SESSION['mail']);
-        $connect->execute();
-        $connect = $connect->fetchAll(PDO::FETCH_ASSOC);
+//        $connect = $conn->prepare($crea);
+//        $connect->bindParam(':mail', $_SESSION['mail']);
+//        $connect->execute();
+//        $connect = $connect->fetchAll(PDO::FETCH_ASSOC);
+
+//
+
+        $connect = recupererInfo();
 
         if (!$connect) {
             echo json_encode(['error' => $_SESSION['mail']]);

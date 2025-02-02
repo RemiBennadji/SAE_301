@@ -22,21 +22,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
     // Requête pour récupérer nom et prénom du professeur
-    $info = "SELECT nom, prenom FROM collegue WHERE mail = :MAIL";
+    //$info = "SELECT nom, prenom FROM collegue WHERE mail = :MAIL";
 
     // Requête pour insérer la demande dans la BDD
-    $sql = "INSERT INTO demande(dateDemande, raison, nom, prenom, typeDemande) 
-            VALUES(:DATEDEMANDE, :RAISON, :NOM, :PRENOM, :TYPEDEMANDE)";
+//    $sql = "INSERT INTO demande(dateDemande, raison, nom, prenom, typeDemande)
+//            VALUES(:DATEDEMANDE, :RAISON, :NOM, :PRENOM, :TYPEDEMANDE)";
 
     try {
-        $conn = getConnectionBDD();
+        //$conn = getConnectionBDD();
 
         // Récupérer les informations du professeur
-        $getInfo = $conn->prepare($info);
-        $getInfo->bindParam(":MAIL", $mail);
-        $getInfo->execute();
+//        $getInfo = $conn->prepare($info);
+//        $getInfo->bindParam(":MAIL", $mail);
+//        $getInfo->execute();
 
-        $res = $getInfo->fetch(PDO::FETCH_ASSOC);
+        //$res = $getInfo->fetch(PDO::FETCH_ASSOC);
+        $res = recupNomPrenomProf($mail);
         if ($res) {
             $nom = $res[0]["nom"];
             $prenom = $res[0]["prenom"];
@@ -44,13 +45,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         // Insérer les données dans la table Demande
-        $insertion = $conn->prepare($sql);
-        $insertion->bindParam(":DATEDEMANDE", $timestamp);
-        $insertion->bindParam(":RAISON", $raison);
-        $insertion->bindParam(":NOM", $nom);
-        $insertion->bindParam(":PRENOM", $prenom);
-        $insertion->bindParam(":TYPEDEMANDE", $type);
-        $insertion->execute();
+//        $insertion = $conn->prepare($sql);
+//        $insertion->bindParam(":DATEDEMANDE", $timestamp);
+//        $insertion->bindParam(":RAISON", $raison);
+//        $insertion->bindParam(":NOM", $nom);
+//        $insertion->bindParam(":PRENOM", $prenom);
+//        $insertion->bindParam(":TYPEDEMANDE", $type);
+//        $insertion->execute();
+        insertDemande($timestamp,$raison,$nom,$prenom,$type);
 
         header('Location: ../View/Pages/EDTprof.php');
 

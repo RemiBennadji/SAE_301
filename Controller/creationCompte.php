@@ -31,20 +31,22 @@ if (isset($_FILES['fichier']) && $_FILES['fichier']['error'] === UPLOAD_ERR_OK) 
                     $nom = $res[1];
                     $prenom = $res[2];
                     // Vérification de l'existence de la ligne dans la BDD
-                    $sql1 = $conn->prepare("SELECT COUNT(*) FROM etudiants WHERE nom = :nom AND prenom = :prenom");
-                    $sql1->bindParam(':nom', $nom);
-                    $sql1->bindParam(':prenom', $prenom);
-                    $sql1->execute();
+//                    $sql1 = $conn->prepare("SELECT COUNT(*) FROM etudiants WHERE nom = :nom AND prenom = :prenom");
+//                    $sql1->bindParam(':nom', $nom);
+//                    $sql1->bindParam(':prenom', $prenom);
+//                    $sql1->execute();
+                    $sql1 = verifEtu();
                     if ($sql1->fetchColumn() == 0 && ($nom != "nom")) { // Test si la ligne existe deja dans la BDD et si le nom de la ligne n'est pas égal à nom
-                        $insertStmt = $conn->prepare("INSERT INTO etudiants (civilite, nom, prenom, semestre, nom_ressource, email) VALUES (:civilite, :nom, :prenom, :semestre, :nom_ressource, :email)");
-                        $insertStmt->execute([
-                            'civilite' => $res[0],
-                            'nom' => $nom,
-                            'prenom' => $prenom,
-                            'semestre' => $res[3],
-                            'nom_ressource' => $res[4],
-                            'email'=>$res[5]
-                        ]);
+//                        $insertStmt = $conn->prepare("INSERT INTO etudiants (civilite, nom, prenom, semestre, nom_ressource, email) VALUES (:civilite, :nom, :prenom, :semestre, :nom_ressource, :email)");
+//                        $insertStmt->execute([
+//                            'civilite' => $res[0],
+//                            'nom' => $nom,
+//                            'prenom' => $prenom,
+//                            'semestre' => $res[3],
+//                            'nom_ressource' => $res[4],
+//                            'email'=>$res[5]
+//                        ]);
+                        insertStmt($res,$nom,$prenom);
                         $etu = new Etudiant();
                         $etu->setPrenom($prenom);
                         $etu->setNom($nom);
