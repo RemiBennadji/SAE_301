@@ -135,7 +135,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $dateActuel = $edt->incrementerSemaine($dateActuel);
     }
 }
-
+echo '
+<div class="big-container4">
+        <form id="myForm">
+            <div class="divQuoti">
+                <div class="option2">
+                    <input class="input2" type="radio" name="btn2" value="option1" checked>
+                    <div class="btn2">
+                        <span class="span2">Quotidien</span>
+                    </div>
+                </div>
+                <div class="option2">
+                    <input class="input2" type="radio" name="btn2" value="option2">
+                    <div class="btn2">
+                        <span class="span2">Hebdomadaire</span>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+<br>';
 // Affichage de la partie permettant de changer la semaine, incluant un calendrier
 echo '<div class="changerSemaine">
     <button id="download-pdf" class="btn">Télécharger en PDF</button>

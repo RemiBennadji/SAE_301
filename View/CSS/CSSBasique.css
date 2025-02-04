@@ -484,6 +484,12 @@ input:focus ~ label {
     text-align: center;
     border-radius: 20px;}
 
+.big-container4{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    text-align: center;}
 
 .buttonSeConfirmer{
     /*border: none;*/
@@ -1155,3 +1161,58 @@ select#edtAdmin {
 
 
 /*Telecharger*/
+.divQuoti {
+    --font-color-dark: #323232;
+    --font-color-light: #FFF;
+    --bg-color: #fff;
+    --main-color: #323232;
+    position: relative;
+    width: 250px;
+    height: 36px;
+    background-color: var(--bg-color);
+    border: 2px solid var(--main-color);
+    border-radius: 34px;
+    display: flex;
+    flex-direction: row;
+    box-shadow: 4px 4px var(--main-color);
+}
+
+.option2 {
+    width: 49%;
+    height: 28px;
+    position: relative;
+    top: 2px;
+    left: 2px;
+}
+
+.input2 {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    appearance: none;
+    cursor: pointer;
+}
+
+.btn2 {
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-color);
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.span2 {
+    color: var(--font-color-dark);
+}
+
+.input2:checked + .btn2 {
+    background-color: var(--main-color);
+}
+
+.input2:checked + .btn2 .span2 {
+    color: var(--font-color-light);
+}
