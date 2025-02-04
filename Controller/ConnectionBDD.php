@@ -68,17 +68,29 @@ function getMail(){
 
 //codeVerif
 function codeExpire(){
-    return "DELETE FROM codeverif WHERE expiration < NOW()";
+    $conn = getConnectionBDD();
+    $codeExpire = "DELETE FROM codeverif WHERE expiration < NOW()";
+    $codeExpire = codeExpire();
+    $conn->prepare($codeExpire)->execute();
 }
 
 //codeVerif
-function recupererCode(){
-    return "SELECT codev, email FROM codeverif WHERE codev = :code";
+function recupererCode($codeVerif){
+    $conn = getConnectionBDD();
+    $recupCode = "SELECT codev, email FROM codeverif WHERE codev = :code";
+    $recupCode = $conn->prepare($recupCode);
+    $recupCode->bindParam(':code', $codeVerif);
+    $recupCode->execute();
+    return $recupCode->fetchAll(PDO::FETCH_ASSOC);
 }
 
 //codeVerif
-function suppCode(){
-    return "DELETE FROM codeverif WHERE codev = :code";
+function suppCode($codeVerif){
+    $conn = getConnectionBDD();
+    $sup = "DELETE FROM codeverif WHERE codev = :code";
+    $sup = $conn->prepare($sup);
+    $sup->bindParam(':code', $codeVerif);
+    $sup->execute();
 }
 
 //creationCompte.php
@@ -99,11 +111,11 @@ function insertStmt($res,$nom,$prenom)
     function verifEtu()
     {
         $conn = getConnectionBDD();
-        $sql1 = $conn->prepare("SELECT COUNT(*) FROM etudiants WHERE nom = :nom AND prenom = :prenom");
-        $sql1->bindParam(':nom', $nom);
-        $sql1->bindParam(':prenom', $prenom);
-        $sql1->execute();
-        return $sql1;
+        $sql = $conn->prepare("SELECT COUNT(*) FROM etudiants WHERE nom = :nom AND prenom = :prenom");
+        $sql->bindParam(':nom', $nom);
+        $sql->bindParam(':prenom', $prenom);
+        $sql->execute();
+        return $sql;
     }
     
 
@@ -134,5 +146,48 @@ function insertStmt($res,$nom,$prenom)
         $insertion->execute();
     }
 
+    //Identification.php
+    function retrouverUserBDD($ID)
+    {
+        $sql ="SELECT identifiant, motdepasse, changeMDP, role, mail FROM infoutilisateur WHERE identifiant=?";
+        $connection = getConnectionBDDEDTIdentification();
+        $connect = $connection->prepare($sql);
+        $connect->execute([$ID]);
+        return $connect->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    //Identification.php
+    function nomRessource($mail)
+    {
+        $sql ="select nom_ressource, semestre from etudiants where email=:EMAIL";
+        $connection = getConnectionBDDEDTIdentification();
+        $res = $connection->prepare($sql);
+        $res->bindParam(':EMAIL', $mail);
+        $res->execute();
+        return $res->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    //Identification.php
+    function maxVersion()
+    {
+        $sql = "select max(version) from versionValideEDT";
+        $connexionEDT = getConnectionBDDEDTIdentification();
+        $version = $connexionEDT->prepare($sql);
+        $version->execute();
+        return $version->fetchColumn();
+    }
+
+    //mdpOublie
+    function insertCodeVerif()
+    {
+        $conn = getConnectionBDD();
+        $sql = 'INSERT INTO codeverif (email, codev, date, expiration) VALUES (:email, :code, TO_TIMESTAMP(:time), TO_TIMESTAMP(:expiration))';
+        $result = $conn->prepare($sql);
+        $result->bindParam(':email', $email);
+        $result->bindParam(':code', $code);
+        $result->bindParam(':time', $time);
+        $result->bindParam(':expiration', $expiration);
+        $result->execute();
+    }
 
 }
