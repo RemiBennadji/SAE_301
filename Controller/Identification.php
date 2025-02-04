@@ -2,7 +2,7 @@
 
 header('Content-Type: application/json');
 
-include "../Controller/ConnectionBDD.php";
+require 'ConnectionBDD.php';
 include_once "../Model/Classe/Compte.php";
 include_once "../Model/Classe/Administrateur.php";
 include_once "../Model/Classe/Etudiant.php";
@@ -36,7 +36,7 @@ try {
 //    $connect = $connection->prepare($sql1);
 //    $connect->execute([$ID]);
 //    $connect = $connect->fetchAll(PDO::FETCH_ASSOC);
-    $connect = retrouverUserBDD($ID);
+      $connect = findUserBDD($ID);
 
 
 //    $connexionEDT = getConnectionBDDEDTIdentification();

@@ -104,90 +104,90 @@ function insertStmt($res,$nom,$prenom)
         'prenom' => $prenom,
         'semestre' => $res[3],
         'nom_ressource' => $res[4],
-        'email'=>$res[5]
+        'email' => $res[5]
     ]);
-    
-    //creationCompte.php
-    function verifEtu()
-    {
-        $conn = getConnectionBDD();
-        $sql = $conn->prepare("SELECT COUNT(*) FROM etudiants WHERE nom = :nom AND prenom = :prenom");
-        $sql->bindParam(':nom', $nom);
-        $sql->bindParam(':prenom', $prenom);
-        $sql->execute();
-        return $sql;
-    }
-    
-
-    //Demande.PHP
-    function recupNomPrenomProf($mail)
-    {
-        $info = "SELECT nom, prenom FROM collegue WHERE mail = :MAIL";
-        $conn = getConnectionBDD();
-        $getInfo = $conn->prepare($info);
-        $getInfo->bindParam(":MAIL", $mail);
-        $getInfo->execute();
-
-        return $getInfo->fetch(PDO::FETCH_ASSOC);
-    }
-
-    //Demande.PHP
-    function insertDemande($timestamp,$raison,$nom,$prenom,$type)
-    {
-        $sql = "INSERT INTO demande(dateDemande, raison, nom, prenom, typeDemande) 
-            VALUES(:DATEDEMANDE, :RAISON, :NOM, :PRENOM, :TYPEDEMANDE)";
-        $conn = getConnectionBDD();
-        $insertion = $conn->prepare($sql);
-        $insertion->bindParam(":DATEDEMANDE", $timestamp);
-        $insertion->bindParam(":RAISON", $raison);
-        $insertion->bindParam(":NOM", $nom);
-        $insertion->bindParam(":PRENOM", $prenom);
-        $insertion->bindParam(":TYPEDEMANDE", $type);
-        $insertion->execute();
-    }
-
-    //Identification.php
-    function retrouverUserBDD($ID)
-    {
-        $sql ="SELECT identifiant, motdepasse, changeMDP, role, mail FROM infoutilisateur WHERE identifiant=?";
-        $connection = getConnectionBDDEDTIdentification();
-        $connect = $connection->prepare($sql);
-        $connect->execute([$ID]);
-        return $connect->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    //Identification.php
-    function nomRessource($mail)
-    {
-        $sql ="select nom_ressource, semestre from etudiants where email=:EMAIL";
-        $connection = getConnectionBDDEDTIdentification();
-        $res = $connection->prepare($sql);
-        $res->bindParam(':EMAIL', $mail);
-        $res->execute();
-        return $res->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    //Identification.php
-    function maxVersion()
-    {
-        $sql = "select max(version) from versionValideEDT";
-        $connexionEDT = getConnectionBDDEDTIdentification();
-        $version = $connexionEDT->prepare($sql);
-        $version->execute();
-        return $version->fetchColumn();
-    }
-
-    //mdpOublie
-    function insertCodeVerif()
-    {
-        $conn = getConnectionBDD();
-        $sql = 'INSERT INTO codeverif (email, codev, date, expiration) VALUES (:email, :code, TO_TIMESTAMP(:time), TO_TIMESTAMP(:expiration))';
-        $result = $conn->prepare($sql);
-        $result->bindParam(':email', $email);
-        $result->bindParam(':code', $code);
-        $result->bindParam(':time', $time);
-        $result->bindParam(':expiration', $expiration);
-        $result->execute();
-    }
-
 }
+    
+//creationCompte.php
+function verifEtu()
+{
+    $conn = getConnectionBDD();
+    $sql = $conn->prepare("SELECT COUNT(*) FROM etudiants WHERE nom = :nom AND prenom = :prenom");
+    $sql->bindParam(':nom', $nom);
+    $sql->bindParam(':prenom', $prenom);
+    $sql->execute();
+    return $sql;
+}
+
+
+//Demande.PHP
+function recupNomPrenomProf($mail)
+{
+    $info = "SELECT nom, prenom FROM collegue WHERE mail = :MAIL";
+    $conn = getConnectionBDD();
+    $getInfo = $conn->prepare($info);
+    $getInfo->bindParam(":MAIL", $mail);
+    $getInfo->execute();
+
+    return $getInfo->fetch(PDO::FETCH_ASSOC);
+}
+
+//Demande.PHP
+function insertDemande($timestamp,$raison,$nom,$prenom,$type)
+{
+    $sql = "INSERT INTO demande(dateDemande, raison, nom, prenom, typeDemande) 
+        VALUES(:DATEDEMANDE, :RAISON, :NOM, :PRENOM, :TYPEDEMANDE)";
+    $conn = getConnectionBDD();
+    $insertion = $conn->prepare($sql);
+    $insertion->bindParam(":DATEDEMANDE", $timestamp);
+    $insertion->bindParam(":RAISON", $raison);
+    $insertion->bindParam(":NOM", $nom);
+    $insertion->bindParam(":PRENOM", $prenom);
+    $insertion->bindParam(":TYPEDEMANDE", $type);
+    $insertion->execute();
+}
+
+//Identification.php
+function findUserBDD($ID)
+{
+    $sql ="SELECT identifiant, motdepasse, changeMDP, role, mail FROM infoutilisateur WHERE identifiant=?";
+    $connection = getConnectionBDDEDTIdentification();
+    $connect = $connection->prepare($sql);
+    $connect->execute([$ID]);
+    return $connect->fetchAll(PDO::FETCH_ASSOC);
+}
+
+//Identification.php
+function nomRessource($mail)
+{
+    $sql ="select nom_ressource, semestre from etudiants where email=:EMAIL";
+    $connection = getConnectionBDDEDTIdentification();
+    $res = $connection->prepare($sql);
+    $res->bindParam(':EMAIL', $mail);
+    $res->execute();
+    return $res->fetchAll(PDO::FETCH_ASSOC);
+}
+
+//Identification.php
+function maxVersion()
+{
+    $sql = "select max(version) from versionValideEDT";
+    $connexionEDT = getConnectionBDDEDTIdentification();
+    $version = $connexionEDT->prepare($sql);
+    $version->execute();
+    return $version->fetchColumn();
+}
+
+//mdpOublie
+function insertCodeVerif()
+{
+    $conn = getConnectionBDD();
+    $sql = 'INSERT INTO codeverif (email, codev, date, expiration) VALUES (:email, :code, TO_TIMESTAMP(:time), TO_TIMESTAMP(:expiration))';
+    $result = $conn->prepare($sql);
+    $result->bindParam(':email', $email);
+    $result->bindParam(':code', $code);
+    $result->bindParam(':time', $time);
+    $result->bindParam(':expiration', $expiration);
+    $result->execute();
+}
+
