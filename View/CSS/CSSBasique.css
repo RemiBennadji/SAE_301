@@ -12,6 +12,7 @@ body {
 }
 
 * {
+    margin: 0;
     box-sizing: border-box;
 }
 
@@ -1005,7 +1006,7 @@ select#edtAdmin {
     background-color: #f8d7da;
     border: 1px solid #f5c6cb;
 }
- /* Centre le message */
+/* Centre le message */
 .messageReport {
     position: fixed;
     top: 50%;
@@ -1116,33 +1117,11 @@ td, th {
     min-height: 50px;
 }
 
-.container{
-    height: 100vh;
-}
-
-table{
-    text-align: center;
-    display: block;
-    box-sizing: border-box;
-    width: 100%;
-    margin: auto;
-}
-
-div{
-    border-radius: 5px;
-    text-align: center;
-    height: 100px;
-    padding: 5px 5px 5px 5px;
-    width: 100%;
-
-}
-
 @media (max-width: 800px) {
     div{
         display: block;
         width: 100%;
         box-sizing: border-box;
-        border-radius: 5px
     }
 
     .caseEDT {
@@ -1166,15 +1145,10 @@ div{
         height: 100vh;
     }
 
-    table{
-        text-align: center;
-        display: block;
-        box-sizing: border-box;
+    table {
+        height: 100%;
         width: 100%;
-        margin: auto;
+        table-layout: fixed;
     }
 
 }
-
-
-
