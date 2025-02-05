@@ -214,6 +214,16 @@ function AfficherEdtSemaine($dateDebut, $nomProf) {
                 }
 
 
+//                $nombreCours = $cours [?];
+//                if ($nombreCours == 1) {
+//                    echo "<td rowspan='$nombreCreneaux'><span class='cours'>$contenuHTML</span></td>";
+//                } else {
+//                    echo "<td rowspan='$nombreCreneaux' class='case'>";
+//                    for (String $k : $cours) {
+//                        echo "<span style='padding: 2px'>$contenuHTML</span>";
+//                    }
+//                    echo "</td>";
+//                }
 
 
 
