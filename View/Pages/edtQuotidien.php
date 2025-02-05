@@ -24,7 +24,7 @@
         </div>
         <ul class="menu">
             <!-- Lien vers différentes sections du site, avec affichage conditionnel -->
-            <li><a id="edtQuo" class="underline-animation" href="edtQuotidien.php">EDT Quotidien</a></li>
+            <li><a id="edt" class="underline-animation" href="EDT.php">EDT Quotidien</a></li>
             <li><a id="edtProf" class="underline-animation" href="EDTprof.php" style="display: none">EDT Professeur</a></li>
             <li><a id="edtCours" class="underline-animation" href="EDTmatiereSelection.php" style="display: none">EDT Ressource</a></li>
             <li><a class="underline-animation" href="EDTsalleLibres.php" id="afficheSalles">Salles disponibles</a></li>
@@ -111,30 +111,26 @@ if (isset($_COOKIE['annee'])) {
     echo "Le cookie 'annee' n'est pas défini."; // Message d'erreur si le cookie 'annee' n'existe pas
 }
 
-// Calcul de la date du début de la semaine (lundi)
-$dateActuel = date('Y-m-d', strtotime('monday this week'));
+$dateActuel = date('Y-m-d', strtotime('today'));
+
 
 // Gestion des actions POST, comme la sélection de la date ou le changement de semaine
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST["selectedDate"])) {
         // Traitement de la date sélectionnée et ajustement pour le lundi de la semaine
         $selectedDate = new DateTime($_POST["selectedDate"]);
-        $dayOfWeek = $selectedDate->format('N'); // 1 (lundi) à 7 (dimanche)
-        $daysToSubtract = $dayOfWeek - 1;
-        $selectedDate->sub(new DateInterval("P{$daysToSubtract}D"));
-        $dateActuel = $selectedDate->format('Y-m-d');
+        if (isset($_POST["precedent"])) {
+            $selectedDate = $edt->decrementerJour($dateActuel);
+        }
+
+        if (isset($_POST["suivant"])) {
+            $selectedDate = $edt->incrementerJour($dateActuel);
+        }
     } else {
-        $dateActuel = $_POST["dateActuel"] ?? $dateActuel; // Utilisation de la date actuelle si aucune date n'est sélectionnée
+        $dateActuel = $_POST["dateActuel"]; // Utilisation de la date actuelle si aucune date n'est sélectionnée
     }
 
     // Gestion des boutons pour naviguer entre les semaines
-    if (isset($_POST["precedent"])) {
-        $dateActuel = $edt->decrementerSemaine($dateActuel);
-    }
-
-    if (isset($_POST["suivant"])) {
-        $dateActuel = $edt->incrementerSemaine($dateActuel);
-    }
 }
 echo '
 <div class="big-container4">
@@ -159,7 +155,7 @@ echo '
 // Affichage de la partie permettant de changer la semaine, incluant un calendrier
 echo '<div class="changerSemaine">
     <button id="download-pdf" class="btn">Télécharger en PDF</button>
-    <form action="EDT.php" method="post">
+    <form action="edtQuotidien.php" method="post">
         <button type="submit" name="precedent" class="fleche">Précédent</button>
         
         <label for="selectionnerSemaine">Semaine du</label>
@@ -182,7 +178,7 @@ echo ('<footer class="footer">
 </footer>');
 
 // Appel à la fonction qui affiche l'emploi du temps de la semaine
-$edt->AfficherEdtSemaine($dateActuel, $classeActuel, $anneeActuel,$_COOKIE["version"]);
+$edt->AfficherEdtJour($dateActuel, $classeActuel, $anneeActuel,$_COOKIE["version"]);
 ?>
 
 <!-- Inclusion de scripts pour le menu, le calendrier et la génération de PDF -->

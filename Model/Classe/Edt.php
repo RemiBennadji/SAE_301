@@ -3,6 +3,19 @@
 class Edt
 {
 
+    function AfficherEdtJour($dateDebut, $classe, $annee, $version){
+        $timestamp = strtotime($dateDebut);
+        echo "<table>";
+        echo "<tr><th>Heure</th>";
+
+        $jour = date($timestamp);
+        $joursData = $this->RecupererCoursParJour($jour, $classe, $annee, $version);
+        echo "</tr>";
+
+        $listeHorraire = ['08:00', '09:30', '11:00', '12:30', '14:00', '15:30'.'<br>'.'<br>'.'<br>'.'17:00'];
+        $cellulesSautees = array_fill(0, 5, 0);
+
+    }
     function AfficherEdtSemaine($dateDebut, $classe, $annee, $version) {
 
         $timestamp = strtotime($dateDebut);
