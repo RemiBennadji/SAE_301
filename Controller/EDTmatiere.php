@@ -200,7 +200,23 @@ function AfficherEdtSemaine($dateDebut, $nomProf) {
                     "Semestre : ".$semestre . " | " . $nomRessource . "<br>" .
                     "</div>";
 
-                echo "<td rowspan='$nombreCreneaux'>$contenuHTML</td>";
+
+
+                $nombreCours = 3;
+                if ($nombreCours == 1) {
+                    echo "<td rowspan='$nombreCreneaux'><span class='cours'>$contenuHTML</span></td>";
+                } else {
+                    echo "<td rowspan='$nombreCreneaux' class='case'>";
+                    for ($k = 0; $k < $nombreCours; $k++) {
+                        echo "<span style='padding: 2px'>$contenuHTML</span>";
+                    }
+                    echo "</td>";
+                }
+
+
+
+
+
                 $cellulesSautees[$j] = $nombreCreneaux - 1;
             } else {
                 echo "<td></td>";

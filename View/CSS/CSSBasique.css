@@ -1158,3 +1158,9 @@ div{
     text-align: center;
 
 }
+
+.case {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
