@@ -86,7 +86,7 @@ if (isset($_COOKIE['groupe'])) {
 }
 
 if (!isset($_SESSION['role'])) {
-    header("Location: ../View/HTML/Deconnexion.html"); // Redirection si pas de rôle
+    header("Location: ../View/HTML/Deconnexion.html"); // Redirection si pas de rôle (connexion via URL sans passer par l'identification)
     exit();
 }
 
@@ -103,6 +103,37 @@ if (isset($_SESSION['role'])) {
         header("Location: ./Deconnexion.php"); // Redirection si pas de rôle
         exit();
     }
+//    if($_SESSION['role'] == 'administrateur'){
+//        $sqlheur24h = "SELECT version.timestamp + INTERVAL '24 hours' AS timestamp_plus_24h, version.version FROM version WHERE version.version = (SELECT MAX(version) FROM version)";
+//        $sqlcount = "select count(*) from validationedt where valider = false";
+//        try {
+//            $connexion = getConnectionBDD();
+//            $conn1 = $connexion->prepare($sqlheur24h);
+//            $conn1->execute();
+//
+//            $result1 = $conn1->fetch(PDO::FETCH_ASSOC);
+//            $timestamp_plus_24h = $result1['timestamp_plus_24h'];
+//            $version = $result1['version'];
+//
+//            $conn2 = $connexion->prepare($sqlcount);
+//            $conn2->execute();
+//
+//            $result2 = $conn2->fetch(PDO::FETCH_ASSOC);
+//            $countFalse = $result2['count'];
+//
+//            $DateActuel = new DateTime();
+//
+//            if ($DateActuel > $timestamp_plus_24h && $countFalse ==0) {
+//                $insertion = "insert into versionvalideedt(version, datevalidation) values(?, ?)";
+//                $stmt = $connexion->prepare($insertion);
+//                $stmt->bindParam(1, $version);
+//                $stmt->bindParam(2, $DateActuel);
+//                $stmt->execute();
+//            }
+//        } catch (PDOException $e) {
+//            echo 'Erreur : ' . $e->getMessage();
+//        }
+//    }
 }
 
 date_default_timezone_set('Europe/Paris');//Fuseau horaire
