@@ -54,16 +54,8 @@
         </ul>
     </nav>
 </header>
+<script defer src="../../Model/JavaScript/menuHamburger.js"></script>
 
-<!-- Script pour faire fonctionner le menu burger (affichage mobile) -->
-<script>
-    const burger = document.querySelector('.burger');
-    const menu = document.querySelector('.menu');
-    burger.addEventListener("click", () => {
-        menu.classList.toggle("active");
-        burger.classList.toggle("toggle");
-    });
-</script>
 
 <br><br><br>
 

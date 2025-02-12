@@ -174,15 +174,6 @@ $heureCourante = date('H:i', strtotime('+1 hour'));
     </nav>
 </header>
 
-<!-- Script pour faire fonctionner le menu burger (affichage mobile) -->
-<script>
-    const burger = document.querySelector('.burger');
-    const menu = document.querySelector('.menu');
-    burger.addEventListener("click", () => {
-        menu.classList.toggle("active");
-        burger.classList.toggle("toggle");
-    });
-</script>
 
 <!-- Affichage de la partie permettant de changer la journée, incluant un calendrier -->
 <div class="changerSemaine">
@@ -225,6 +216,7 @@ $heureCourante = date('H:i', strtotime('+1 hour'));
 
 <script src="../../Model/JavaScript/GenererPDF.js"></script>
 <script src="../../Model/JavaScript/MenuPrincipal.js"></script>
+<script defer src="../../Model/JavaScript/menuHamburger.js"></script>
 <script>afficherElement("<?php echo $_SESSION['role']; ?>");</script>
 
 <footer class="footer">

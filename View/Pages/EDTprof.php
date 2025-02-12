@@ -55,15 +55,6 @@
     </nav>
 </header>
 
-<!-- Script pour faire fonctionner le menu burger (affichage mobile) -->
-<script>
-    const burger = document.querySelector('.burger');
-    const menu = document.querySelector('.menu');
-    burger.addEventListener("click", () => {
-        menu.classList.toggle("active");
-        burger.classList.toggle("toggle");
-    });
-</script>
 
 <?php
 // Inclusion des fichiers nécessaires pour la connexion à la base de données et la gestion de l'emploi du temps
@@ -290,6 +281,7 @@ AfficherEdtSemaine($dateActuel, $nomProf);
 <!-- la génération de PDF -->
 <script src="../../Model/JavaScript/GenererPDF.js"></script>
 <script src="../../Model/JavaScript/MenuPrincipal.js"></script>
+<script defer src="../../Model/JavaScript/menuHamburger.js"></script>
 <script>afficherElement("<?php echo $_COOKIE['role']; ?>");</script>
 <script src="../../Model/JavaScript/EdtProf.js"></script>
 </body>

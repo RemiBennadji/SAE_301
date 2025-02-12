@@ -8,7 +8,7 @@
     <link href="../CSS/CSSBasique.css" rel="stylesheet">
 </head>
 <body>
-<a href="../../Controller/EDT.php"><img src="../../Ressource/logouphf2.png" class="logoUPHF" alt="Logo de l'UPHF"></a>
+<a href="EDT.php"><img src="../../Ressource/logouphf2.png" class="logoUPHF" alt="Logo de l'UPHF"></a>
 <header>
     <!-- Menu de navigation principal -->
     <nav>
@@ -57,15 +57,6 @@
     </nav>
 </header>
 
-<!-- Script pour faire fonctionner le menu burger (affichage mobile) -->
-<script>
-    const burger = document.querySelector('.burger');
-    const menu = document.querySelector('.menu');
-    burger.addEventListener("click", () => {
-        menu.classList.toggle("active");
-        burger.classList.toggle("toggle");
-    });
-</script>
 <br><br>
 <div class="big-container">
     <div class="sub-container">
@@ -88,6 +79,7 @@
 </footer>
 
 <script src="../../Model/JavaScript/MenuPrincipal.js"></script>
+<script defer src="../../Model/JavaScript/menuHamburger.js"></script>
 <script>afficherElement("<?php echo $_SESSION['role']; ?>");</script>
 </body>
 </html>
