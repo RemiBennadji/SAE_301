@@ -191,3 +191,14 @@ function insertCodeVerif()
     $result->execute();
 }
 
+
+//mdpOublie
+function selectMail()
+{
+    $conn = getConnectionBDD();
+    $listeMail = "SELECT mail FROM mailidentifiant";
+    $listeMail = $conn->prepare($listeMail);
+    $listeMail->execute();
+    $listeMail = $listeMail->fetchAll(PDO::FETCH_ASSOC);
+    return $listeMail;
+}

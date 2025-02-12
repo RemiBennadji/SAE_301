@@ -67,15 +67,6 @@ if (isset($_SESSION['role'])) {
     </nav>
 </header>
 
-<!-- Script pour faire fonctionner le menu burger (affichage mobile) -->
-<script>
-    const burger = document.querySelector('.burger');
-    const menu = document.querySelector('.menu');
-    burger.addEventListener("click", () => {
-        menu.classList.toggle("active");
-        burger.classList.toggle("toggle");
-    });
-</script>
 
 <!-- Formulaire où on entre le nom d'une ressource, on utilise la réponse dans le fichier EDTmatiere.php -->
 <br><br><br><br><br>
@@ -96,6 +87,7 @@ if (isset($_SESSION['role'])) {
     <p>&copy; 2024 - SAE Emploi du temps. Rémi | Dorian | Matthéo | Bastien | Noah.</p>
 </footer>
 <script src="../../Model/JavaScript/MenuPrincipal.js"></script>
+<script defer src="../../Model/JavaScript/menuHamburger.js"></script>
 <script>afficherElement("<?php echo $_SESSION['role']; ?>");</script>
 </body>
 </html>

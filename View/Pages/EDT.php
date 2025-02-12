@@ -62,15 +62,6 @@
     </nav>
 </header>
 
-<!-- Script pour faire fonctionner le menu burger (affichage mobile) -->
-<script>
-    const burger = document.querySelector('.burger');
-    const menu = document.querySelector('.menu');
-    burger.addEventListener("click", () => {
-        menu.classList.toggle("active");
-        burger.classList.toggle("toggle");
-    });
-</script>
 
 <br><br>
 
@@ -190,5 +181,6 @@ $edt->AfficherEdtSemaine($dateActuel, $classeActuel, $anneeActuel,$_COOKIE["vers
 <script>afficherElement("<?php echo $_SESSION['role']; ?>");</script>
 <script src="../../Model/JavaScript/CalendrierEDT.js"></script>
 <script src="../../Model/JavaScript/GenererPDF.js"></script>
+<script defer src="../../Model/JavaScript/menuHamburger.js"></script>
 </body>
 </html>

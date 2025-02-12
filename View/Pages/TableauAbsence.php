@@ -84,15 +84,6 @@ if (isset($_POST['precedent'])) {
     </nav>
 </header>
 
-<!-- Script pour faire fonctionner le menu burger (affichage mobile) -->
-<script>
-    const burger = document.querySelector('.burger');
-    const menu = document.querySelector('.menu');
-    burger.addEventListener("click", () => {
-        menu.classList.toggle("active");
-        burger.classList.toggle("toggle");
-    });
-</script>
 
 <div class="changerSemaine">
     <button id="download-pdf" class="btn">Télécharger en PDF</button>
@@ -192,5 +183,6 @@ genererTableau($listeAbsences, "Liste des absences");
 <script>afficherElement("<?php echo $_SESSION['role'] ?>")</script>
 <script src="../../Model/JavaScript/CalendrierEDT.js"></script>
 <script src="../../Model/JavaScript/GenererPDF.js"></script>
+<script defer src="../../Model/JavaScript/menuHamburger.js"></script>
 </body>
 </html>

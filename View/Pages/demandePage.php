@@ -58,15 +58,6 @@ include "../../Controller/demande.php";
     </nav>
 </header>
 
-<!-- Script pour faire fonctionner le menu burger (affichage mobile) -->
-<script>
-    const burger = document.querySelector('.burger');
-    const menu = document.querySelector('.menu');
-    burger.addEventListener("click", () => {
-        menu.classList.toggle("active");
-        burger.classList.toggle("toggle");
-    });
-</script>
 <body>
 
 <form action="../../Controller/demande.php" method="post" class="form-demande">
@@ -85,6 +76,7 @@ include "../../Controller/demande.php";
 </form>
 
 <script src="../../Model/JavaScript/MenuPrincipal.js"></script>
+<script defer src="../../Model/JavaScript/menuHamburger.js"></script>
 <script>afficherElement("<?php echo $_SESSION['role']; ?>");</script>
 </body>
 </html>
