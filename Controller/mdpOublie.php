@@ -7,7 +7,7 @@ include_once "../Model/Classe/Mail.php";
 
 //$conn = getConnectionBDD();
 
-function sendCode($email, $code, $conn){
+function sendCode($email, $code){
     $time = time();
     $expiration = $time + (10*60);
 //    $sql1 = 'INSERT INTO codeverif (email, codev, date, expiration) VALUES (:email, :code, TO_TIMESTAMP(:time), TO_TIMESTAMP(:expiration))';
@@ -38,16 +38,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" and isset($_POST["email"]) and !isset($
     $email = isset($_POST["email"]) ? htmlspecialchars($_POST["email"]) : "";
     $code = rand(0,999999);
     $code = sprintf('%06d', $code);
-    $listeMail = "SELECT mail FROM mailidentifiant";
-    $listeMail = $conn->prepare($listeMail);
-    $listeMail->execute();
-    $listeMail = $listeMail->fetchAll(PDO::FETCH_ASSOC);
+//    $listeMail = "SELECT mail FROM mailidentifiant";
+//    $listeMail = $conn->prepare($listeMail);
+//    $listeMail->execute();
+//    $listeMail = $listeMail->fetchAll(PDO::FETCH_ASSOC);
+    $listeMail = selectMail();
     $mailAll = [];
     foreach ($listeMail as $mail) {
         $mailAll[] = $mail["mail"];
     }
     if(in_array($email, $mailAll)){
-        sendCode($email, $code, $conn);
+        sendCode($email, $code);
         session_start();
         $_SESSION['mail'] = $email;
         header("location: ../View/Pages/codeVerif.html");
