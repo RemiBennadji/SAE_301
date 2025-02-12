@@ -113,24 +113,17 @@ if (isset($_COOKIE['annee'])) {
 
 $dateActuel = date('Y-m-d', strtotime('today'));
 
+if (isset($_POST['dateSelection'])) {
+    $dateActuelle = new DateTime($_POST['dateSelection']);
+} else {
+    $dateActuelle = new DateTime();
+}
 
-// Gestion des actions POST, comme la sélection de la date ou le changement de semaine
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST["selectedDate"])) {
-        // Traitement de la date sélectionnée et ajustement pour le lundi de la semaine
-        $selectedDate = new DateTime($_POST["selectedDate"]);
-        if (isset($_POST["precedent"])) {
-            $selectedDate = $edt->decrementerJour($dateActuel);
-        }
-
-        if (isset($_POST["suivant"])) {
-            $selectedDate = $edt->incrementerJour($dateActuel);
-        }
-    } else {
-        $dateActuel = $_POST["dateActuel"]; // Utilisation de la date actuelle si aucune date n'est sélectionnée
-    }
-
-    // Gestion des boutons pour naviguer entre les semaines
+// Gestion de la navigation avec les flèches
+if (isset($_POST['precedent'])) {
+    $dateActuelle->modify('-1 days');
+} elseif (isset($_POST['suivant'])) {
+    $dateActuelle->modify('+1 days');
 }
 echo '
 <div class="big-container4">
@@ -160,10 +153,10 @@ echo '<div class="changerSemaine">
         
         <label for="selectionnerSemaine">Semaine du</label>
         <input type="date" id="selectionnerSemaine" name="selectedDate" onchange="this.form.submit()" 
-               value="' . htmlspecialchars($dateActuel, ENT_QUOTES, 'UTF-8') . '">
+               value="' . htmlspecialchars($dateActuelle->format('Y-m-d'), ENT_QUOTES, 'UTF-8') . '">
         <input type="hidden" name="role" value="' . $_SESSION["role"] . '">
         <input type="hidden"  name="dateActuel" 
-               value="' . htmlspecialchars($dateActuel, ENT_QUOTES, 'UTF-8') . '">
+               value="' . htmlspecialchars($dateActuelle->format('Y-m-d'), ENT_QUOTES, 'UTF-8') . '">
         
         <button type="submit" name="suivant" class="fleche">Suivant</button>
     </form>
