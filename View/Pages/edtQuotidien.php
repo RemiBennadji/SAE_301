@@ -125,6 +125,7 @@ if (isset($_POST['precedent'])) {
 } elseif (isset($_POST['suivant'])) {
     $dateActuelle->modify('+1 days');
 }
+
 echo '
 <div class="big-container4">
         <form id="myForm">
@@ -145,6 +146,7 @@ echo '
         </form>
     </div>
 <br>';
+
 // Affichage de la partie permettant de changer la semaine, incluant un calendrier
 echo '<div class="changerSemaine">
     <button id="download-pdf" class="btn">Télécharger en PDF</button>
@@ -152,10 +154,10 @@ echo '<div class="changerSemaine">
         <button type="submit" name="precedent" class="fleche">Précédent</button>
         
         <label for="selectionnerSemaine">Semaine du</label>
-        <input type="date" id="selectionnerSemaine" name="selectedDate" onchange="this.form.submit()" 
+        <input type="date" id="selectionnerSemaine" name="dateSelection" onchange="this.form.submit()" 
                value="' . htmlspecialchars($dateActuelle->format('Y-m-d'), ENT_QUOTES, 'UTF-8') . '">
         <input type="hidden" name="role" value="' . $_SESSION["role"] . '">
-        <input type="hidden"  name="dateActuel" 
+        <input type="hidden"  name="dateActuelle" 
                value="' . htmlspecialchars($dateActuelle->format('Y-m-d'), ENT_QUOTES, 'UTF-8') . '">
         
         <button type="submit" name="suivant" class="fleche">Suivant</button>
@@ -172,6 +174,7 @@ echo ('<footer class="footer">
 
 // Appel à la fonction qui affiche l'emploi du temps de la semaine
 $edt->AfficherEdtJour($dateActuel, $classeActuel, $anneeActuel,$_COOKIE["version"]);
+
 ?>
 
 <!-- Inclusion de scripts pour le menu, le calendrier et la génération de PDF -->

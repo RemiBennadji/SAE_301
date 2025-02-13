@@ -19,7 +19,19 @@ class Edt
         $cellulesSautees = array_fill(0, 5, 0);
 
 
-        $j = 2;
+        $nomJour = date("l", $timestamp);
+        if($nomJour == "Monday"){
+            $j=0;
+        }elseif ($nomJour == "Tuesday") {
+            $j=1;
+        }elseif ($nomJour == "Wednesday") {
+            $j=2;
+        }elseif ($nomJour == "Thursday") {
+            $j=3;
+        }elseif ($nomJour == "Friday") {
+            $j=4;
+        }
+
         // Parcourir chaque horaire pour afficher les cours correspondants
         for ($h = 0; $h < count($listeHoraire); $h++) {
             echo "<tr>";
