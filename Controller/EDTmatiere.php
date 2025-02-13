@@ -111,6 +111,26 @@ function AfficherEdtSemaine($dateDebut, $nomProf) {
         $jourTimestamp = strtotime("+$i day", strtotime($lundi));
         $jour = date("Y-m-d", $jourTimestamp);
         $joursData[$i] = RecupererCoursParJour($jour, $nomProf);
+
+
+
+
+        // Pour déboguer le contenu de $joursData
+        foreach ($joursData as $jour => $coursJour) {
+            echo "Jour $jour : <br>";
+            foreach ($coursJour as $cours) {
+                echo "- Heure: " . date('H:i', strtotime($cours['date'])) . "<br>";
+                echo "  Type: " . $cours['typeseance'] . "<br>";
+                echo "  Matière: " . $cours['matiere'] . "<br>";
+                echo "  Salle: " . $cours['salles'] . "<br>";
+                echo "  Nombre de cours: " . $cours['nombre_cours'] . "<br>";
+                echo "  Semestre: " . $cours['semestre'] . "<br>";
+                echo "<hr>";
+            }
+        }
+
+
+
         echo "<th>" . $joursSemaine[$i] . " " . date("d/m", $jourTimestamp) . "</th>";
     }
     echo "</tr>";
@@ -202,7 +222,7 @@ function AfficherEdtSemaine($dateDebut, $nomProf) {
 
 
 
-                $nombreCours = 3;
+                $nombreCours = $cours['nombre_cours'];  // Récupère le nombre de cours parallèles
                 if ($nombreCours == 1) {
                     echo "<td rowspan='$nombreCreneaux'><span class='cours'>$contenuHTML</span></td>";
                 } else {
@@ -212,18 +232,6 @@ function AfficherEdtSemaine($dateDebut, $nomProf) {
                     }
                     echo "</td>";
                 }
-
-
-//                $nombreCours = $cours [?];
-//                if ($nombreCours == 1) {
-//                    echo "<td rowspan='$nombreCreneaux'><span class='cours'>$contenuHTML</span></td>";
-//                } else {
-//                    echo "<td rowspan='$nombreCreneaux' class='case'>";
-//                    for (String $k : $cours) {
-//                        echo "<span style='padding: 2px'>$contenuHTML</span>";
-//                    }
-//                    echo "</td>";
-//                }
 
 
 
@@ -242,13 +250,27 @@ function RecupererCoursParJour($jour, $nomProf): array
 {
 
     $sql = "
-    SELECT
-        seance.idseance, seance.typeseance, seance.duree,
-        schedulesalle.salle as salles,
-        collegue.prenom, collegue.nom,
+WITH CoursParalleles AS (
+    SELECT 
+        seance.idseance, 
+        seance.typeseance, 
+        seance.duree,
+        STRING_AGG(DISTINCT schedulesalle.salle::text, ',') as salles,  -- Correction ici
+        collegue.prenom, 
+        collegue.nom,
         enseignement.court as matiere,
-        enseignement.discipline, schedule.horaire as date, 
-        enseignement.semestre, schedule.nomgroupe, enseignement.code, rg.nomressource as ressource
+        enseignement.discipline, 
+        schedule.horaire as date,
+        enseignement.semestre, 
+        schedule.nomgroupe,
+        enseignement.code, 
+        rg.nomressource as ressource,
+        COUNT(*) OVER (
+            PARTITION BY 
+                schedule.horaire,
+                enseignement.code,
+                seance.typeseance
+        ) as nombre_cours
     FROM seance
         LEFT JOIN collegue ON seance.collegue = collegue.id
         JOIN enseignement USING (code, semestre)
@@ -258,7 +280,22 @@ function RecupererCoursParJour($jour, $nomProf): array
     WHERE DATE(horaire) = ?
         AND version = ?
         AND enseignement.code ILIKE ?
-    ORDER BY horaire
+    GROUP BY 
+        seance.idseance, 
+        seance.typeseance, 
+        seance.duree,
+        collegue.prenom, 
+        collegue.nom,
+        enseignement.court,
+        enseignement.discipline,
+        schedule.horaire,
+        enseignement.semestre,
+        schedule.nomgroupe,
+        enseignement.code,
+        rg.nomressource
+)
+SELECT * FROM CoursParalleles
+ORDER BY date, salles
     ";
 
 
