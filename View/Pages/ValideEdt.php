@@ -104,32 +104,7 @@ $timestamp = date('Y-m-d H:i:s');//Date actuel pour la mettre dans la BDD
 //Pour avoir l'edt à valider
 try {
     $sql2 = "select max(version) as total from schedulesalle;";
-//    $sqlheur24h = "SELECT version.timestamp + INTERVAL '24 hours' AS timestamp_plus_24h, version.version FROM version WHERE version.version = (SELECT MAX(version) FROM version)";
-//    $sqlcount = "select count(*) from validationedt where valider = false";
-//
     $connexion = getConnectionBDD();
-//    $conn1 = $connexion->prepare($sqlheur24h);
-//    $conn1->execute();
-//
-//    $result1 = $conn1->fetch(PDO::FETCH_ASSOC);
-//    $timestamp_plus_24h = $result1['timestamp_plus_24h'];
-//    $version = $result1['version'];
-//
-//    $conn2 = $connexion->prepare($sqlcount);
-//    $conn2->execute();
-//
-//    $result2 = $conn2->fetch(PDO::FETCH_ASSOC);
-//    $countFalse = $result2['count'];
-//
-//    $DateActuel = new DateTime();
-//
-//    if ($DateActuel > $timestamp_plus_24h && $countFalse ==0) {
-//        $insertion = "insert into versionvalideedt(version, datevalidation) values(?, ?)";
-//        $stmt = $connexion->prepare($insertion);
-//        $stmt->bindParam(1, $version);
-//        $stmt->bindParam(2, $DateActuel);
-//        $stmt->execute();
-//    }
     $nouvelleVersion = $connexion->prepare($sql2);
     $nouvelleVersion->execute();
     $nouvelleVersion = $nouvelleVersion->fetch(PDO::FETCH_ASSOC)['total'];
@@ -178,7 +153,6 @@ function adminValideVersion()//Si les profs qui ont validés > aux profs non val
         $connexion = getConnectionBDD();
         $accepter = $connexion->prepare($sql);
         $accepter->execute(['true']);
-        $accepter = $accepter->fetch(PDO::FETCH_ASSOC)['total'];
 
         $pasaccepter = $connexion->prepare($sql);
         $pasaccepter->execute(['false']);
@@ -194,6 +168,32 @@ function adminValideVersion()//Si les profs qui ont validés > aux profs non val
                 </form>
                 ";
         }
+//        $sqlheur24h = "SELECT version.timestamp + INTERVAL '24 hours' AS timestamp_plus_24h, version.version FROM version WHERE version.version = (SELECT MAX(version) FROM version)";
+//        $sqlcount = "select count(*) from validationedt where valider = false";
+//
+//        $connexion = getConnectionBDD();
+//        $conn1 = $connexion->prepare($sqlheur24h);
+//        $conn1->execute();
+//
+//        $result1 = $conn1->fetch(PDO::FETCH_ASSOC);
+//        $timestamp_plus_24h = $result1['timestamp_plus_24h'];
+//        $version = $result1['version'];
+//
+//        $conn2 = $connexion->prepare($sqlcount);
+//        $conn2->execute();
+//
+//        $result2 = $conn2->fetch(PDO::FETCH_ASSOC);
+//        $countFalse = $result2['count'];
+//
+//        $DateActuel = new DateTime();
+//
+//        if ($DateActuel > $timestamp_plus_24h && $countFalse ==0) {
+//            $insertion = "insert into versionvalideedt(version, datevalidation) values(?, ?)";
+//            $stmt = $connexion->prepare($insertion);
+//            $stmt->bindParam(1, $version);
+//            $stmt->bindParam(2, $DateActuel);
+//            $stmt->execute();
+//        }
     }
     catch (PDOException $e) {
         echo $e->getMessage();
