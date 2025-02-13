@@ -1,6 +1,6 @@
 <?php
-include "ConnectionBDD.php";
-require_once "../Model/Classe/Edt.php";
+include "../../Controller/ConnectionBDD.php";
+require_once "../../Model/Classe/Edt.php";
 
 $edt = new Edt();
 session_start();
@@ -119,12 +119,12 @@ $heureCourante = date('H:i', strtotime('+1 hour'));
 <head>
     <meta charset="UTF-8">
     <title>EDT Salle</title>
-    <link rel="stylesheet" type="text/css" href="../View/CSS/CSSBasique.css">
+    <link rel="stylesheet" type="text/css" href="../CSS/CSSBasique.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.22/jspdf.plugin.autotable.min.js"></script>
 </head>
 <body>
-<a href="EDT.php"><img src="../Ressource/logouphf2.png" class="logoUPHF" alt="Logo UPHF"></a>
+<a href="EDT.php"><img src="../../Ressource/logouphf2.png" class="logoUPHF" alt="Logo UPHF"></a>
 <!-- Menu hamburger -->
 <header>
     <!-- Menu de navigation principal -->
@@ -137,15 +137,15 @@ $heureCourante = date('H:i', strtotime('+1 hour'));
         </div>
         <ul class="menu">
             <!-- Lien vers différentes sections du site, avec affichage conditionnel -->
-            <li><a id="edtProf" class="underline-animation" href="../Controller/EDTprof.php" style="display: none">EDT Professeur</a></li>
-            <li><a id="edtCours" class="underline-animation" href="../Controller/EDTmatiereSelection.php" style="display: none">EDT Ressource</a></li>
-            <li><a class="underline-animation" href="../Controller/EDTsalleLibres.php" id="afficheSalles">Salles disponibles</a></li>
-            <li><a id="tableauEtudiant" class="underline-animation" href="../Controller/VoireEtudiant.php" style="display: none">Listes Étudiants</a></li>
-            <li><a id="tableauAbsence" class="underline-animation" href="../Controller/TableauAbsence.php" style="display: none">Tableau Absence</a></li>
-            <li><a id="tableauReport" class="underline-animation" href="../Controller/TableauReport.php" style="display: none">Tableau Report</a></li>
-            <li><a class="underline-animation" href="../View/HTML/demandePage.php" id="demande" style="display: none">Faire une demande</a></li>
-            <li><a class="underline-animation" href="../View/HTML/creationCompte.php" id="creationCompte" style="display: none">Créer un compte</a></li>
-            <li><a id ="valideEDT" class="underline-animation" href="../Controller/ValideEdt.php" style="display: none">ValideEDT</a></li>
+            <li><a id="edtProf" class="underline-animation" href="EDTprof.php" style="display: none">EDT Professeur</a></li>
+            <li><a id="edtCours" class="underline-animation" href="EDTmatiereSelection.php" style="display: none">EDT Ressource</a></li>
+            <li><a class="underline-animation" href="EDTsalleLibres.php" id="afficheSalles">Salles disponibles</a></li>
+            <li><a id="tableauEtudiant" class="underline-animation" href="VoireEtudiant.php" style="display: none">Listes Étudiants</a></li>
+            <li><a id="tableauAbsence" class="underline-animation" href="TableauAbsence.php" style="display: none">Tableau Absence</a></li>
+            <li><a id="tableauReport" class="underline-animation" href="TableauReport.php" style="display: none">Tableau Report</a></li>
+            <li><a class="underline-animation" href="demandePage.php" id="demande" style="display: none">Faire une demande</a></li>
+            <li><a class="underline-animation" href="creationCompte.php" id="creationCompte" style="display: none">Créer un compte</a></li>
+            <li><a id ="valideEDT" class="underline-animation" href="ValideEdt.php" style="display: none">ValideEDT</a></li>
             <!-- Sélecteur d'année scolaire, affiché conditionnellement -->
             <label class="choixClasse" id="choixClasse" style="display: none">
                 <select id="edtAdmin" class="edtAdmin">
@@ -169,32 +169,23 @@ $heureCourante = date('H:i', strtotime('+1 hour'));
                     <option value="FA">FA</option>
                 </select>
             </label>
-            <li><a class="underline-animation" href="../Controller/Deconnexion.php">Déconnexion</a></li>
+            <li><a class="underline-animation" href="../../Controller/Deconnexion.php">Déconnexion</a></li>
         </ul>
     </nav>
 </header>
 
-<!-- Script pour faire fonctionner le menu burger (affichage mobile) -->
-<script>
-    const burger = document.querySelector('.burger');
-    const menu = document.querySelector('.menu');
-    burger.addEventListener("click", () => {
-        menu.classList.toggle("active");
-        burger.classList.toggle("toggle");
-    });
-</script>
 
 <!-- Affichage de la partie permettant de changer la journée, incluant un calendrier -->
 <div class="changerSemaine">
     <button id="download-pdf" class="btn">Télécharger en PDF</button>
     <form action="EDTsalleLibres.php" method="post">
-        <button type="submit" name="precedent">&lt;</button>
+        <button type="submit" name="precedent" class="fleche">Précédent</button>
 
         <label for="selectionnerSemaine">Semaine du</label>
         <input type="date" id="selectionnerSemaine" name="dateSelection" onchange="this.form.submit()"
                value="<?= htmlspecialchars($dateActuelle->format('Y-m-d'), ENT_QUOTES, 'UTF-8') ?>">
 
-        <button type="submit" name="suivant">&gt;</button>
+        <button type="submit" name="suivant" class="fleche">Suivant</button>
     </form>
 </div>
 
@@ -223,8 +214,9 @@ $heureCourante = date('H:i', strtotime('+1 hour'));
     </tbody>
 </table>
 
-<script src="../Model/JavaScript/GenererPDF.js"></script>
-<script src="../Model/JavaScript/MenuPrincipal.js"></script>
+<script src="../../Model/JavaScript/GenererPDF.js"></script>
+<script src="../../Model/JavaScript/MenuPrincipal.js"></script>
+<script defer src="../../Model/JavaScript/menuHamburger.js"></script>
 <script>afficherElement("<?php echo $_SESSION['role']; ?>");</script>
 
 <footer class="footer">

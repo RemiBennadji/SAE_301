@@ -9,7 +9,7 @@ include "../../Controller/demande.php";
     <title>Demander un report</title>
   <link href="../CSS/CSSBasique.css" rel="stylesheet">
 </head>
-<a href="../../Controller/EDTprof.php"><img src="../../Ressource/logouphf2.png" class="logoUPHF" alt="Logo UPHF"></a>
+<a href="EDTprof.php"><img src="../../Ressource/logouphf2.png" class="logoUPHF" alt="Logo UPHF"></a>
 <header>
     <!-- Menu de navigation principal -->
     <nav>
@@ -21,15 +21,15 @@ include "../../Controller/demande.php";
         </div>
         <ul class="menu">
             <!-- Lien vers différentes sections du site, avec affichage conditionnel -->
-            <li><a id="edtProf" class="underline-animation" href="../../Controller/EDTprof.php" style="display: none">EDT Professeur</a></li>
-            <li><a id="edtCours" class="underline-animation" href="../../Controller/EDTmatiereSelection.php" style="display: none">EDT Ressource</a></li>
-            <li><a class="underline-animation" href="../../Controller/EDTsalleLibres.php" id="afficheSalles">Salles disponibles</a></li>
-            <li><a id="tableauEtudiant" class="underline-animation" href="../../Controller/VoireEtudiant.php" style="display: none">Listes Étudiants</a></li>
-            <li><a id="tableauAbsence" class="underline-animation" href="../../Controller/TableauAbsence.php" style="display: none">Tableau Absence</a></li>
-            <li><a id="tableauReport" class="underline-animation" href="../../Controller/TableauReport.php" style="display: none">Tableau Report</a></li>
-            <li><a class="underline-animation" href="../../View/HTML/demandePage.php" id="demande" style="display: none">Faire une demande</a></li>
-            <li><a class="underline-animation" href="../../View/HTML/creationCompte.php" id="creationCompte" style="display: none">Créer un compte</a></li>
-            <li><a id ="valideEDT" class="underline-animation" href="../../Controller/ValideEdt.php" style="display: none">ValideEDT</a></li>
+            <li><a id="edtProf" class="underline-animation" href="EDTprof.php" style="display: none">EDT Professeur</a></li>
+            <li><a id="edtCours" class="underline-animation" href="EDTmatiereSelection.php" style="display: none">EDT Ressource</a></li>
+            <li><a class="underline-animation" href="EDTsalleLibres.php" id="afficheSalles">Salles disponibles</a></li>
+            <li><a id="tableauEtudiant" class="underline-animation" href="VoireEtudiant.php" style="display: none">Listes Étudiants</a></li>
+            <li><a id="tableauAbsence" class="underline-animation" href="TableauAbsence.php" style="display: none">Tableau Absence</a></li>
+            <li><a id="tableauReport" class="underline-animation" href="TableauReport.php" style="display: none">Tableau Report</a></li>
+            <li><a class="underline-animation" href="demandePage.php" id="demande" style="display: none">Faire une demande</a></li>
+            <li><a class="underline-animation" href="creationCompte.php" id="creationCompte" style="display: none">Créer un compte</a></li>
+            <li><a id ="valideEDT" class="underline-animation" href="ValideEdt.php" style="display: none">ValideEDT</a></li>
             <!-- Sélecteur d'année scolaire, affiché conditionnellement -->
             <label class="choixClasse" id="choixClasse" style="display: none">
                 <select id="edtAdmin" class="edtAdmin">
@@ -58,15 +58,6 @@ include "../../Controller/demande.php";
     </nav>
 </header>
 
-<!-- Script pour faire fonctionner le menu burger (affichage mobile) -->
-<script>
-    const burger = document.querySelector('.burger');
-    const menu = document.querySelector('.menu');
-    burger.addEventListener("click", () => {
-        menu.classList.toggle("active");
-        burger.classList.toggle("toggle");
-    });
-</script>
 <body>
 
 <form action="../../Controller/demande.php" method="post" class="form-demande">
@@ -84,7 +75,9 @@ include "../../Controller/demande.php";
   <input type="submit" value="Valider">
 </form>
 
+<script src="../../Model/JavaScript/DemandePage.js"></script>
 <script src="../../Model/JavaScript/MenuPrincipal.js"></script>
+<script defer src="../../Model/JavaScript/menuHamburger.js"></script>
 <script>afficherElement("<?php echo $_SESSION['role']; ?>");</script>
 </body>
 </html>

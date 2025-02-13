@@ -19,10 +19,14 @@ function professeur() {
     document.getElementById("afficheSalles").style.display = "block";
     document.getElementById("valideEDT").style.display = "block";
     document.getElementById("demande").style.display = "block";
-    document.getElementById("edt").style.display = "none";
+    if(document.getElementById("edt")){
+        document.getElementById("edt").style.display = "none";
+    }
     let element = document.getElementById('menu');
-    element.classList.remove('menu');
-    element.classList.add('menuProf');
+    if(element){
+        element.classList.remove('menu');
+        element.classList.add('menuProf');
+    }
 }
 
 function secretariat() {

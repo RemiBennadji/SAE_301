@@ -2,7 +2,7 @@
 
 header('Content-Type: application/json');
 
-include "../Controller/ConnectionBDD.php";
+require 'ConnectionBDD.php';
 include_once "../Model/Classe/Compte.php";
 include_once "../Model/Classe/Administrateur.php";
 include_once "../Model/Classe/Etudiant.php";
@@ -25,23 +25,25 @@ $ID = $_POST["id"];
 $PWD = $_POST["pwd"];
 
 //Requête SQL permettant de retrouver l'utilisateur dans la BDD @Noah
-$sql1 ="SELECT identifiant, motdepasse, changeMDP, role, mail FROM infoutilisateur WHERE identifiant=?";
-$sql2 ="select nom_ressource, semestre from etudiants where email=:EMAIL";
+//$sql1 ="SELECT identifiant, motdepasse, changeMDP, role, mail FROM infoutilisateur WHERE identifiant=?";
+//$sql2 ="select nom_ressource, semestre from etudiants where email=:EMAIL";
 //Requete pour avoir la version max de l edt @Bastien
-$sql3 = "select max(version) from versionValideEDT";
+//$sql3 = "select max(version) from versionValideEDT";
 
 //Connexion à la BDD + lancement des requêtes SQL @Noah
 try {
-    $connection = getConnectionBDDEDTIdentification();
-    $connect = $connection->prepare($sql1);
-    $connect->execute([$ID]);
-    $connect = $connect->fetchAll(PDO::FETCH_ASSOC);
+//    $connection = getConnectionBDDEDTIdentification();
+//    $connect = $connection->prepare($sql1);
+//    $connect->execute([$ID]);
+//    $connect = $connect->fetchAll(PDO::FETCH_ASSOC);
+      $connect = findUserBDD($ID);
 
 
-    $connexionEDT = getConnectionBDDEDTIdentification();
-    $version = $connexionEDT->prepare($sql3);
-    $version->execute();
-    $version = $version->fetchColumn();
+//    $connexionEDT = getConnectionBDDEDTIdentification();
+//    $version = $connexionEDT->prepare($sql3);
+//    $version->execute();
+//    $version = $version->fetchColumn();
+    $version = maxVersion();
 
     //Attribution du role @Noah
     $role = $connect[0]['role'];
@@ -49,10 +51,12 @@ try {
     setcookie("groupe", "A1", time() + (60 * 15), "/");
     if($role == "etudiant"){
         $mail = $connect[0]["mail"];
-        $res = $connection->prepare($sql2);
-        $res->bindParam(':EMAIL', $mail);
-        $res->execute();
-        $res = $res->fetchAll(PDO::FETCH_ASSOC);
+//        $res = $connection->prepare($sql2);
+//        $res->bindParam(':EMAIL', $mail);
+//        $res->execute();
+//        $res = $res->fetchAll(PDO::FETCH_ASSOC);
+
+        $res = nomRessource($mail);
         $annee = 0;
         $semestre = $res[0]["semestre"];
         if ($semestre==1 || $semestre==2){
@@ -119,17 +123,17 @@ try {
 
     //Vérification si c'est la première connexion @Noah
     if (!$connect[0]['changemdp']) {
-        echo json_encode(['redirect' => '../../View/HTML/changeMDP.html']);
+        echo json_encode(['redirect' => '../../View/Pages/changeMDP.html']);
         exit();
     }
 
     //Vérification avec le hashage @Noah
     if (password_verify($PWD,$connect[0]['motdepasse'])) {
         if($compte->getRole() == "professeur"){
-            echo json_encode(['redirect' => '../../Controller/EDTprof.php']); // Retourne la redirection
+            echo json_encode(['redirect' => '../../View/Pages/EDTprof.php']); // Retourne la redirection
         }
         else{
-            echo json_encode(['redirect' => '../../Controller/EDT.php']); // Retourne la redirection
+            echo json_encode(['redirect' => '../../View/Pages/EDT.php']); // Retourne la redirection
         }
         exit();
     } else{
