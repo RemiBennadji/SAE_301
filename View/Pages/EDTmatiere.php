@@ -106,19 +106,19 @@ function AfficherEdtSemaine($dateDebut, $nomProf) {
 
 
 
-        // Pour déboguer le contenu de $joursData
-        foreach ($joursData as $jour => $coursJour) {
-            echo "Jour $jour : <br>";
-            foreach ($coursJour as $cours) {
-                echo "- Heure: " . date('H:i', strtotime($cours['date'])) . "<br>";
-                echo "  Type: " . $cours['typeseance'] . "<br>";
-                echo "  Matière: " . $cours['matiere'] . "<br>";
-                echo "  Salle: " . $cours['salles'] . "<br>";
-                echo "  Nombre de cours: " . $cours['nombre_cours'] . "<br>";
-                echo "  Semestre: " . $cours['semestre'] . "<br>";
-                echo "<hr>";
-            }
-        }
+//        // Pour déboguer le contenu de $joursData
+//        foreach ($joursData as $jour => $coursJour) {
+//            echo "Jour $jour : <br>";
+//            foreach ($coursJour as $cours) {
+//                echo "- Heure: " . date('H:i', strtotime($cours['date'])) . "<br>";
+//                echo "  Type: " . $cours['typeseance'] . "<br>";
+//                echo "  Matière: " . $cours['matiere'] . "<br>";
+//                echo "  Salle: " . $cours['salles'] . "<br>";
+//                echo "  Nombre de cours: " . $cours['nombre_cours'] . "<br>";
+//                echo "  Semestre: " . $cours['semestre'] . "<br>";
+//                echo "<hr>";
+//            }
+//        }
 
 
 
