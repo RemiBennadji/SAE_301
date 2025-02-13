@@ -20,14 +20,14 @@ if(empty($_POST['mdp'])) {
 }
 
 if(empty($_SESSION['ID']) && empty($_SESSION['from'])) {
-    echo json_encode(['error'=>'sessionExpired', 'redirect'=>'../../View/HTML/Identification.html']);
+    echo json_encode(['error'=>'sessionExpired', 'redirect'=>'../../View/Pages/Identification.html']);
     exit();
 }
 $conn = getConnectionBDD();
 
 if(!empty($_SESSION['from'])){
-    $crea = "SELECT mail, identifiant, role FROM infoutilisateur WHERE mail=:mail";
-    $recupMail = "SELECT email FROM codeverif WHERE codev =:code";
+    //$crea = recupererInfo();
+    $recupMail = getMail();
 
     try{
 //        $recup = $conn->prepare($recupMail);
@@ -35,10 +35,14 @@ if(!empty($_SESSION['from'])){
 //        $recup->execute();
 //        $recup = $recup->fetchAll(PDO::FETCH_ASSOC);
 
-        $connect = $conn->prepare($crea);
-        $connect->bindParam(':mail', $_SESSION['mail']);
-        $connect->execute();
-        $connect = $connect->fetchAll(PDO::FETCH_ASSOC);
+//        $connect = $conn->prepare($crea);
+//        $connect->bindParam(':mail', $_SESSION['mail']);
+//        $connect->execute();
+//        $connect = $connect->fetchAll(PDO::FETCH_ASSOC);
+
+//
+
+        $connect = recupererInfo();
 
         if (!$connect) {
             echo json_encode(['error' => $_SESSION['mail']]);
@@ -81,10 +85,10 @@ if($mdp == $mdpverify) {
     //Vérifie si le mot de passe correspond bien aux critères @Noah
     if($compte->verifMdp($mdp)){
         if(!empty($_SESSION['from'])){
-            echo json_encode(['success'=>'ok', 'redirect'=>'../../View/HTML/Identification.html']);
+            echo json_encode(['success'=>'ok', 'redirect'=>'../../View/Pages/Identification.html']);
             exit();
         }else {
-            echo json_encode(['redirect' => '../../Controller/EDT.php']);
+            echo json_encode(['redirect' => '../../View/Pages/EDT.php']);
             exit();
         }
     }

@@ -5,19 +5,20 @@ use PHPMailer\PHPMailer\PHPMailer;
 require 'ConnectionBDD.php';
 include_once "../Model/Classe/Mail.php";
 
-$conn = getConnectionBDD();
+//$conn = getConnectionBDD();
 
-function sendCode($email, $code, $conn){
+function sendCode($email, $code){
     $time = time();
     $expiration = $time + (10*60);
-    $sql1 = 'INSERT INTO codeverif (email, codev, date, expiration) VALUES (:email, :code, TO_TIMESTAMP(:time), TO_TIMESTAMP(:expiration))';
+//    $sql1 = 'INSERT INTO codeverif (email, codev, date, expiration) VALUES (:email, :code, TO_TIMESTAMP(:time), TO_TIMESTAMP(:expiration))';
     try {
-        $result = $conn->prepare($sql1);
-        $result->bindParam(':email', $email);
-        $result->bindParam(':code', $code);
-        $result->bindParam(':time', $time);
-        $result->bindParam(':expiration', $expiration);
-        $result->execute();
+//        $result = $conn->prepare($sql1);
+//        $result->bindParam(':email', $email);
+//        $result->bindParam(':code', $code);
+//        $result->bindParam(':time', $time);
+//        $result->bindParam(':expiration', $expiration);
+//        $result->execute();
+        insertCodeVerif();
 
         $mail = new Mail();
         $mail->setMdp('xthbhnhaiazxbebp');
@@ -37,21 +38,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" and isset($_POST["email"]) and !isset($
     $email = isset($_POST["email"]) ? htmlspecialchars($_POST["email"]) : "";
     $code = rand(0,999999);
     $code = sprintf('%06d', $code);
-    $listeMail = "SELECT mail FROM mailidentifiant";
-    $listeMail = $conn->prepare($listeMail);
-    $listeMail->execute();
-    $listeMail = $listeMail->fetchAll(PDO::FETCH_ASSOC);
+//    $listeMail = "SELECT mail FROM mailidentifiant";
+//    $listeMail = $conn->prepare($listeMail);
+//    $listeMail->execute();
+//    $listeMail = $listeMail->fetchAll(PDO::FETCH_ASSOC);
+    $listeMail = selectMail();
     $mailAll = [];
     foreach ($listeMail as $mail) {
         $mailAll[] = $mail["mail"];
     }
     if(in_array($email, $mailAll)){
-        sendCode($email, $code, $conn);
+        sendCode($email, $code);
         session_start();
         $_SESSION['mail'] = $email;
-        header("location: ../View/HTML/codeVerif.html");
+        header("location: ../View/Pages/codeVerif.html");
     }else{
-        header("location: ../View/HTML/mdpOublie.html");
+        header("location: ../View/Pages/mdpOublie.html");
     }
 }
 ?>

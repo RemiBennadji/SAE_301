@@ -15,7 +15,7 @@ if (isset($_SESSION['role'])) {
 <head>
     <meta charset="UTF-8">
     <title>Matiere</title>
-    <link href="../View/CSS/CSSBasique.css" rel="stylesheet">
+    <link href="../CSS/CSSBasique.css" rel="stylesheet">
 </head>
 <body>
 <a href="EDT.php"><img src="../../Ressource/logouphf2.png" class="logoUPHF" alt="Logo de l'UPHF"></a>
@@ -30,15 +30,15 @@ if (isset($_SESSION['role'])) {
         </div>
         <ul class="menu">
             <!-- Lien vers différentes sections du site, avec affichage conditionnel -->
-            <li><a id="edtProf" class="underline-animation" href="../Controller/EDTprof.php" style="display: none">EDT Professeur</a></li>
-            <li><a id="edtCours" class="underline-animation" href="../Controller/EDTmatiereSelection.php" style="display: none">EDT Ressource</a></li>
-            <li><a class="underline-animation" href="../Controller/EDTsalleLibres.php" id="afficheSalles">Salles disponibles</a></li>
-            <li><a id="tableauEtudiant" class="underline-animation" href="../Controller/VoireEtudiant.php" style="display: none">Listes Étudiants</a></li>
-            <li><a id="tableauAbsence" class="underline-animation" href="../Controller/TableauAbsence.php" style="display: none">Tableau Absence</a></li>
-            <li><a id="tableauReport" class="underline-animation" href="../Controller/TableauReport.php" style="display: none">Tableau Report</a></li>
-            <li><a class="underline-animation" href="../View/HTML/demandePage.php" id="demande" style="display: none">Faire une demande</a></li>
-            <li><a class="underline-animation" href="../View/HTML/creationCompte.php" id="creationCompte" style="display: none">Créer un compte</a></li>
-            <li><a id ="valideEDT" class="underline-animation" href="../Controller/ValideEdt.php" style="display: none">ValideEDT</a></li>
+            <li><a id="edtProf" class="underline-animation" href="EDTprof.php" style="display: none">EDT Professeur</a></li>
+            <li><a id="edtCours" class="underline-animation" href="EDTmatiereSelection.php" style="display: none">EDT Ressource</a></li>
+            <li><a class="underline-animation" href="EDTsalleLibres.php" id="afficheSalles">Salles disponibles</a></li>
+            <li><a id="tableauEtudiant" class="underline-animation" href="VoireEtudiant.php" style="display: none">Listes Étudiants</a></li>
+            <li><a id="tableauAbsence" class="underline-animation" href="TableauAbsence.php" style="display: none">Tableau Absence</a></li>
+            <li><a id="tableauReport" class="underline-animation" href="TableauReport.php" style="display: none">Tableau Report</a></li>
+            <li><a class="underline-animation" href="demandePage.php" id="demande" style="display: none">Faire une demande</a></li>
+            <li><a class="underline-animation" href="creationCompte.php" id="creationCompte" style="display: none">Créer un compte</a></li>
+            <li><a id ="valideEDT" class="underline-animation" href="ValideEdt.php" style="display: none">ValideEDT</a></li>
             <!-- Sélecteur d'année scolaire, affiché conditionnellement -->
             <label class="choixClasse" id="choixClasse" style="display: none">
                 <select id="edtAdmin" class="edtAdmin">
@@ -62,20 +62,11 @@ if (isset($_SESSION['role'])) {
                     <option value="FA">FA</option>
                 </select>
             </label>
-            <li><a class="underline-animation" href="../Controller/Deconnexion.php">Déconnexion</a></li>
+            <li><a class="underline-animation" href="../../Controller/Deconnexion.php">Déconnexion</a></li>
         </ul>
     </nav>
 </header>
 
-<!-- Script pour faire fonctionner le menu burger (affichage mobile) -->
-<script>
-    const burger = document.querySelector('.burger');
-    const menu = document.querySelector('.menu');
-    burger.addEventListener("click", () => {
-        menu.classList.toggle("active");
-        burger.classList.toggle("toggle");
-    });
-</script>
 
 <!-- Formulaire où on entre le nom d'une ressource, on utilise la réponse dans le fichier EDTmatiere.php -->
 <br><br><br><br><br>
@@ -95,7 +86,8 @@ if (isset($_SESSION['role'])) {
 <footer class="footer">
     <p>&copy; 2024 - SAE Emploi du temps. Rémi | Dorian | Matthéo | Bastien | Noah.</p>
 </footer>
-<script src="../Model/JavaScript/MenuPrincipal.js"></script>
+<script src="../../Model/JavaScript/MenuPrincipal.js"></script>
+<script defer src="../../Model/JavaScript/menuHamburger.js"></script>
 <script>afficherElement("<?php echo $_SESSION['role']; ?>");</script>
 </body>
 </html>
