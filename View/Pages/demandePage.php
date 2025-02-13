@@ -75,6 +75,7 @@ include "../../Controller/demande.php";
   <input type="submit" value="Valider">
 </form>
 
+<script src="../../Model/JavaScript/DemandePage.js"></script>
 <script src="../../Model/JavaScript/MenuPrincipal.js"></script>
 <script defer src="../../Model/JavaScript/menuHamburger.js"></script>
 <script>afficherElement("<?php echo $_SESSION['role']; ?>");</script>

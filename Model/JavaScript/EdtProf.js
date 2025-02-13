@@ -16,5 +16,5 @@ function setCookie(date,jour,heure){
     sessionStorage.setItem('reportDate', date);
     sessionStorage.setItem('reportHeure', heure);
 
-    document.location.href = "../../View/HTML/demandePage.php";
+    document.location.href = "../../View/Pages/demandePage.php";
 }
