@@ -133,7 +133,6 @@ function AfficherEdtSemaine($dateDebut, $nomProf) {
     for ($h = 0; $h < count($listeHorraire); $h++) {
         echo "<tr>";
         echo "<td style='vertical-align: top;'>$listeHorraire[$h]</td>";
-
         for ($j = 0; $j < 5; $j++) {
             if ($cellulesSautees[$j] > 0) {
                 $cellulesSautees[$j]--;
@@ -207,22 +206,42 @@ function AfficherEdtSemaine($dateDebut, $nomProf) {
                 $contenuHTML = "<div class='$classeCSS'>" .
                     $cours['typeseance'] . "<br>" .
                     $cours['code'] . " " . $cours['matiere'] . "<br>" .
-                    $sallesStr . "<br>" .
-                    "Semestre : ".$semestre . " | " . $nomRessource . "<br>" .
-                    "</div>";
+                    $sallesStr . "<br>";
+                if($cours['typeseance'] == "CM"){
+                    $contenuHTML .= "Semestre : ".$semestre . " | BUT : " . $_COOKIE["annee"] . "<br>" . "</div>";
+                }
+                elseif ($cours['typeseance'] == "TD"){
+                    $contenuHTML .= "Semestre : ".$semestre . " | Groupe : " . $nomRessource[0] . "<br>" . "</div>";
+                }
+                elseif ($cours['typeseance'] == "TP"){
+                    $contenuHTML .= "Semestre : ".$semestre . " | Groupe : " . $nomRessource[0] . "<br>" . "</div>";
+                }
+                elseif ($cours['typeseance'] != "CM"){
+                    $contenuHTML .= "Semestre : ".$semestre . " | " . $nomRessource . "<br>" . "</div>";
+                }
 
 
 
                 $nombreCours = $cours['nombre_cours'];  // Récupère le nombre de cours parallèles
                 if ($nombreCours == 1) {
                     echo "<td rowspan='$nombreCreneaux'><span class='cours'>$contenuHTML</span></td>";
-                } else {
+                }
+                elseif ($cours['typeseance'] == "CM"){
+                    echo "<td rowspan='$nombreCreneaux'><span class='cours'>$contenuHTML</span></td>";
+                }
+                elseif ($cours['typeseance'] == "TD"){
                     echo "<td rowspan='$nombreCreneaux' class='case'>";
-                    for ($k = 0; $k < $nombreCours; $k++) {
+                    for ($k = 0; $k < $nombreCours; $k+=2) {
                         echo "<span style='padding: 2px'>$contenuHTML</span>";
                     }
-                    echo "</td>";
                 }
+                elseif ($cours['typeseance'] == "TP"){
+                    echo "<td rowspan='$nombreCreneaux' class='case'>";
+                    for ($k = 0; $k < $nombreCours; $k+=2) {
+                        echo "<span style='padding: 2px'>$contenuHTML</span>";
+                    }
+                }
+
 
 
 
