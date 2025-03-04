@@ -108,6 +108,7 @@ function genererTableau($data, $titre) {
                 <th>Nom</th>
                 <th>Prenom</th>
                 <th>Date demande</th>
+                <th>Heure fin</th>
                 <th>Raison</th>
                 <th>Typedemande</th>
             </tr>
@@ -115,9 +116,10 @@ function genererTableau($data, $titre) {
         <tbody>";
     foreach ($data as $ligne) {
         echo "<tr>
-            <td>" . htmlspecialchars($ligne['nom']) . "</td>
-            <td>" . htmlspecialchars($ligne['prenom']) . "</td>
+            <td>" . htmlspecialchars($ligne['nom'] ?? 'Nom non disponible') . "</td>
+            <td>" . htmlspecialchars($ligne['prenom'] ?? 'Prénom non disponible') . "</td>
             <td>" . htmlspecialchars($ligne['datedemande']) . "</td>
+            <td>" .  htmlspecialchars($ligne['heurefin']) . "</td>
             <td>" . htmlspecialchars($ligne['raison']) . "</td>
             <td>" . htmlspecialchars($ligne['typedemande']) . "</td>";
     }

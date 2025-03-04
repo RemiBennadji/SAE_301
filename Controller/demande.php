@@ -14,11 +14,12 @@ if (isset($_SESSION['role'])) {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Récupération des données du formulaire
     $date = $_POST["dateReport"]; // Exemple : "2025-01-17"
-    $heure = $_POST["heureReport"]; // Exemple : "14:30:00"
+    $heure = $_POST["heureStartReport"]; // Exemple : "14:30:00"
     $timestamp = date("Y-m-d H:i:s", strtotime("$date $heure"));
     $raison = $_POST["sujet"];
     $type = $_POST["typeDemande"];
     $mail = strtolower($_SESSION["mail"]);
+    $heureFin = $_POST["heureEndReport"];
 
 
     // Requête pour récupérer nom et prénom du professeur
@@ -52,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 //        $insertion->bindParam(":PRENOM", $prenom);
 //        $insertion->bindParam(":TYPEDEMANDE", $type);
 //        $insertion->execute();
-        insertDemande($timestamp,$raison,$nom,$prenom,$type);
+        insertDemande($timestamp,$heureFin, $raison,$nom,$prenom,$type);
 
         header('Location: ../View/Pages/EDTprof.php');
 

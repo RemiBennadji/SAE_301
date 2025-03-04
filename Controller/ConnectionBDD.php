@@ -128,17 +128,18 @@ function recupNomPrenomProf($mail)
     $getInfo->bindParam(":MAIL", $mail);
     $getInfo->execute();
 
-    return $getInfo->fetch(PDO::FETCH_ASSOC);
+    return $getInfo->fetchAll(PDO::FETCH_ASSOC);
 }
 
 //Demande.PHP
-function insertDemande($timestamp,$raison,$nom,$prenom,$type)
+function insertDemande($timestamp,$heureFin, $raison,$nom,$prenom,$type)
 {
-    $sql = "INSERT INTO demande(dateDemande, raison, nom, prenom, typeDemande) 
-        VALUES(:DATEDEMANDE, :RAISON, :NOM, :PRENOM, :TYPEDEMANDE)";
+    $sql = "INSERT INTO demande(dateDemande, heurefin, raison, nom, prenom, typeDemande) 
+        VALUES(:DATEDEMANDE, :HEUREFIN, :RAISON, :NOM, :PRENOM, :TYPEDEMANDE)";
     $conn = getConnectionBDD();
     $insertion = $conn->prepare($sql);
     $insertion->bindParam(":DATEDEMANDE", $timestamp);
+    $insertion->bindParam(":HEUREFIN", $heureFin);
     $insertion->bindParam(":RAISON", $raison);
     $insertion->bindParam(":NOM", $nom);
     $insertion->bindParam(":PRENOM", $prenom);

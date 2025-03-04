@@ -1,5 +1,22 @@
 <?php
 include "../../Controller/demande.php";
+
+// Connexion à la base de données
+try {
+    $connexion = getConnectionBDD();
+    $sql = "SELECT nom, prenom from collegue join infoutilisateur using (mail);";
+
+    // Utiliser la date actuelle pour la requête
+    $nomPrenomProf = $connexion->prepare($sql);
+    $nomPrenomProf->execute();
+
+    $listeReport = $nomPrenomProf->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    echo "Erreur : " . $e->getMessage();
+    exit;
+}
+echo $listeReport['nom'];
+echo $listeReport['prenom'];
 ?>
 
 <!DOCTYPE html>
@@ -61,18 +78,29 @@ include "../../Controller/demande.php";
 <body>
 
 <form action="../../Controller/demande.php" method="post" class="form-demande">
+
     <label for="typeDemande">Type de votre demande : </label>
     <select id="typeDemande" name="typeDemande">
         <option value="Report">Report</option>
         <option value="Contrainte">Contrainte</option>
     </select><br>
-  <label for="dateReport">Date du cours</label><br>
-  <input type="date" id="dateReport" name="dateReport" required placeholder=" "><br>
-    <label for="heureReport">Heure du cours</label><br>
-    <input type="time" id="heureReport" name="heureReport" required placeholder=" "><br>
-  <label for="sujet">Raison</label><br>
-  <input type="text" id="sujet" name="sujet" required placeholder="Pourquoi ?"><br>
-  <input type="submit" value="Valider">
+
+    <label for="dateReport">Date du cours</label><br>
+    <input type="date" id="dateReport" name="dateReport" required placeholder=" "><br>
+
+    <label for="heureReport">Heure de début du cours</label><br>
+    <input type="time" id="heureStartReport" name="heureStartReport" required placeholder=" "><br>
+
+    <label for="heureReport">Heure de fin du cours</label><br>
+    <input type="time" id="heureEndReport" name="heureEndReport" required placeholder=" "><br>
+
+    <label for="sujet">Raison</label><br>
+    <input type="text" id="sujet" name="sujet" required placeholder="Pourquoi ?"><br>
+
+    <input type="hidden" name="nom" value="<?php $listeReport['nom'] ?>">
+    <input type="hidden" name="prenom" value="<?php $listeReport['prenom'] ?>">
+
+    <input type="submit" value="Valider">
 </form>
 
 <script src="../../Model/JavaScript/DemandePage.js"></script>
