@@ -59,6 +59,8 @@
 
 <?php
 // Inclusion des fichiers nécessaires pour la connexion à la base de données et la gestion de l'emploi du temps
+use function Sodium\add;
+
 include "../../Controller/ConnectionBDD.php";
 require_once "../../Model/Classe/Edt.php";
 
@@ -84,6 +86,22 @@ $dateActuel = date('Y-m-d', strtotime('monday this week'));
 
 //récupération du nom de la ressource pour l'utiliser en condition de la requête pour afficher l'edt
 $nomProf = $_POST["codeRessource"];
+
+function estExistant(Array $listeExistant, $courAAjouter){
+    $changement = false;
+    foreach ($listeExistant as $cour) {
+        if ($courAAjouter["Salle"] == $cour["Salle"]) {
+            // TODO Changement de cours à faire, changer la classe, ex : si A1 a cours et que A2 à cours, alors modifier et remplacer A1 par A puis retorner la nouvelle liste
+            return $listeExistant;
+        }
+    }
+
+
+
+    $listeExistant+= $courAAjouter;
+    return $listeExistant;
+
+};
 
 function AfficherEdtSemaine($dateDebut, $nomProf) {
     global $edt;
@@ -216,10 +234,6 @@ function AfficherEdtSemaine($dateDebut, $nomProf) {
                 elseif ($cours['typeseance'] == "TP"){
                     $contenuHTML .= "Semestre : ".$semestre . " | Groupe : " . $nomRessource[0] . "<br>" . "</div>";
                 }
-                elseif ($cours['typeseance'] != "CM"){
-                    $contenuHTML .= "Semestre : ".$semestre . " | " . $nomRessource . "<br>" . "</div>";
-                }
-
 
 
                 $nombreCours = $cours['nombre_cours'];  // Récupère le nombre de cours parallèles
@@ -232,18 +246,36 @@ function AfficherEdtSemaine($dateDebut, $nomProf) {
                 elseif ($cours['typeseance'] == "TD"){
                     echo "<td rowspan='$nombreCreneaux' class='case'>";
                     for ($k = 0; $k < $nombreCours; $k+=2) {
-                        echo "<span style='padding: 2px'>$contenuHTML</span>";
+                        if($k > 0){
+                            //Todo Changer $sallesStr et $nomRessource[0]
+                            $contenuHTML = "<div class='$classeCSS'>" .
+                                $cours['typeseance'] . "<br>" .
+                                $cours['code'] . " " . $cours['matiere'] . "<br>" .
+                                $sallesStr . "<br>" .
+                                "Semestre : ".$semestre . " | Groupe : " . $nomRessource[0] . "<br>" . "</div>";
+
+                        }
+                        else{
+                            echo "<span style='padding: 2px'>$contenuHTML</span>";
+                        }
                     }
                 }
                 elseif ($cours['typeseance'] == "TP"){
                     echo "<td rowspan='$nombreCreneaux' class='case'>";
                     for ($k = 0; $k < $nombreCours; $k+=2) {
+                    }
+                    if($k > 0){
+                        //Todo Changer $sallesStr et $nomRessource[0]
+                        $contenuHTML = "<div class='$classeCSS'>" .
+                            $cours['typeseance'] . "<br>" .
+                            $cours['code'] . " " . $cours['matiere'] . "<br>" .
+                            $sallesStr . "<br>" .
+                            "Semestre : ".$semestre . " | Groupe : " . $nomRessource[0] . "<br>" . "</div>";
+                    }
+                    else{
                         echo "<span style='padding: 2px'>$contenuHTML</span>";
                     }
                 }
-
-
-
 
                 $cellulesSautees[$j] = $nombreCreneaux - 1;
             } else {
