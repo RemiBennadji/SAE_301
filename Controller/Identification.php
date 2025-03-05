@@ -32,6 +32,12 @@ $PWD = $_POST["pwd"];
 try {
     //Test si identifiant existant dans la bdd @matthéo
     $connect = findUserBDD($ID); //$sql1 ="SELECT identifiant, motdepasse, changeMDP, role, mail FROM infoutilisateur WHERE identifiant=?";
+    // Si l'utilisateur n'existe pas, cela renvoie une erreur au JS @Noah
+
+    if(!$connect){
+        echo json_encode(['error' => 'error identifiant']);
+        exit();
+    }
 
     $version = maxVersion(); //$sql = "select max(version) from versionValideEDT";
 
@@ -54,12 +60,6 @@ try {
         }
         setcookie("groupe", $res[0]['nom_ressource'], time() + (60 * 30 * 4 ), "/");
         setcookie("annee", $annee, time() + (60 * 15 * 4 ), "/");
-    }
-
-    // Si l'utilisateur n'existe pas, cela renvoie une erreur au JS @Noah
-    if(!$connect){
-        echo json_encode(['error' => 'error requête']);
-        exit();
     }
 
     $compte = null;
@@ -123,7 +123,7 @@ try {
         }
         exit();
     } else{
-        echo json_encode(['error' => 'errorConnexion']);
+        echo json_encode(['error' => 'errorMDP']);
     }
 
     } catch (PDOException $e) {
