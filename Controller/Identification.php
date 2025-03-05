@@ -24,39 +24,25 @@ if (!isset($_POST['id']) || !isset($_POST['pwd'])) {
 $ID = $_POST["id"];
 $PWD = $_POST["pwd"];
 
-//Requête SQL permettant de retrouver l'utilisateur dans la BDD @Noah
-//$sql1 ="SELECT identifiant, motdepasse, changeMDP, role, mail FROM infoutilisateur WHERE identifiant=?";
-//$sql2 ="select nom_ressource, semestre from etudiants where email=:EMAIL";
+
 //Requete pour avoir la version max de l edt @Bastien
 //$sql3 = "select max(version) from versionValideEDT";
 
 //Connexion à la BDD + lancement des requêtes SQL @Noah
 try {
-//    $connection = getConnectionBDDEDTIdentification();
-//    $connect = $connection->prepare($sql1);
-//    $connect->execute([$ID]);
-//    $connect = $connect->fetchAll(PDO::FETCH_ASSOC);
-      $connect = findUserBDD($ID);
+    //Test si identifiant existant dans la bdd @matthéo
+    $connect = findUserBDD($ID); //$sql1 ="SELECT identifiant, motdepasse, changeMDP, role, mail FROM infoutilisateur WHERE identifiant=?";
 
-
-//    $connexionEDT = getConnectionBDDEDTIdentification();
-//    $version = $connexionEDT->prepare($sql3);
-//    $version->execute();
-//    $version = $version->fetchColumn();
-    $version = maxVersion();
+    $version = maxVersion(); //$sql = "select max(version) from versionValideEDT";
 
     //Attribution du role @Noah
     $role = $connect[0]['role'];
 
-    setcookie("groupe", "A1", time() + (60 * 15), "/");
+    setcookie("groupe", "A1", time() + (60 * 15 * 4 ), "/");
     if($role == "etudiant"){
         $mail = $connect[0]["mail"];
-//        $res = $connection->prepare($sql2);
-//        $res->bindParam(':EMAIL', $mail);
-//        $res->execute();
-//        $res = $res->fetchAll(PDO::FETCH_ASSOC);
 
-        $res = nomRessource($mail);
+        $res = nomRessource($mail); //$sql2 ="select nom_ressource, semestre from etudiants where email=:EMAIL";
         $annee = 0;
         $semestre = $res[0]["semestre"];
         if ($semestre==1 || $semestre==2){
@@ -66,8 +52,8 @@ try {
         } else if ($semestre==5 || $semestre==6){
             $annee = 3;
         }
-        setcookie("groupe", $res[0]['nom_ressource'], time() + (60 * 30), "/");
-        setcookie("annee", $annee, time() + (60 * 15), "/");
+        setcookie("groupe", $res[0]['nom_ressource'], time() + (60 * 30 * 4 ), "/");
+        setcookie("annee", $annee, time() + (60 * 15 * 4 ), "/");
     }
 
     // Si l'utilisateur n'existe pas, cela renvoie une erreur au JS @Noah
@@ -101,7 +87,7 @@ try {
                 $nomProf .= $ID[$i];
             }
         }
-        setcookie("nomProf", $nomProf, time() + (60 * 15), "/");
+        setcookie("nomProf", $nomProf, time() + (60 * 15 * 4 ), "/");
     }
 
 
@@ -115,10 +101,10 @@ try {
     $_SESSION['mail'] = $connect[0]['mail'];
 
     //Début cookie
-    setcookie("role", $role, time() + (60 * 15), "/");
-    setcookie("ID", $ID, time() + (60 * 15), "/");
-    setcookie("annee", 1, time() + (60 * 15), "/");
-    setcookie("version", $version, time() + (60 * 15), "/");
+    setcookie("role", $role, time() + (60 * 15 * 4 ), "/");
+    setcookie("ID", $ID, time() + (60 * 15 * 4 ), "/");
+    setcookie("annee", 1, time() + (60 * 15 * 4 ), "/");
+    setcookie("version", $version, time() + (60 * 15 * 4 ), "/");
 
 
     //Vérification si c'est la première connexion @Noah

@@ -83,7 +83,7 @@ date_default_timezone_set('Europe/Paris');//Fuseau horaire
 
 // Connexion à la base de données
 try {
-    $connexion = getConnectionBDDEDTIdentification();
+    $connexion = getConnectionBDD();
     $sql = "select * from etudiants order by nom;";
 
     // Utiliser la date actuelle pour la requête
