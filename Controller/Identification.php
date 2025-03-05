@@ -26,20 +26,19 @@ $PWD = $_POST["pwd"];
 
 
 //Requete pour avoir la version max de l edt @Bastien
-//$sql3 = "select max(version) from versionValideEDT";
 
 //Connexion à la BDD + lancement des requêtes SQL @Noah
 try {
     //Test si identifiant existant dans la bdd @matthéo
-    $connect = findUserBDD($ID); //$sql1 ="SELECT identifiant, motdepasse, changeMDP, role, mail FROM infoutilisateur WHERE identifiant=?";
-    // Si l'utilisateur n'existe pas, cela renvoie une erreur au JS @Noah
+    $connect = findUserBDD($ID); //$sql1 ="SELECT identifiant, motdepasse, changeMDP, role, mail FROM infoutilisateur WHERE identifiant=?"; @mattheo
 
+    // Si l'utilisateur n'existe pas, cela renvoie une erreur au JS @Noah
     if(!$connect){
         echo json_encode(['error' => 'error identifiant']);
         exit();
     }
 
-    $version = maxVersion(); //$sql = "select max(version) from versionValideEDT";
+    $version = maxVersion(); //$sql = "select max(version) from versionValideEDT"; @mattheo
 
     //Attribution du role @Noah
     $role = $connect[0]['role'];
@@ -48,7 +47,7 @@ try {
     if($role == "etudiant"){
         $mail = $connect[0]["mail"];
 
-        $res = nomRessource($mail); //$sql2 ="select nom_ressource, semestre from etudiants where email=:EMAIL";
+        $res = nomRessource($mail); //$sql2 ="select nom_ressource, semestre from etudiants where email=:EMAIL"; @mattheo
         $annee = 0;
         $semestre = $res[0]["semestre"];
         if ($semestre==1 || $semestre==2){
