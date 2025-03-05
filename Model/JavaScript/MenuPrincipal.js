@@ -95,7 +95,6 @@ document.addEventListener('DOMContentLoaded', function () {
             else {
                 document.cookie = "groupe=" + edtAdmin.value + "; expires=" + expirationDate + "; path=/";
             }
-            window.location.reload();
         });
     } else {
         console.error("L'élément edtAdmin n'a pas été trouvé.");

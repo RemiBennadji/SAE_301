@@ -1,4 +1,7 @@
 <html lang="fr">
+<?php
+
+?>
 <head>
     <!-- Titre de la page -->
     <title>EDT</title>

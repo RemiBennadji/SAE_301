@@ -22,26 +22,6 @@ function getConnectionBDD(){
         }
     }
 }
-function getConnectionBDDEDTIdentification(){
-        try {
-            $dbname = "postgres";
-            $user = "postgres";
-            $password = "root";
-            $dsn = "pgsql:host=192.168.38.45;dbname=$dbname";
-
-            //$dsn = "pgsql:host=2a02:842a:81db:d601:88a7:f394:4625:e9ff;dbname=sae";
-            //$user = "lecteur";
-            //$password = "root";
-
-            $pdo = new PDO($dsn, $user, $password);
-            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-            return $pdo;
-        } catch (PDOException $e) {
-            echo "Erreur de connexion : " . $e->getMessage();
-            exit();
-        }
-}
 
 //changeMDP
 function recupererInfo(){
@@ -151,7 +131,7 @@ function insertDemande($timestamp,$heureFin, $raison,$nom,$prenom,$type)
 function findUserBDD($ID)
 {
     $sql ="SELECT identifiant, motdepasse, changeMDP, role, mail FROM infoutilisateur WHERE identifiant=?";
-    $connection = getConnectionBDDEDTIdentification();
+    $connection = getConnectionBDD();
     $connect = $connection->prepare($sql);
     $connect->execute([$ID]);
     return $connect->fetchAll(PDO::FETCH_ASSOC);
@@ -161,7 +141,7 @@ function findUserBDD($ID)
 function nomRessource($mail)
 {
     $sql ="select nom_ressource, semestre from etudiants where email=:EMAIL";
-    $connection = getConnectionBDDEDTIdentification();
+    $connection = getConnectionBDD();
     $res = $connection->prepare($sql);
     $res->bindParam(':EMAIL', $mail);
     $res->execute();
@@ -172,7 +152,7 @@ function nomRessource($mail)
 function maxVersion()
 {
     $sql = "select max(version) from versionValideEDT";
-    $connexionEDT = getConnectionBDDEDTIdentification();
+    $connexionEDT = getConnectionBDD();
     $version = $connexionEDT->prepare($sql);
     $version->execute();
     return $version->fetchColumn();
