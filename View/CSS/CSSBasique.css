@@ -393,6 +393,11 @@ input:focus ~ label {
     transform: translateY(-50%);
     border-radius: 50%; /* Forme circulaire */
 }
+
+.textErreur{
+    font-weight: bold;
+    color: #df0a0a;
+}
 /* Fin Identification */
 
 /* menuPrincipal */
