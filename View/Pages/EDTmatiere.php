@@ -185,13 +185,7 @@ function AfficherEdtSemaine($dateDebut, $nomProf) {
                 $typeSeance = strtolower($cours['typeseance']);
                 $salles = explode(',', $cours['salles']);
 
-//                //Todo
-//                echo ' | ';
-//                foreach ($joursData[$j] as $cours) {
-//                    echo $cours['matiere'] . ' ' . $cours['salles'] . ' | ';
-//                }
-//                echo $j . " | ";
-
+                //Todo
                 //print_r($cours);
 
 
@@ -260,7 +254,7 @@ function AfficherEdtSemaine($dateDebut, $nomProf) {
                     echo "<td rowspan='$nombreCreneaux' class='case'>";
                     for ($k = 0; $k < $nombreCours; $k+=2) {
                         if($k > 0){
-                            $salleCase = $cours["salles"];
+                            $salleCase = next($coursDuJour)["salles"];
 
                             //Todo Changer $sallesStr et $nomRessource[0]
                             $contenuHTML = "<div class='$classeCSS'>" .
@@ -279,13 +273,14 @@ function AfficherEdtSemaine($dateDebut, $nomProf) {
                     echo "<td rowspan='$nombreCreneaux' class='case'>";
                     for ($k = 0; $k < $nombreCours; $k+=2) {
                     }
+                    $salleCase = next($coursDuJour)["salles"];
                     if($k > 0){
                         //Todo Changer $sallesStr et $nomRessource[0]
                         $contenuHTML = "<div class='$classeCSS'>" .
                             $cours['typeseance'] . "<br>" .
                             $cours['code'] . " " . $cours['matiere'] . "<br>" .
-                            $sallesStr . "<br>" .
-                            "Semestre : ".$semestre . " | Groupe : " . $nomRessource[0] . "<br>" . "</div>";
+                            $salleCase . "<br>" .
+                            "Semestre : ".$semestre . " | Groupe : " . $nomRessource . "<br>" . "</div>";
                     }
                     else{
                         echo "<span style='padding: 2px'>$contenuHTML</span>";
