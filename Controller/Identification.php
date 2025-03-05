@@ -38,7 +38,7 @@ try {
     //Attribution du role @Noah
     $role = $connect[0]['role'];
 
-    setcookie("groupe", "A1", time() + (60 * 15), "/");
+    setcookie("groupe", "A1", time() + (60 * 15 * 4 ), "/");
     if($role == "etudiant"){
         $mail = $connect[0]["mail"];
 
@@ -52,8 +52,8 @@ try {
         } else if ($semestre==5 || $semestre==6){
             $annee = 3;
         }
-        setcookie("groupe", $res[0]['nom_ressource'], time() + (60 * 30), "/");
-        setcookie("annee", $annee, time() + (60 * 15), "/");
+        setcookie("groupe", $res[0]['nom_ressource'], time() + (60 * 30 * 4 ), "/");
+        setcookie("annee", $annee, time() + (60 * 15 * 4 ), "/");
     }
 
     // Si l'utilisateur n'existe pas, cela renvoie une erreur au JS @Noah
@@ -87,7 +87,7 @@ try {
                 $nomProf .= $ID[$i];
             }
         }
-        setcookie("nomProf", $nomProf, time() + (60 * 15), "/");
+        setcookie("nomProf", $nomProf, time() + (60 * 15 * 4 ), "/");
     }
 
 
@@ -101,10 +101,10 @@ try {
     $_SESSION['mail'] = $connect[0]['mail'];
 
     //Début cookie
-    setcookie("role", $role, time() + (60 * 15), "/");
-    setcookie("ID", $ID, time() + (60 * 15), "/");
-    setcookie("annee", 1, time() + (60 * 15), "/");
-    setcookie("version", $version, time() + (60 * 15), "/");
+    setcookie("role", $role, time() + (60 * 15 * 4 ), "/");
+    setcookie("ID", $ID, time() + (60 * 15 * 4 ), "/");
+    setcookie("annee", 1, time() + (60 * 15 * 4 ), "/");
+    setcookie("version", $version, time() + (60 * 15 * 4 ), "/");
 
 
     //Vérification si c'est la première connexion @Noah
