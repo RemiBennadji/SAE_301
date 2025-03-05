@@ -6,6 +6,8 @@ window.onload = function() {
         document.getElementById('dateReport').value = reportDate;
     }
     if (reportHeure) {
-        document.getElementById('heureReport').value = reportHeure;
+        document.getElementById('heureStartReport').value = reportHeure.slice(0,5);
+        document.getElementById('heureEndReport').value = "17:00";
     }
+
 }
