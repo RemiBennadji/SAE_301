@@ -271,6 +271,7 @@ echo '<div class="changerSemaine">
     </form>
 </div><br><br><br>';
 
+
 echo "<div class='container-edt'>
         <div class='edt-table'>
             <label>Version actuelle</label><br>
@@ -288,7 +289,7 @@ echo "<form id='validation' action='ValideEdt.php' method='post'>
         <div class='DivValider'>
             <input type='hidden' name='action' value='valider'>
             <button type='button' class='ValiderVersion' id='ValiderVersion' onclick='confirmerAction()'>Valider Version Actuelle</button>
-            <button type='button' id='AnnulerValidation' onclick='annulerValidation()'>Annuler la validation</button>
+            <button type='button' class='AnnulerValidation' id='AnnulerValidation' onclick='annulerValidation()'>Annuler la validation</button>
             <button type='button' id='Vider' onclick='vider()'>Vider les validations</button>
         </div>
         <label id='validationMessage' style='display: none; color: green;'></label>
