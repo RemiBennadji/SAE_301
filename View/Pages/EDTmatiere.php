@@ -103,6 +103,8 @@ function estExistant(Array $listeExistant, $courAAjouter){
 
 };
 
+
+
 function AfficherEdtSemaine($dateDebut, $nomProf) {
     global $edt;
     $timestamp = strtotime($dateDebut);
@@ -183,6 +185,16 @@ function AfficherEdtSemaine($dateDebut, $nomProf) {
                 $typeSeance = strtolower($cours['typeseance']);
                 $salles = explode(',', $cours['salles']);
 
+//                //Todo
+//                echo ' | ';
+//                foreach ($joursData[$j] as $cours) {
+//                    echo $cours['matiere'] . ' ' . $cours['salles'] . ' | ';
+//                }
+//                echo $j . " | ";
+
+                //print_r($cours);
+
+
 
                 //on vérifie le type de séance pour adapter l'affichage
                 if ($typeSeance == 'ds') {
@@ -217,6 +229,7 @@ function AfficherEdtSemaine($dateDebut, $nomProf) {
                     $prenomProf = "";
                 }
 
+
                 $semestre = $cours['semestre'];
                 $nomRessource = $cours['ressource'];
 
@@ -232,7 +245,7 @@ function AfficherEdtSemaine($dateDebut, $nomProf) {
                     $contenuHTML .= "Semestre : ".$semestre . " | Groupe : " . $nomRessource[0] . "<br>" . "</div>";
                 }
                 elseif ($cours['typeseance'] == "TP"){
-                    $contenuHTML .= "Semestre : ".$semestre . " | Groupe : " . $nomRessource[0] . "<br>" . "</div>";
+                    $contenuHTML .= "Semestre : ".$semestre . " | Groupe : " . $nomRessource . "<br>" . "</div>";
                 }
 
 
@@ -247,11 +260,13 @@ function AfficherEdtSemaine($dateDebut, $nomProf) {
                     echo "<td rowspan='$nombreCreneaux' class='case'>";
                     for ($k = 0; $k < $nombreCours; $k+=2) {
                         if($k > 0){
+                            $salleCase = $cours["salles"];
+
                             //Todo Changer $sallesStr et $nomRessource[0]
                             $contenuHTML = "<div class='$classeCSS'>" .
                                 $cours['typeseance'] . "<br>" .
                                 $cours['code'] . " " . $cours['matiere'] . "<br>" .
-                                $sallesStr . "<br>" .
+                                $salleCase . "<br>" .
                                 "Semestre : ".$semestre . " | Groupe : " . $nomRessource[0] . "<br>" . "</div>";
 
                         }
@@ -290,6 +305,7 @@ function AfficherEdtSemaine($dateDebut, $nomProf) {
 //requête permettant de récupérer toutes les informations à utiliser dans la méthode afficherEdtSemaine pour faire l'affichage dans les cases de l'emploi du temps
 function RecupererCoursParJour($jour, $nomProf): array
 {
+
 
     $sql = "
 WITH CoursParalleles AS (
@@ -394,6 +410,9 @@ echo ('<footer class="footer">
 
 // Appel à la fonction qui affiche l'emploi du temps de la ressource choisie et pour de la semaine
 AfficherEdtSemaine($dateActuel, $nomProf);
+
+
+
 ?>
 
 <!-- Inclusion de scripts pour le calendrier et la génération de PDF -->
@@ -403,3 +422,4 @@ AfficherEdtSemaine($dateActuel, $nomProf);
 <script defer src="../../Model/JavaScript/menuHamburger.js"></script>
 <script>afficherElement("<?php echo $_SESSION['role']; ?>");</script>
 </body>
+</html>
