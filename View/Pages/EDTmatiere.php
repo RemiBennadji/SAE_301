@@ -250,28 +250,41 @@ function AfficherEdtSemaine($dateDebut, $nomProf) {
                 elseif ($cours['typeseance'] == "CM"){
                     echo "<td rowspan='$nombreCreneaux'><span class='cours'>$contenuHTML</span></td>";
                 }
-                elseif ($cours['typeseance'] == "TD"){
-                    echo "<td rowspan='$nombreCreneaux' class='case'>";
-                    for ($k = 0; $k < $nombreCours; $k+=2) {
-                        if($k > 0){
-                            $salleCase = next($coursDuJour)["salles"];
+                elseif ($cours['typeseance'] == "TD") {
 
-                            //Todo Changer $sallesStr et $nomRessource[0]
-                            $contenuHTML = "<div class='$classeCSS'>" .
-                                $cours['typeseance'] . "<br>" .
-                                $cours['code'] . " " . $cours['matiere'] . "<br>" .
-                                $salleCase . "<br>" .
-                                "Semestre : ".$semestre . " | Groupe : " . $nomRessource[0] . "<br>" . "</div>";
+                    $data = [];
 
+                    echo "<td class='case'>";
+                    $nomGroupe = trim($nomRessource[0]);
+
+                    for ($k = 0; $k < $nombreCours; $k++) {
+
+                        if (in_array($nomGroupe, $data)) {//Si le groupe est deja dans la boucle il passe a la prochaine ieration
+                            continue;
                         }
-                        else{
-                            echo "<span style='padding: 2px'>$contenuHTML</span>";
-                        }
+
+                        $salleCase = next($coursDuJour)["salles"];
+
+                        array_push($data, $nomGroupe);//Ajout du groupe dans $data
+
+                        var_dump($data);
+
+                        $donnée = "<div class='$classeCSS'>" .
+                            $cours['typeseance'] . "<br>" .
+                            $cours['code'] . " " . $cours['matiere'] . "<br>" .
+                            $salleCase . "<br>" .
+                            "Semestre : ".$semestre . " | Groupe : " . $nomGroupe . "<br>" . "</div>";
+
+
+                        echo "<span style='padding: 2px'>$donnée</span>";
+
                     }
+                    echo "</td>";
                 }
+
                 elseif ($cours['typeseance'] == "TP"){
                     echo "<td rowspan='$nombreCreneaux' class='case'>";
-                    for ($k = 0; $k < $nombreCours; $k+=2) {
+                    for ($k = 0; $k < $nombreCours; $k++) {
                     }
                     $salleCase = next($coursDuJour)["salles"];
                     if($k > 0){
