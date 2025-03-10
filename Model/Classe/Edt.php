@@ -15,41 +15,27 @@ class Edt
         $joursData = $this->RecupererCoursParJour($jour, $classe, $annee, $version);
         echo "</tr>";
 
-        $listeHoraire = ['08:00', '09:30', '11:00', '12:30', '14:00', '15:30'.'<br>'.'<br>'.'<br>'.'17:00'];
+        $listeHoraire = ['08:00', '09:30', '11:00', '12:30', '14:00', '15:30', '17:00'];
         $cellulesSautees = array_fill(0, 5, 0);
-
-
-        $nomJour = date("l", $timestamp);
-        if($nomJour == "Monday"){
-            $j=0;
-        }elseif ($nomJour == "Tuesday") {
-            $j=1;
-        }elseif ($nomJour == "Wednesday") {
-            $j=2;
-        }elseif ($nomJour == "Thursday") {
-            $j=3;
-        }elseif ($nomJour == "Friday") {
-            $j=4;
-        }
 
         // Parcourir chaque horaire pour afficher les cours correspondants
         for ($h = 0; $h < count($listeHoraire); $h++) {
             echo "<tr>";
             echo "<td style='vertical-align: top;'>$listeHoraire[$h]</td>";
-            if ($cellulesSautees[$j] > 0) {
-                $cellulesSautees[$j]--;
+            if ($cellulesSautees[0] > 0) {
+                $cellulesSautees[0]--;
                 continue;
             }
 
             $horaireCourant = date("H:i:s", strtotime($listeHoraire[$h]));
-            $coursDuJour = array_filter($joursData[$j], function($cours) use ($horaireCourant) {
+            $coursDuJour = array_filter($joursData, function($cours) use ($horaireCourant) {
                 return date("H:i:s", strtotime($cours['date'])) === $horaireCourant;
             });
 
             if (!empty($coursDuJour)) {
                 $cours = current($coursDuJour);
 
-                // Récupération de la durée des cours (1h30, 3h00) @Dorian
+                // Récupération de la durée des cours (1h30, 3h00)
                 $dureeStr = $cours['duree'];
                 if (strpos($dureeStr, 'years') !== false) {
                     preg_match('/(\d+) hours (\d+) mins/', $dureeStr, $matches);
@@ -61,7 +47,7 @@ class Edt
 
                 $nombreCreneaux = ceil($dureeMinutes / 90);
 
-                // Formatage du nom de la discipline pour qu'elle adaptait au CSS @Dorian
+                // Formatage du nom de la discipline pour l'adapter au CSS
                 $discipline = strtolower($this->supprimerAccents($cours['discipline']));
                 $discipline = preg_replace('/[^a-z0-9]+/', '-', $discipline);
                 $discipline = trim($discipline, '-');
@@ -69,12 +55,11 @@ class Edt
                 $typeSeance = strtolower($cours['typeseance']);
                 $salles = explode(',', $cours['salles']);
 
-                // Si c'est UN DS @Dorian
+                // Si c'est un DS
                 if ($typeSeance == 'ds') {
                     $classeCSS = "ds";
                     // Et que le DS est pour les premières années
                     if ($annee == 1){
-                        // On ajoute la salle 110
                         $sallesStr = "Amphi, Salle 110";
                     }
                     else{
@@ -86,11 +71,7 @@ class Edt
                     $sallesStr = "Salle " . implode(", ", $salles);
                 }
                 else {
-                    $classeCSS = $dureeMinutes == 180 ?
-                        // Si le cours dure 3h, alors on ajoute "-3" pour la case soit plus "large" sinon, c'est le format de base @Dorian
-                        "cours-" . $discipline . "-" . $typeSeance . '-3' :
-                        "cours-" . $discipline . "-" . $typeSeance;
-
+                    $classeCSS = $dureeMinutes == 180 ? "cours-" . $discipline . "-" . $typeSeance . '-3' : "cours-" . $discipline . "-" . $typeSeance;
                     if (count($salles) == 1 && $salles[0] == '200') {
                         $sallesStr = "Amphi";
                     } else {
@@ -99,16 +80,16 @@ class Edt
                 }
 
                 if(isset($cours['prenom'])){
-                    // Formatage du nom des professeurs (P. Nom)
+                    // Formatage du nom des professeurs
                     $nomProf = $cours['prenom'][0] . ". ". $cours['nom'];
                 }
 
-                // Si aucun prof (On reformate en vide)
+                // Si aucun prof
                 if ($nomProf == ". ") {
                     $nomProf = "";
                 }
 
-                // On compile toutes les informations "intéressante" à afficher @Dorian
+                // Compilation des informations à afficher
                 $contenuHTML = "<div class='tooltip caseEDT $classeCSS'>" .
                     $cours['typeseance'] . "<br>" .
                     "<span class='tooltiptext'>" .
@@ -122,17 +103,17 @@ class Edt
                     "</div>";
 
                 echo "<td rowspan='$nombreCreneaux'>$contenuHTML</td>";
-                $cellulesSautees[$j] = $nombreCreneaux - 1;
+                $cellulesSautees[0] = $nombreCreneaux - 1;
             } else {
                 echo "<td></td>";
             }
+            echo "</tr>";
         }
 
-        // Fermer le tableau HTML
         echo "</table>";
-
-
     }
+
+
     function AfficherEdtSemaine($dateDebut, $classe, $annee, $version) {
 
         $timestamp = strtotime($dateDebut);

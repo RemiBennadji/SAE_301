@@ -77,14 +77,14 @@
 <?php
 // Inclusion des fichiers nécessaires pour la connexion à la base de données et la gestion de l'emploi du temps
 include "../../Controller/ConnectionBDD.php";
-require_once "../../Model/Classe/Edt.php";
+require_once "../../Model/Classe/EdtQuotiClass.php";
 
 //ini_set('display_errors', 1);
 //ini_set('display_startup_errors', 1);
 //error_reporting(E_ALL);
 
 // Création d'un objet Edt pour gérer l'emploi du temps
-$edt = new Edt();
+$edt = new EdtQuotiClass();
 
 // Démarrage de la session pour gérer les variables utilisateur
 session_start();
@@ -121,9 +121,9 @@ if (isset($_POST['dateSelection'])) {
 
 // Gestion de la navigation avec les flèches
 if (isset($_POST['precedent'])) {
-    $dateActuelle->modify('-1 days');
+    $dateActuelle = $edt->decrementerJour($dateActuelle);
 } elseif (isset($_POST['suivant'])) {
-    $dateActuelle->modify('+1 days');
+    $dateActuelle = $edt->incrementerJour($dateActuelle);
 }
 
 echo '
