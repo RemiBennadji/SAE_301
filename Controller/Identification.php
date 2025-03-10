@@ -24,10 +24,6 @@ if (!isset($_POST['id']) || !isset($_POST['pwd'])) {
 $ID = $_POST["id"];
 $PWD = $_POST["pwd"];
 
-
-//Requete pour avoir la version max de l edt @Bastien
-//$sql3 = "select max(version) from versionValideEDT";
-
 //Connexion à la BDD + lancement des requêtes SQL @Noah
 try {
     //Test si identifiant existant dans la bdd @matthéo
