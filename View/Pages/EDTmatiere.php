@@ -87,20 +87,12 @@ $dateActuel = date('Y-m-d', strtotime('monday this week'));
 //récupération du nom de la ressource pour l'utiliser en condition de la requête pour afficher l'edt
 $nomProf = $_POST["codeRessource"];
 
-function estExistant(Array $listeExistant, $courAAjouter){
-    $changement = false;
-    foreach ($listeExistant as $cour) {
-        if ($courAAjouter["Salle"] == $cour["Salle"]) {
-            // TODO Changement de cours à faire, changer la classe, ex : si A1 a cours et que A2 à cours, alors modifier et remplacer A1 par A puis retorner la nouvelle liste
-            return $listeExistant;
-        }
+function estExistant(Array $listeExistant){
+    $listeInterm = [];
+    for($i=0; $i<count($listeExistant); $i++){
+        array_push($listeInterm, $listeExistant[$i]);
     }
-
-
-
-    $listeExistant+= $courAAjouter;
-    return $listeExistant;
-
+    return array_unique($listeInterm);
 };
 
 
@@ -188,6 +180,13 @@ function AfficherEdtSemaine($dateDebut, $nomProf) {
                 //Todo
                 //print_r($cours);
 
+//                $data = [];
+//                $nomRessource = $cours['ressource'];
+//                $nomGroupe = trim($nomRessource[0]);
+//                if (in_array($nomGroupe, $data)) {//Si le groupe est deja dans la boucle il passe a la prochaine iteration
+//                    continue;
+//                }
+//                array_push($data, $nomGroupe);//Ajout du groupe dans $data
 
 
                 //on vérifie le type de séance pour adapter l'affichage
@@ -251,52 +250,42 @@ function AfficherEdtSemaine($dateDebut, $nomProf) {
                     echo "<td rowspan='$nombreCreneaux'><span class='cours'>$contenuHTML</span></td>";
                 }
                 elseif ($cours['typeseance'] == "TD") {
-
+                    echo "<td rowspan='$nombreCreneaux' class='case'>";
                     $data = [];
-
-                    echo "<td class='case'>";
                     $nomGroupe = trim($nomRessource[0]);
 
-                    for ($k = 0; $k < $nombreCours; $k++) {
+                    if (!in_array($nomGroupe, $data)) {
+                        $data[] .= $nomGroupe;
 
-                        if (in_array($nomGroupe, $data)) {//Si le groupe est deja dans la boucle il passe a la prochaine ieration
-                            continue;
-                        }
-
-                        $salleCase = next($coursDuJour)["salles"];
-
-                        array_push($data, $nomGroupe);//Ajout du groupe dans $data
-
-                        var_dump($data);
-
-                        $donnée = "<div class='$classeCSS'>" .
+                        $donnee = "<div class='$classeCSS'>" .
                             $cours['typeseance'] . "<br>" .
                             $cours['code'] . " " . $cours['matiere'] . "<br>" .
-                            $salleCase . "<br>" .
+                            $sallesStr . "<br>" .
                             "Semestre : ".$semestre . " | Groupe : " . $nomGroupe . "<br>" . "</div>";
 
-
-                        echo "<span style='padding: 2px'>$donnée</span>";
+                        echo "<span style='padding: 2px'>$donnee</span>";
 
                     }
                     echo "</td>";
                 }
 
                 elseif ($cours['typeseance'] == "TP"){
-                    echo "<td rowspan='$nombreCreneaux' class='case'>";
-                    for ($k = 0; $k < $nombreCours; $k++) {
-                    }
                     $salleCase = next($coursDuJour)["salles"];
-                    if($k > 0){
-                        //Todo Changer $sallesStr et $nomRessource[0]
-                        $contenuHTML = "<div class='$classeCSS'>" .
-                            $cours['typeseance'] . "<br>" .
-                            $cours['code'] . " " . $cours['matiere'] . "<br>" .
-                            $salleCase . "<br>" .
-                            "Semestre : ".$semestre . " | Groupe : " . $nomRessource . "<br>" . "</div>";
-                    }
-                    else{
-                        echo "<span style='padding: 2px'>$contenuHTML</span>";
+
+                    echo "<td rowspan='$nombreCreneaux' class='case'>";
+                    for ($k = 0; $k < 1; $k++) {
+
+                        //$salleCase = next($coursDuJour)["salles"];
+                        if ($k > 0) {
+                            //Todo Changer $sallesStr et $nomRessource[0]
+                            $contenuHTML = "<div class='$classeCSS'>" .
+                                $cours['typeseance'] . "<br>" .
+                                $cours['code'] . " " . $cours['matiere'] . "<br>" .
+                                $salleCase . "<br>" .
+                                "Semestre : " . $semestre . " | Groupe : " . $nomRessource . "<br>" . "</div>";
+                        } else {
+                            echo "<span style='padding: 2px'>$contenuHTML</span>";
+                        }
                     }
                 }
 
@@ -418,9 +407,6 @@ echo ('<footer class="footer">
 
 // Appel à la fonction qui affiche l'emploi du temps de la ressource choisie et pour de la semaine
 AfficherEdtSemaine($dateActuel, $nomProf);
-
-
-
 ?>
 
 <!-- Inclusion de scripts pour le calendrier et la génération de PDF -->
