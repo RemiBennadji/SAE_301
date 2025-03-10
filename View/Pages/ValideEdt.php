@@ -170,7 +170,7 @@ function ajoutProfValidation()
         $req->execute();
         foreach ($req->fetchAll(PDO::FETCH_ASSOC) as $prof) {//Parcours la BDD @Bastien
             $req2 = $connexion->prepare($sql2);
-            $req2->execute([$prof['nom'], $prof['prenom'], null]);
+            $req2->execute([$prof['nom'], $prof['prenom'], "null"]);
         }
     }
     catch (PDOException $e) {
@@ -306,7 +306,7 @@ if (isset($_POST["action"])) {
             $nom = $_COOKIE['nomProf'];
             $connexion = getConnectionBDD();
             $req = $connexion->prepare($sql);
-            $req->execute([true,$timestamp,$nom]);
+            $req->execute(["true",$timestamp,$nom]);
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
@@ -316,7 +316,7 @@ if (isset($_POST["action"])) {
             $nom = $_COOKIE['nomProf'];
             $connexion = getConnectionBDD();
             $req = $connexion->prepare($sql);
-            $req->execute([false,null,$nom]);
+            $req->execute(["false",null,$nom]);
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
@@ -359,10 +359,10 @@ $nonValides = [];
 
 // Séparation des données en deux groupes
 foreach ($personnes as $prof) {
-    if ($prof['valider']) {
+    if ($prof['valider'] === "true") {
         $valides[] = $prof;
     }
-    elseif ($prof['valider'] == false) {
+    elseif ($prof['valider'] === "false") {
         $refuses[] = $prof;
     }
     else {
