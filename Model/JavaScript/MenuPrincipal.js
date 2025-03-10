@@ -53,6 +53,24 @@ function afficherElement(role) {
 
 //sert à afficher le bon emploi du temps choisit par l'administrateur
 document.addEventListener('DOMContentLoaded', function () {
+    const boutonPrecedent = document.getElementById('precedent')
+    const boutonSuivant = document.getElementById('suivant')
+
+    function chargerEdt(selectedDate){
+        const xhr = new XMLHttpRequest();
+
+        xhr.open('POST', '../../View/Pages/EDT.php', true);
+
+        xhr.onload = function(){
+            if (xhr.status === 200) {
+                const edtContainer = document.getElementById('edtContainer')
+                edtContainer.innerHTML = xhr.responseText;
+            }
+        }
+    }
+
+
+
     const edtAdmin = document.getElementById('edtAdmin');
     if (edtAdmin) {
         edtAdmin.addEventListener('change', function () {
@@ -95,7 +113,6 @@ document.addEventListener('DOMContentLoaded', function () {
             else {
                 document.cookie = "groupe=" + edtAdmin.value + "; expires=" + expirationDate + "; path=/";
             }
-            window.location.reload();
         });
     } else {
         console.error("L'élément edtAdmin n'a pas été trouvé.");

@@ -151,7 +151,7 @@ echo '
 echo '<div class="changerSemaine">
     <button id="download-pdf" class="btn">Télécharger en PDF</button>
     <form action="EDT.php" method="post">
-        <button type="submit" name="precedent" class="fleche">Précédent</button>
+        <button type="submit" id ="precedent" name="precedent" class="fleche">Précédent</button>
         
         <label for="selectionnerSemaine">Semaine du</label>
         <input type="date" id="selectionnerSemaine" name="selectedDate" onchange="this.form.submit()" 
@@ -160,7 +160,7 @@ echo '<div class="changerSemaine">
         <input type="hidden"  name="dateActuel" 
                value="' . htmlspecialchars($dateActuel, ENT_QUOTES, 'UTF-8') . '">
         
-        <button type="submit" name="suivant" class="fleche">Suivant</button>
+        <button type="submit" id="suivant" name="suivant" class="fleche">Suivant</button>
     </form>
 </div>';
 
@@ -173,8 +173,12 @@ echo ('<footer class="footer">
 </footer>');
 
 // Appel à la fonction qui affiche l'emploi du temps de la semaine
+echo '<div id="edtContainer">';
 $edt->AfficherEdtSemaine($dateActuel, $classeActuel, $anneeActuel,$_COOKIE["version"]);
+echo '</div>'
 ?>
+
+
 
 <!-- Inclusion de scripts pour le menu, le calendrier et la génération de PDF -->
 <script src="../../Model/JavaScript/MenuPrincipal.js"></script>
