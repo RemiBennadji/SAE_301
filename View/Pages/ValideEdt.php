@@ -65,9 +65,9 @@ require_once "../../Model/Classe/Edt.php";
 
 $edt = new Edt();
 
-//ini_set('display_errors', 1);
-//ini_set('display_startup_errors', 1);
-//error_reporting(E_ALL);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 // Vérifier si le cookie "groupe" existe
 session_start();
@@ -170,7 +170,7 @@ function ajoutProfValidation()
         $req->execute();
         foreach ($req->fetchAll(PDO::FETCH_ASSOC) as $prof) {//Parcours la BDD @Bastien
             $req2 = $connexion->prepare($sql2);
-            $req2->execute([$prof['nom'], $prof['prenom'], "FALSE"]);
+            $req2->execute([$prof['nom'], $prof['prenom']]);
         }
     }
     catch (PDOException $e) {
@@ -271,6 +271,16 @@ echo '<div class="changerSemaine">
     </form>
 </div><br><br><br>';
 
+echo "<form id='validation' action='ValideEdt.php' method='post'>
+        <div class='DivValider'>
+            <input type='hidden' name='action' value='valider'>
+            <button type='button' class='ValiderVersion' id='ValiderVersion' onclick='confirmerAction()'>Valider Version Actuelle</button>
+            <button type='button' class='AnnulerValidation' id='AnnulerValidation' onclick='annulerValidation()'>Annuler la validation</button>
+            <button type='button' id='Vider' onclick='vider()'>Vider les validations</button>
+        </div>
+        <label id='validationMessage' style='display: none; color: green;'></label>
+    </form><br><br><br>
+";
 
 echo "<div class='container-edt'>
         <div class='edt-table'>
@@ -285,16 +295,7 @@ $edt->AfficherEdtSemaine($dateActuel, $classeActuel, $anneeActuel, $nouvelleVers
 echo "  </div>
       </div>";
 
-echo "<form id='validation' action='ValideEdt.php' method='post'>
-        <div class='DivValider'>
-            <input type='hidden' name='action' value='valider'>
-            <button type='button' class='ValiderVersion' id='ValiderVersion' onclick='confirmerAction()'>Valider Version Actuelle</button>
-            <button type='button' class='AnnulerValidation' id='AnnulerValidation' onclick='annulerValidation()'>Annuler la validation</button>
-            <button type='button' id='Vider' onclick='vider()'>Vider les validations</button>
-        </div>
-        <label id='validationMessage' style='display: none; color: green;'></label>
-    </form>
-";
+
 
 adminValideVersion();
 
@@ -353,13 +354,18 @@ try {
 }
 
 $valides = [];
+$refuses = [];
 $nonValides = [];
 
 // Séparation des données en deux groupes
 foreach ($personnes as $prof) {
     if ($prof['valider']) {
         $valides[] = $prof;
-    } else {
+    }
+    elseif ($prof['valider'] == false) {
+        $refuses[] = $prof;
+    }
+    else {
         $nonValides[] = $prof;
     }
 }
@@ -368,6 +374,7 @@ echo "<h1>Liste des validations</h1>";
 
 if($_COOKIE["role"] === "administrateur") {
     genererTableau($valides, "Validés");
+    genererTableau($refuses, "Refusés");
     genererTableau($nonValides, "Non validés");
 }
 
