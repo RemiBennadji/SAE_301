@@ -192,7 +192,7 @@ function adminValideVersion()//Si les profs qui ont validés > aux profs non val
         $pasaccepter->execute(['false']);
         $pasaccepter = $pasaccepter->fetch(PDO::FETCH_ASSOC)['total'];
 
-        if(($pasaccepter > 0) && ($nouvelleVersion != $_COOKIE["version"])){
+        if(($pasaccepter != 0) && ($nouvelleVersion != $_COOKIE["version"])){
 
             echo "<form id='adminValide' action='ValideEdt.php' method='post'>
                     <div class='DivadminValide'>
