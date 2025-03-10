@@ -170,7 +170,7 @@ function ajoutProfValidation()
         $req->execute();
         foreach ($req->fetchAll(PDO::FETCH_ASSOC) as $prof) {//Parcours la BDD @Bastien
             $req2 = $connexion->prepare($sql2);
-            $req2->execute([$prof['nom'], $prof['prenom']]);
+            $req2->execute([$prof['nom'], $prof['prenom'], null]);
         }
     }
     catch (PDOException $e) {
