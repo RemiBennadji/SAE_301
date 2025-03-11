@@ -41,9 +41,9 @@ document.getElementById('formID').addEventListener('submit', function (event) {
                     }
                     if (jsonData.error === 'errorMDP' ) {//erreur si MDP incorrect
                         // Change le style en cas d'échec
-                        idcompte.style.background = '#f2a19b';
-                        idcompte.style.border = '2px solid red';
-                        labelIdentifiant.style.color = 'red';
+                        idcompte.style.background = '#f5f9fb';
+                        idcompte.style.border = '2px solid #0081a1';
+                        labelIdentifiant.style.color = '#0081a1';
                         idpsw.style.background = '#f2a19b';
                         idpsw.style.border = '2px solid red';
                         labelPsw.style.color = 'red';
