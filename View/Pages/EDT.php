@@ -119,9 +119,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Gestion des boutons pour naviguer entre les semaines
-    if (isset($_POST["precedent"])) {
-        $dateActuel = $edt->decrementerSemaine($dateActuel);
-    }
+//    if (isset($_POST["precedent"])) {
+//        $dateActuel = $edt->decrementerSemaine($dateActuel);
+//    }
 
     if (isset($_POST["suivant"])) {
         $dateActuel = $edt->incrementerSemaine($dateActuel);
@@ -172,11 +172,9 @@ echo ('<footer class="footer">
     <p>&copy; 2024 - SAE Emploi du temps. Rémi | Dorian | Matthéo | Bastien | Noah.</p>
 </footer>');
 
-// Appel à la fonction qui affiche l'emploi du temps de la semaine
-echo '<div id="edtContainer">';
-$edt->AfficherEdtSemaine($dateActuel, $classeActuel, $anneeActuel,$_COOKIE["version"]);
-echo '</div>'
 ?>
+
+<div id="edtContainer"> <?php $edt->AfficherEdtSemaine($dateActuel, $classeActuel, $anneeActuel,$_COOKIE["version"]) ?></div>
 
 
 
