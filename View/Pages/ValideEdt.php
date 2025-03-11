@@ -192,7 +192,7 @@ function adminValideVersion()//Si les profs qui ont validés > aux profs non val
         $pasaccepter->execute(['false']);
         $pasaccepter = $pasaccepter->fetch(PDO::FETCH_ASSOC)['total'];
 
-        if(($pasaccepter != 0) && ($nouvelleVersion != $_COOKIE["version"])){
+        if(($nouvelleVersion != $_COOKIE["version"]) && $accepter > 0) {
 
             echo "<form id='adminValide' action='ValideEdt.php' method='post'>
                     <div class='DivadminValide'>
@@ -373,9 +373,42 @@ foreach ($personnes as $prof) {
 echo "<h1>Liste des validations</h1>";
 
 if($_COOKIE["role"] === "administrateur") {
-    genererTableau($valides, "Validés");
-    genererTableau($refuses, "Refusés");
-    genererTableau($nonValides, "Non validés");
+    if(!empty($valides)) {
+        genererTableau($valides, "Validés");
+    }
+    if(!empty($refuses)) {
+        genererTableau($refuses, "Refusés");
+    }
+    if(!empty($nonValides)) {
+        genererTableau($nonValides, "Non validés");
+    }
+}
+
+$sql = "SELECT max(timestamp) FROM version;";
+try {
+    $connexion = getConnectionBDD();
+    $req = $connexion->query($sql);
+
+    $t = $req->fetch(PDO::FETCH_ASSOC);
+
+    $timestampVersion = new DateTime("@".$t['max(timestamp)']);
+    $timestampVersion->modify('+24 hours');
+    $timestampActuel = new DateTime();
+
+} catch (PDOException $e) {
+    echo "Erreur : " . $e->getMessage();
+    exit;
+}
+
+if (($timestampActuel > $timestampVersion) && (empty($refuses))) {
+    $sql = "insert into versionValideEDT (version,dateValidation) values(?,?);";
+    try {
+        $req = $connexion->prepare($sql);
+        $req->execute([$nouvelleVersion, $timestamp]);
+        viderValidation();
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    }
 }
 
 
