@@ -55,11 +55,13 @@ function afficherElement(role) {
 document.addEventListener('DOMContentLoaded', function () {
     const boutonPrecedent = document.getElementById('precedent')
     const boutonSuivant = document.getElementById('suivant')
+    const selectionnerSemaine = document.getElementById('selectionnerSemaine')
 
     function chargerEdt(selectedDate){
         const xhr = new XMLHttpRequest();
 
         xhr.open('POST', '../../View/Pages/EDT.php', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
         xhr.onload = function(){
             if (xhr.status === 200) {
@@ -67,7 +69,17 @@ document.addEventListener('DOMContentLoaded', function () {
                 edtContainer.innerHTML = xhr.responseText;
             }
         }
+        xhr.send('selectedDate=' + encodeURIComponent(selectedDate));
     }
+
+    boutonPrecedent.addEventListener('click', function(e){
+        e.preventDefault()
+        const currentDate = new Date(selectionnerSemaine.value);
+        currentDate.setDate(currentDate.getDate() - 7);
+        selectionnerSemaine.value = currentDate.toISOString().split('T')[0];
+        chargerEdt(selectionnerSemaine.value);
+
+    })
 
 
 

@@ -151,10 +151,10 @@ echo '
 echo '<div class="changerSemaine">
     <button id="download-pdf" class="btn">Télécharger en PDF</button>
     <form action="EDT.php" method="post">
-        <button type="submit" id ="precedent" name="precedent" class="fleche">Précédent</button>
+        <button type="button" id ="precedent" name="precedent" class="fleche">Précédent</button>
         
         <label for="selectionnerSemaine">Semaine du</label>
-        <input type="date" id="selectionnerSemaine" name="selectedDate" onchange="this.form.submit()" 
+        <input type="date" id="selectionnerSemaine" name="selectedDate" 
                value="' . htmlspecialchars($dateActuel, ENT_QUOTES, 'UTF-8') . '">
         <input type="hidden" name="role" value="' . $_SESSION["role"] . '">
         <input type="hidden"  name="dateActuel" 
