@@ -230,7 +230,8 @@ function AfficherEdtSemaine($dateDebut, $nomProf) {
                 $contenuHTML = "<div class='$classeCSS'>" .
                     $cours['typeseance'] . "<br>" .
                     $cours['code'] . " " . $cours['matiere'] . "<br>" .
-                    $sallesStr . "<br>";
+                    $sallesStr . "<br>"
+                    . $cours['prenom'][0] . ". " . $cours['nom'] . "<br>";
                 if($cours['typeseance'] == "CM"){
                     $contenuHTML .= "Semestre : ".$semestre . " | BUT : " . $_COOKIE["annee"] . "<br>" . "</div>";
                 }
@@ -261,6 +262,7 @@ function AfficherEdtSemaine($dateDebut, $nomProf) {
                             $cours['typeseance'] . "<br>" .
                             $cours['code'] . " " . $cours['matiere'] . "<br>" .
                             $sallesStr . "<br>" .
+                            $cours['prenom'][0] . ". " . $cours['nom'] . "<br>" .
                             "Semestre : ".$semestre . " | Groupe : " . $nomGroupe . "<br>" . "</div>";
 
                         echo "<span style='padding: 2px'>$donnee</span>";
@@ -282,7 +284,8 @@ function AfficherEdtSemaine($dateDebut, $nomProf) {
                                 $cours['typeseance'] . "<br>" .
                                 $cours['code'] . " " . $cours['matiere'] . "<br>" .
                                 $salleCase . "<br>" .
-                                "Semestre : " . $semestre . " | Groupe : " . $nomRessource . "<br>" . "</div>";
+                                "Semestre : " . $semestre . " | Groupe : " . $nomRessource . "<br>"
+                                . $cours['prenom'][0] . ". " . $cours['nom'] . "</div>";
                         } else {
                             echo "<span style='padding: 2px'>$contenuHTML</span>";
                         }

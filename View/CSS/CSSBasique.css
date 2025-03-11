@@ -7,9 +7,7 @@
 
 }
 
-body {
-    font-family: Arial, sans-serif;
-}
+
 
 
 
@@ -1292,4 +1290,11 @@ div{
     font-size: 15px;
     color: white;
     border-style: solid;
+}
+
+@media (max-width: 1000px) {
+
+}.tableauresponsive {
+    font-family: Arial, sans-serif;
+    font-size: 27px;
 }

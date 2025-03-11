@@ -101,7 +101,7 @@ try {
 <?php
 function genererTableau($data, $titre) {
     echo "<h2>$titre</h2>";
-    echo "<table id='azerty'>
+    echo "<table id='azerty' class='tableauresponsive'>
         <thead>
             <tr>
                 <th>Nom</th>
