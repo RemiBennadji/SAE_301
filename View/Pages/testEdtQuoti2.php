@@ -50,18 +50,29 @@ try {
         JOIN schedule USING (code, typeseance, nomgroupe, semestre, noseance)
         JOIN ressourcegroupe rg USING (nomgroupe, semestre)
         JOIN schedulesalle USING (code, typeseance, nomgroupe, semestre, noseance, version)
-    WHERE DATE(horaire) = :horaire
-        AND version = :version
-    ORDER BY horaire
-    ";
+    WHERE DATE(horaire) = ?
+        AND version = ?
+        AND semestre IN (?,?)
+    ORDER BY horaire";
 
     $horaire = '2025-01-21';
     $version = 42;
+    $semestre1 = 1;         // Exemple de semestre
+    $semestre2 = 2;         // Exemple de semestre
+
+// Préparer la requête
     $resultSalles = $connection->prepare($sql);
+
+// Lier les paramètres avec bindParam
     $resultSalles->bindParam(':horaire', $horaire);
     $resultSalles->bindParam(':version', $version);
+    $resultSalles->bindParam(':semestre1', $semestre1);
+    $resultSalles->bindParam(':semestre2', $semestre2);
+
+// Exécuter la requête
     $resultSalles->execute();
 
+// Récupérer les résultats sous forme de tableau associatif
     $listeSalles = $resultSalles->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     echo $e->getMessage();
