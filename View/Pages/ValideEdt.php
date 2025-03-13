@@ -282,6 +282,30 @@ echo "<form id='validation' action='ValideEdt.php' method='post'>
     </form><br><br><br>
 ";
 
+try {
+    $sql = "select distinct version as v from version order by version;";
+
+    $connexion = getConnectionBDD();
+
+    $v = $connexion->prepare($sql);
+    $v->execute();
+    $v = $v->fetchall(PDO::FETCH_ASSOC);
+}
+catch (PDOException $e) {
+    echo $e->getMessage();
+}
+
+// Todo stocker la version dans un cookie pour garder la version
+echo '<div class="menuVersion">
+    <label for="menu">Choisir une version :</label>
+    <select id="menu" name="menu" class="menuVersionSelect">';
+foreach ($v as $ver) {
+    echo "<option value='" . $ver["v"] . "'>" . $ver["v"] . "</option>";
+}
+echo '</select></div>';
+
+
+
 echo "<div class='container-edt'>
         <div class='edt-table'>
             <label>Version actuelle</label><br>
@@ -391,8 +415,10 @@ try {
 
     $t = $req->fetch(PDO::FETCH_ASSOC);
 
-    $timestampVersion = new DateTime("@".$t['max(timestamp)']);
+    $timestampVersion = new DateTime();
+    $timestampVersion = new DateTime($t["max"]);
     $timestampVersion->modify('+24 hours');
+
     $timestampActuel = new DateTime();
 
 } catch (PDOException $e) {
