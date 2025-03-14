@@ -283,7 +283,7 @@ echo "<form id='validation' action='ValideEdt.php' method='post'>
 ";
 
 try {
-    $sql = "select distinct version as v from version order by version;";
+    $sql = "select distinct version as v from schedulesalle order by version desc;";
 
     $connexion = getConnectionBDD();
 
@@ -295,10 +295,10 @@ catch (PDOException $e) {
     echo $e->getMessage();
 }
 
-// Todo stocker la version dans un cookie pour garder la version
-echo '<div class="menuVersion">
-    <label for="menu">Choisir une version :</label>
-    <select id="menu" name="menu" class="menuVersionSelect">';
+echo '<div class="menuVersion" id="menuVersion">
+    <label for="menu"></label>
+    <select id="menu" name="menu" class="menuVersionSelect" onchange="choisirVersion()">
+    <option value="" disabled selected>Choisissez une version...</option>';
 foreach ($v as $ver) {
     echo "<option value='" . $ver["v"] . "'>" . $ver["v"] . "</option>";
 }

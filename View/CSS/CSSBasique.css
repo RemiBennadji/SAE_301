@@ -1292,39 +1292,30 @@ div{
     border-style: solid;
 }
 
-/* Style du conteneur pour le menu */
 .menuVersion {
-    width: 200px;
+    position: absolute;
+    margin: 20px 10px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    color: #333;
+    left: 0;
+    font-weight: bold;
 }
 
-/* Style du menu déroulant */
 .menuVersionSelect {
-    width: 16%; /* Le select prend toute la largeur du conteneur */
-    padding: 5px; /* Espacement intérieur du select */
-    height: 30px; /* Hauteur du select lorsqu'il est fermé */
-    border: 1px solid #ccc; /* Bordure grise pour le select */
-    border-radius: 4px; /* Bordures arrondies */
-    background-color: #f9f9f9; /* Couleur de fond légère */
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    font-weight: bold;
+    width: 185px;
 }
 
-.menuVersionSelect::-webkit-scrollbar {
-    width: 6px; /* Largeur de la scrollbar */
-}
-
-/* Personnalisation des options dans le menu déroulant */
-.menuVersionSelect option {
-    font-size: 12px; /* Taille de la police des options */
-    padding: 5px; /* Espacement des options */
-}
-
-/* Ajout d'un style au focus pour rendre le select interactif */
 .menuVersionSelect:focus {
-    border-color: #0056b3; /* Changer la bordure lors du focus */
-    outline: none; /* Supprimer le contour par défaut */
-    box-shadow: 0 0 5px rgba(0, 86, 179, 0.5); /* Ombre légère */
+    background-color: #e6e6e6;
+    border-color: #66afe9;
+    outline: none;
 }
-
-
 
 @media (max-width: 1000px) {
 
