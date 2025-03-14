@@ -88,7 +88,7 @@ function insertStmt($res,$nom,$prenom)
 }
     
 //creationCompte.php
-function verifEtu()
+function verifEtu($nom, $prenom)
 {
     $conn = getConnectionBDD();
     $sql = $conn->prepare("SELECT COUNT(*) FROM etudiants WHERE nom = :nom AND prenom = :prenom");

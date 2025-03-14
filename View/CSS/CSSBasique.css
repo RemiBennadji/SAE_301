@@ -380,7 +380,7 @@ input:focus ~ label {
     position: absolute;
     top: 23%;
     right: 8%;
-    transform: translateY(-50%);
+    transform: translateY(-140%);
     border-radius: 50%; /* Forme circulaire */
 }
 
