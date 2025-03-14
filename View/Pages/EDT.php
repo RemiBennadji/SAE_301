@@ -160,7 +160,7 @@ echo '<div class="changerSemaine">
         <input type="hidden"  name="dateActuel" 
                value="' . htmlspecialchars($dateActuel, ENT_QUOTES, 'UTF-8') . '">
         
-        <button type="submit" id="suivant" name="suivant" class="fleche">Suivant</button>
+        <button type="button" id="suivant" name="suivant" class="fleche">Suivant</button>
     </form>
 </div>';
 

@@ -89,6 +89,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     })
 
+    boutonSuivant.addEventListener('click', function (e) {
+        e.preventDefault();
+        const currentDate = new Date(selectionnerSemaine.value);
+        currentDate.setDate(currentDate.getDate() + 7);
+        selectionnerSemaine.value = currentDate.toISOString().split('T')[0];
+        chargerEdt(selectionnerSemaine.value);
+    });
+
 
 
     const edtAdmin = document.getElementById('edtAdmin');
