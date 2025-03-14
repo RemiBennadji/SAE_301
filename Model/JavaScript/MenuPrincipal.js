@@ -58,23 +58,24 @@ document.addEventListener('DOMContentLoaded', function () {
     const selectionnerSemaine = document.getElementById('selectionnerSemaine')
 
     function chargerEdt(selectedDate) {
+
         const data = new URLSearchParams();
-        data.append('selectedDate', selectedDate); // Ajouter la date sélectionnée
+        data.append('selectedDate', selectedDate);
 
         fetch('../../View/Pages/EDT.php', {
             method: 'POST',
-            body: data, // Envoie des données sous forme de formulaire classique
+            body: data,
         })
-            .then(response => response.text()) // Récupère la réponse sous forme de texte
+            .then(response => response.text())
             .then(responseText => {
-                // Utiliser DOMParser pour analyser la réponse HTML complète
+                // Utiliser DOMParser pour trier la réponse HTML
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(responseText, 'text/html');
 
-                // Extraire uniquement la div#edtContainer du document analysé
+                // Prendre seulement la div edtContainer de la réponse
                 const newEdt = doc.querySelector('#edtContainer');
 
-                // Mettre à jour uniquement la div#edtContainer dans la page actuelle
+                // Mettre à jour uniquement la div edtContainer dans la page actuelle
                 document.getElementById('edtContainer').innerHTML = newEdt.innerHTML;
             })
             .catch(error => console.error('Erreur:', error));
