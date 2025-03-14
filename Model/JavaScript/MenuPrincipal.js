@@ -57,19 +57,27 @@ document.addEventListener('DOMContentLoaded', function () {
     const boutonSuivant = document.getElementById('suivant')
     const selectionnerSemaine = document.getElementById('selectionnerSemaine')
 
-    function chargerEdt(selectedDate){
-        const xhr = new XMLHttpRequest();
+    function chargerEdt(selectedDate) {
+        const data = new URLSearchParams();
+        data.append('selectedDate', selectedDate); // Ajouter la date sélectionnée
 
-        xhr.open('POST', '../../View/Pages/EDT.php', true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        fetch('../../View/Pages/EDT.php', {
+            method: 'POST',
+            body: data, // Envoie des données sous forme de formulaire classique
+        })
+            .then(response => response.text()) // Récupère la réponse sous forme de texte
+            .then(responseText => {
+                // Utiliser DOMParser pour analyser la réponse HTML complète
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(responseText, 'text/html');
 
-        xhr.onload = function(){
-            if (xhr.status === 200) {
-                const edtContainer = document.getElementById('edtContainer')
-                edtContainer.innerHTML = xhr.responseText;
-            }
-        }
-        xhr.send('selectedDate=' + encodeURIComponent(selectedDate));
+                // Extraire uniquement la div#edtContainer du document analysé
+                const newEdt = doc.querySelector('#edtContainer');
+
+                // Mettre à jour uniquement la div#edtContainer dans la page actuelle
+                document.getElementById('edtContainer').innerHTML = newEdt.innerHTML;
+            })
+            .catch(error => console.error('Erreur:', error));
     }
 
     boutonPrecedent.addEventListener('click', function(e){
