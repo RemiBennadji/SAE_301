@@ -27,21 +27,23 @@ if (isset($_FILES['fichier']) && $_FILES['fichier']['error'] === UPLOAD_ERR_OK) 
             try {
                 $conn = getConnectionBDD();
                 $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
+                $count = 0;
                 while (($res = fgetcsv($lecture, 1000, ";")) !== FALSE) {
                     $nom = $res[1];
                     $prenom = $res[2];
                     // Vérification de l'existence de l'étudiant dans la BDD
                     $sql1 = verifEtu($nom, $prenom);// $sql1 = ("SELECT COUNT(*) FROM etudiants WHERE nom = :nom AND prenom = :prenom");
 //                    echo json_encode($sql1->fetchColumn());
+
                     if ($sql1->fetchColumn() ==0){
-                        if ($sql1->fetchColumn() == 0 && ($nom != "nom")) { // Test si la ligne existe deja dans la BDD et si le nom de la ligne n'est pas égal à "nom" pour le titre du csv
+                        if ($nom != "nom") { // Test si le nom de la ligne n'est pas égal à "nom" pour le titre du csv
                             insertStmt($res,$nom,$prenom); //("INSERT INTO etudiants (civilite, nom, prenom, semestre, nom_ressource, email) VALUES (:civilite, :nom, :prenom, :semestre, :nom_ressource, :email)");
                             $etu = new Etudiant();
                             $etu->setPrenom($prenom);
                             $etu->setNom($nom);
                             $etu->setMail($res[5]);
                             $etu->insererDonnees();
+                            $count++;
                         }
                     }
                 }
