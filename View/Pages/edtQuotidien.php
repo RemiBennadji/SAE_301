@@ -79,11 +79,6 @@
 include "../../Controller/ConnectionBDD.php";
 require_once "../../Model/Classe/EdtQuotiClass.php";
 
-// Débogage - Décommenter si nécessaire
-//ini_set('display_errors', 1);
-//ini_set('display_startup_errors', 1);
-//error_reporting(E_ALL);
-
 // Création d'un objet Edt
 $edt = new EdtQuotiClass();
 
@@ -117,6 +112,8 @@ $version = isset($_COOKIE["version"]) ? $_COOKIE["version"] : "default";
 // Gestion de la date
 if (isset($_POST['dateSelection'])) {
     $dateActuelle = new DateTime($_POST['dateSelection']);
+} elseif (isset($_POST['dateActuelle'])) {
+    $dateActuelle = new DateTime($_POST['dateActuelle']);
 } else {
     $dateActuelle = new DateTime();
 }
@@ -128,7 +125,7 @@ if (isset($_POST['precedent'])) {
     $dateActuelle = $edt->incrementerJour($dateActuelle);
 }
 
-// Conversion de la date pour l'affichage
+// Conversion pour l'affichage
 $dateActuel = $dateActuelle->format('Y-m-d');
 
 // Affichage de l'interface
@@ -156,17 +153,16 @@ echo '
 // Affichage de la partie permettant de changer la semaine
 echo '<div class="changerSemaine">
     <button id="download-pdf" class="btn">Télécharger en PDF</button>
-    <form action="edtQuotidien.php" method="post">
-        <button type="submit" name="precedent" class="fleche">Précédent</button>
+    <form action="' . $_SERVER['PHP_SELF'] . '" method="post">
+        <button type="submit" name="precedent" value="1" class="fleche">Précédent</button>
         
-        <label for="selectionnerSemaine">Jour du</label>
+        <label for="selectionnerSemaine">Semaine du</label>
         <input type="date" id="selectionnerSemaine" name="dateSelection" onchange="this.form.submit()" 
                value="' . htmlspecialchars($dateActuelle->format('Y-m-d'), ENT_QUOTES, 'UTF-8') . '">
-        <input type="hidden" name="role" value="' . (isset($_SESSION["role"]) ? $_SESSION["role"] : '') . '">
         <input type="hidden" name="dateActuelle" 
                value="' . htmlspecialchars($dateActuelle->format('Y-m-d'), ENT_QUOTES, 'UTF-8') . '">
         
-        <button type="submit" name="suivant" class="fleche">Suivant</button>
+        <button type="submit" name="suivant" value="1" class="fleche">Suivant</button>
     </form>
 </div>';
 
