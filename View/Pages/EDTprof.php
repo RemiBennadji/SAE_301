@@ -86,7 +86,7 @@ function AfficherEdtSemaine($dateDebut, $nomProf) {
     $timestamp = strtotime($dateDebut);
     $lundi = date("Y-m-d", $timestamp);
 
-    echo "<table>";
+    echo "<table class='edtresponsive'>";
     echo "<tr><th>Heure</th>";
 
     //Liste pour afficher les jours dans l'axe des abscisses

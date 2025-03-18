@@ -1317,9 +1317,34 @@ div{
     outline: none;
 }
 
-@media (max-width: 1000px) {
-
-}.tableauresponsive {
+.tableauresponsive {
     font-family: Arial, sans-serif;
     font-size: 27px;
+}
+
+@media (min-width: 768px) {
+    .table {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+    }
+
+    body {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+
+    }
+
+    .main-content {
+        display: flex;
+        flex-direction: column;
+
+    }
+
+    .edtresponsive {
+        flex-grow: 1;
+        overflow-y: auto;
+    }
+
 }

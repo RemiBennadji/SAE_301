@@ -189,7 +189,7 @@ $heureCourante = date('H:i', strtotime('+1 hour'));
     </form>
 </div>
 
-<table>
+<table class="edtresponsive">
     <thead>
     <tr>
         <th>Heure</th>
