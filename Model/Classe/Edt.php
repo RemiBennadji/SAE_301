@@ -6,7 +6,7 @@ class Edt
     function AfficherEdtJour($dateDebut, $classe, $annee, $version){
 
         $timestamp = strtotime($dateDebut);
-        echo "<table>";
+        echo "<table class='edtresponsive>";
         echo "<tr><th>Heure</th><th>" . date("d/m/Y", $timestamp) . "</th></tr>";
 
         $joursSemaine = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi'];
@@ -126,7 +126,7 @@ class Edt
         $timestamp = strtotime($dateDebut);
         $lundi = date("Y-m-d", $timestamp);
 
-        echo "<table>";
+        echo "<table class='edtresponsive'>";
         echo "<tr><th>Heure</th>";
 
         $joursSemaine = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi'];
