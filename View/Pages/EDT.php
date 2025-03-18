@@ -117,15 +117,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $dateActuel = $_POST["dateActuel"] ?? $dateActuel; // Utilisation de la date actuelle si aucune date n'est sélectionnée
     }
-
-    // Gestion des boutons pour naviguer entre les semaines
-//    if (isset($_POST["precedent"])) {
-//        $dateActuel = $edt->decrementerSemaine($dateActuel);
-//    }
-
-    if (isset($_POST["suivant"])) {
-        $dateActuel = $edt->incrementerSemaine($dateActuel);
-    }
 }
 echo '
 <div class="big-container4">

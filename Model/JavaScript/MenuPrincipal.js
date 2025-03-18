@@ -57,6 +57,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const boutonSuivant = document.getElementById('suivant')
     const selectionnerSemaine = document.getElementById('selectionnerSemaine')
 
+    // Permet de recharger l'EDT sans recharger toute la page @Noah
     function chargerEdt(selectedDate) {
 
         const data = new URLSearchParams();
@@ -81,6 +82,12 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => console.error('Erreur:', error));
     }
 
+    // Change la valeur de l'EDT en fonction du bouton calendrier @Noah
+    selectionnerSemaine.addEventListener('change', function(){
+        chargerEdt(selectionnerSemaine.value)
+    })
+
+    // Décrémente l'EDT lors d'un click sur la flèche précédent @Noah
     boutonPrecedent.addEventListener('click', function(e){
         e.preventDefault()
         const currentDate = new Date(selectionnerSemaine.value);
@@ -90,6 +97,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     })
 
+    // Incrémente l'EDT lors d'un click sur la flèche précédent @Noah
     boutonSuivant.addEventListener('click', function (e) {
         e.preventDefault();
         const currentDate = new Date(selectionnerSemaine.value);
