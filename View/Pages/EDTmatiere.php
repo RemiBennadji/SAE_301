@@ -372,18 +372,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 // Affichage de la partie permettant de changer la semaine, incluant un calendrier
 echo '<div class="changerSemaine">
     <button id="download-pdf" class="btn">Télécharger en PDF</button>
-    <form action="EDTmatiere.php" method="post">
-        <button type="submit" name="precedent" class="fleche">Précédent</button>
+    <form method="post">
+        <button type="button" id="precedent" name="precedent" class="fleche">Précédent</button>
         
         <label for="selectionnerSemaine">Semaine du</label>
-        <input type="date" id="selectionnerSemaine" name="selectedDate" onchange="this.form.submit()" 
+        <input type="date" id="selectionnerSemaine" name="selectedDate"
                value="' . htmlspecialchars($dateActuel, ENT_QUOTES, 'UTF-8') . '">
         
         <input type="hidden" name="codeRessource" value="' . $_POST["codeRessource"] . '">
         <input type="hidden"  name="dateActuel" 
                value="' . htmlspecialchars($dateActuel, ENT_QUOTES, 'UTF-8') . '">
         
-        <button type="submit" name="suivant" class="fleche">Suivant</button>
+        <button type="button" id="precedent" name="suivant" class="fleche">Suivant</button>
     </form>
 </div>';
 
@@ -393,8 +393,10 @@ echo ('<footer class="footer">
 </footer>');
 
 // Appel à la fonction qui affiche l'emploi du temps de la ressource choisie et pour de la semaine
-AfficherEdtSemaine($dateActuel, $nomProf);
 ?>
+
+<div id="edtContainer"><?php AfficherEdtSemaine($dateActuel, $nomProf)?></div>
+
 
 <!-- Inclusion de scripts pour le calendrier et la génération de PDF -->
 <script src="../../Model/JavaScript/GenererPDF.js"></script>
