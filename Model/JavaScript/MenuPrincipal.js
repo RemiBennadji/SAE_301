@@ -100,3 +100,36 @@ document.addEventListener('DOMContentLoaded', function () {
         console.error("L'élément edtAdmin n'a pas été trouvé.");
     }
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.querySelector('.form-import');
+
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const formData = new FormData(form); // Crée un objet FormData à partir du formulaire
+
+        // Création d'une requête AJAX pour soumettre le fichier CSV
+        fetch('../../Controller/creationCompte.php', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json()) // Attend la réponse en JSON
+            .then(data => {
+                const feedbackElement = document.getElementById('feedback');
+                // Affiche le feedback utilisateur en fonction de la réponse
+                if (data.success) {
+                    feedbackElement.style.display = 'block';
+                    feedbackElement.innerHTML = `Importation réussie ! Nombre de lignes insérées : ${data.count}`;
+                    feedbackElement.style.color = 'green';
+                } else {
+                    feedbackElement.style.display = 'block';
+                    feedbackElement.innerHTML = `Erreur : ${data.message}`;
+                    feedbackElement.style.color = 'red';
+                }
+            })
+            .catch(error => {
+                console.error('Erreur AJAX :', error);
+            });
+    });
+});

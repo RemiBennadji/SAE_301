@@ -66,8 +66,8 @@
                 <div class="button-upload">
                     <input class ="select-file" type="file" name="fichier" id="fichier" accept=".csv" required>
                     <button type="submit">Uploader</button>
-                </div>
-                <p style="display: none">test</p>
+                </div><br>
+                <p id="feedback" style="display: none"></p>
             </div>
         </form>
     </div>
