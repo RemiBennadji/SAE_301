@@ -150,7 +150,13 @@ document.addEventListener('DOMContentLoaded', function () {
             else {
                 document.cookie = "groupe=" + edtAdmin.value + "; expires=" + expirationDate + "; path=/";
             }
+            rechargement();
         });
+
+        function rechargement(){
+            chargerEdt(selectionnerSemaine.value);
+        }
+
     } else {
         console.error("L'élément edtAdmin n'a pas été trouvé.");
     }
