@@ -916,9 +916,9 @@ select#edtAdmin {
 .tooltip {
     display: inline-block;
     cursor: pointer;
-    padding: 10px;
-    min-width: 100px;
-    min-height: 50px;
+    /*padding: 10px;*/
+    /*min-width: 100px;*/
+    /*min-height: 50px;*/
     text-align: center;
 }
 
@@ -972,6 +972,7 @@ select#edtAdmin {
     border: 1px solid #ddd;
     padding: 10px;
     background-color: #f9f9f9;
+    width: 50%;
 }
 
 
@@ -1294,12 +1295,13 @@ div{
 
 .menuVersion {
     position: absolute;
-    margin: 20px 10px;
+    margin: 160px 10px;
     font-family: Arial, sans-serif;
     font-size: 14px;
     color: #333;
     left: 0;
     font-weight: bold;
+
 }
 
 .menuVersionSelect {
@@ -1308,7 +1310,8 @@ div{
     border: 1px solid #ccc;
     background-color: #f9f9f9;
     font-weight: bold;
-    width: 185px;
+    width: 165px;
+    font-size: 12px;
 }
 
 .menuVersionSelect:focus {
