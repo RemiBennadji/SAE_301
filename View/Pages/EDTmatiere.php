@@ -59,8 +59,6 @@
 
 <?php
 // Inclusion des fichiers nécessaires pour la connexion à la base de données et la gestion de l'emploi du temps
-use function Sodium\add;
-
 include "../../Controller/ConnectionBDD.php";
 require_once "../../Model/Classe/Edt.php";
 
@@ -87,282 +85,6 @@ $dateActuel = date('Y-m-d', strtotime('monday this week'));
 //récupération du nom de la ressource pour l'utiliser en condition de la requête pour afficher l'edt
 $nomProf = $_POST["codeRessource"];
 
-function estExistant(Array $listeExistant){
-    $listeInterm = [];
-    for($i=0; $i<count($listeExistant); $i++){
-        array_push($listeInterm, $listeExistant[$i]);
-    }
-    return array_unique($listeInterm);
-};
-
-
-
-function AfficherEdtSemaine($dateDebut, $nomProf) {
-    global $edt;
-    $timestamp = strtotime($dateDebut);
-    $lundi = date("Y-m-d", $timestamp);
-
-    echo "<table class='edtresponsive'>";
-    echo "<tr><th>Heure</th>";
-
-    //Liste pour afficher les jours dans l'axe des abscisses
-    $joursSemaine = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi'];
-    $joursData = [];
-
-    //La boucle sert à transformer en strtotime puis afficher les jours
-    for ($i = 0; $i < 5; $i++) {
-        $jourTimestamp = strtotime("+$i day", strtotime($lundi));
-        $jour = date("Y-m-d", $jourTimestamp);
-        $joursData[$i] = RecupererCoursParJour($jour, $nomProf);
-
-
-
-
-//        // Pour déboguer le contenu de $joursData
-//        foreach ($joursData as $jour => $coursJour) {
-//            echo "Jour $jour : <br>";
-//            foreach ($coursJour as $cours) {
-//                echo "- Heure: " . date('H:i', strtotime($cours['date'])) . "<br>";
-//                echo "  Type: " . $cours['typeseance'] . "<br>";
-//                echo "  Matière: " . $cours['matiere'] . "<br>";
-//                echo "  Salle: " . $cours['salles'] . "<br>";
-//                echo "  Nombre de cours: " . $cours['nombre_cours'] . "<br>";
-//                echo "  Semestre: " . $cours['semestre'] . "<br>";
-//                echo "<hr>";
-//            }
-//        }
-
-
-
-        echo "<th>" . $joursSemaine[$i] . " " . date("d/m", $jourTimestamp) . "</th>";
-    }
-    echo "</tr>";
-
-    //Liste des horaires qui seront afficher sur l'axe des ordonnées
-    $listeHorraire = ['08:00', '09:30', '11:00', '12:30', '14:00', '15:30', '17:00'];
-    $cellulesSautees = array_fill(0, 5, 0);
-
-    for ($h = 0; $h < count($listeHorraire); $h++) {
-        echo "<tr>";
-        echo "<td style='vertical-align: top;'>$listeHorraire[$h]</td>";
-        for ($j = 0; $j < 5; $j++) {
-            if ($cellulesSautees[$j] > 0) {
-                $cellulesSautees[$j]--;
-                continue;
-            }
-
-            $horaireCourant = date("H:i:s", strtotime($listeHorraire[$h]));
-            $coursDuJour = array_filter($joursData[$j], function($cours) use ($horaireCourant) {
-                return date("H:i:s", strtotime($cours['date'])) === $horaireCourant;
-            });
-
-            if (!empty($coursDuJour)) {
-                $cours = current($coursDuJour);
-
-                $dureeStr = $cours['duree'];
-                if (strpos($dureeStr, 'years') !== false) {
-                    preg_match('/(\d+) hours (\d+) mins/', $dureeStr, $matches);
-                    $dureeMinutes = !empty($matches) ? (intval($matches[1]) * 60) + intval($matches[2]) : 90;
-                } else {
-                    $dureeParts = explode(':', $dureeStr);
-                    $dureeMinutes = count($dureeParts) == 3 ? (intval($dureeParts[0]) * 60) + intval($dureeParts[1]) : 90;
-                }
-
-                $nombreCreneaux = ceil($dureeMinutes / 90);
-
-                $discipline = strtolower($edt->supprimerAccents($cours['discipline']));
-                $discipline = preg_replace('/[^a-z0-9]+/', '-', $discipline);
-                $discipline = trim($discipline, '-');
-
-                $typeSeance = strtolower($cours['typeseance']);
-                $salles = explode(',', $cours['salles']);
-
-                //Todo
-                //print_r($cours);
-
-//                $data = [];
-//                $nomRessource = $cours['ressource'];
-//                $nomGroupe = trim($nomRessource[0]);
-//                if (in_array($nomGroupe, $data)) {//Si le groupe est deja dans la boucle il passe a la prochaine iteration
-//                    continue;
-//                }
-//                array_push($data, $nomGroupe);//Ajout du groupe dans $data
-
-
-                //on vérifie le type de séance pour adapter l'affichage
-                if ($typeSeance == 'ds') {
-                    $classeCSS = "ds";
-                    $sallesStr = "Amphi, Salle 110";
-
-                }
-
-                //on vérifie le type de séance pour adapter l'affichage
-                elseif ($typeSeance == 'prj') {
-                    $classeCSS = "sae";
-                    $sallesStr = "Salle " . implode(", ", $salles);
-                }
-
-                //On vérifie si c'est un cours de 1h30 ou 3h pour adapter l'affichage
-                else {
-                    $classeCSS = $dureeMinutes == 180 ?
-                        "cours-" . $discipline . "-" . $typeSeance . '-3' :
-                        "cours-" . $discipline . "-" . $typeSeance;
-
-                    if (count($salles) == 1 && $salles[0] == '200') {
-                        $sallesStr = "Amphi";
-                    } else {
-                        $sallesStr = "Salle " . implode(", ", $salles);
-                    }
-                }
-
-                if(isset($cours['prenom'][0])){
-                    $prenomProf = $cours['prenom'][0] . ".";
-                }
-                if ($prenomProf == ".") {
-                    $prenomProf = "";
-                }
-
-
-                $semestre = $cours['semestre'];
-                $nomRessource = $cours['ressource'];
-
-                //contenuHTML contient toutes les informations présentes dans chaques cases de l'emploi du temps
-                $contenuHTML = "<div class='$classeCSS'>" .
-                    $cours['typeseance'] . "<br>" .
-                    $cours['code'] . " " . $cours['matiere'] . "<br>" .
-                    $sallesStr . "<br>"
-                    . $cours['prenom'][0] . ". " . $cours['nom'] . "<br>";
-                if($cours['typeseance'] == "CM"){
-                    $contenuHTML .= "Semestre : ".$semestre . " | BUT : " . $_COOKIE["annee"] . "<br>" . "</div>";
-                }
-                elseif ($cours['typeseance'] == "TD"){
-                    $contenuHTML .= "Semestre : ".$semestre . " | Groupe : " . $nomRessource[0] . "<br>" . "</div>";
-                }
-                elseif ($cours['typeseance'] == "TP"){
-                    $contenuHTML .= "Semestre : ".$semestre . " | Groupe : " . $nomRessource . "<br>" . "</div>";
-                }
-
-
-                $nombreCours = $cours['nombre_cours'];  // Récupère le nombre de cours parallèles
-                if ($nombreCours == 1) {
-                    echo "<td rowspan='$nombreCreneaux'><span class='cours'>$contenuHTML</span></td>";
-                }
-                elseif ($cours['typeseance'] == "CM"){
-                    echo "<td rowspan='$nombreCreneaux'><span class='cours'>$contenuHTML</span></td>";
-                }
-                elseif ($cours['typeseance'] == "TD") {
-                    echo "<td rowspan='$nombreCreneaux' class='case'>";
-                    $data = [];
-                    $nomGroupe = trim($nomRessource[0]);
-
-                    if (!in_array($nomGroupe, $data)) {
-                        $data[] .= $nomGroupe;
-
-                        $donnee = "<div class='$classeCSS'>" .
-                            $cours['typeseance'] . "<br>" .
-                            $cours['code'] . " " . $cours['matiere'] . "<br>" .
-                            $sallesStr . "<br>" .
-                            $cours['prenom'][0] . ". " . $cours['nom'] . "<br>" .
-                            "Semestre : ".$semestre . " | Groupe : " . $nomGroupe . "<br>" . "</div>";
-
-                        echo "<span style='padding: 2px'>$donnee</span>";
-
-                    }
-                    echo "</td>";
-                }
-
-                elseif ($cours['typeseance'] == "TP"){
-                    $salleCase = next($coursDuJour)["salles"];
-
-                    echo "<td rowspan='$nombreCreneaux' class='case'>";
-                    for ($k = 0; $k < 1; $k++) {
-
-                        //$salleCase = next($coursDuJour)["salles"];
-                        if ($k > 0) {
-                            //Todo Changer $sallesStr et $nomRessource[0]
-                            $contenuHTML = "<div class='$classeCSS'>" .
-                                $cours['typeseance'] . "<br>" .
-                                $cours['code'] . " " . $cours['matiere'] . "<br>" .
-                                $salleCase . "<br>" .
-                                "Semestre : " . $semestre . " | Groupe : " . $nomRessource . "<br>"
-                                . $cours['prenom'][0] . ". " . $cours['nom'] . "</div>";
-                        } else {
-                            echo "<span style='padding: 2px'>$contenuHTML</span>";
-                        }
-                    }
-                }
-
-                $cellulesSautees[$j] = $nombreCreneaux - 1;
-            } else {
-                echo "<td></td>";
-            }
-        }
-        echo "</tr>";
-    }
-    echo "</table>";
-}
-
-//requête permettant de récupérer toutes les informations à utiliser dans la méthode afficherEdtSemaine pour faire l'affichage dans les cases de l'emploi du temps
-function RecupererCoursParJour($jour, $nomProf): array
-{
-
-
-    $sql = "
-WITH CoursParalleles AS (
-    SELECT 
-        seance.idseance, 
-        seance.typeseance, 
-        seance.duree,
-        STRING_AGG(DISTINCT schedulesalle.salle::text, ',') as salles,  -- Correction ici
-        collegue.prenom, 
-        collegue.nom,
-        enseignement.court as matiere,
-        enseignement.discipline, 
-        schedule.horaire as date,
-        enseignement.semestre, 
-        schedule.nomgroupe,
-        enseignement.code, 
-        rg.nomressource as ressource,
-        COUNT(*) OVER (
-            PARTITION BY 
-                schedule.horaire,
-                enseignement.code,
-                seance.typeseance
-        ) as nombre_cours
-    FROM seance
-        LEFT JOIN collegue ON seance.collegue = collegue.id
-        JOIN enseignement USING (code, semestre)
-        JOIN schedule USING (code, typeseance, nomgroupe, semestre, noseance)
-        JOIN ressourcegroupe rg USING (nomgroupe, semestre)
-        JOIN schedulesalle USING (code, typeseance, nomgroupe, semestre, noseance, version)
-    WHERE DATE(horaire) = ?
-        AND version = ?
-        AND enseignement.code ILIKE ?
-    GROUP BY 
-        seance.idseance, 
-        seance.typeseance, 
-        seance.duree,
-        collegue.prenom, 
-        collegue.nom,
-        enseignement.court,
-        enseignement.discipline,
-        schedule.horaire,
-        enseignement.semestre,
-        schedule.nomgroupe,
-        enseignement.code,
-        rg.nomressource
-)
-SELECT * FROM CoursParalleles
-ORDER BY date, salles
-    ";
-
-
-    $connexion = getConnectionBDD();
-    $req = $connexion->prepare($sql);
-    $req->execute([$jour,$_COOKIE["version"], $nomProf]);
-    return $req->fetchAll(PDO::FETCH_ASSOC);
-}
-
 // Gestion des actions POST, comme la sélection de la date ou le changement de semaine
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST["selectedDate"])) {
@@ -387,7 +109,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 // Affichage de la partie permettant de changer la semaine, incluant un calendrier
 echo '<div class="changerSemaine">
-    <button id="download-pdf" class="btn">Télécharger en PDF</button><br><br>
+    <button id="download-pdf" class="btn">Télécharger en PDF</button>
     <form action="EDTmatiere.php" method="post">
         <button type="submit" name="precedent" class="fleche">Précédent</button>
         
@@ -409,7 +131,7 @@ echo ('<footer class="footer">
 </footer>');
 
 // Appel à la fonction qui affiche l'emploi du temps de la ressource choisie et pour de la semaine
-AfficherEdtSemaine($dateActuel, $nomProf);
+$edt->AfficherEdtSemaineMatiere($dateActuel, $nomProf);
 ?>
 
 <!-- Inclusion de scripts pour le calendrier et la génération de PDF -->
@@ -419,4 +141,3 @@ AfficherEdtSemaine($dateActuel, $nomProf);
 <script defer src="../../Model/JavaScript/menuHamburger.js"></script>
 <script>afficherElement("<?php echo $_SESSION['role']; ?>");</script>
 </body>
-</html>
