@@ -27,8 +27,6 @@
         </div>
         <ul class="menu">
             <!-- Lien vers différentes sections du site, avec affichage conditionnel -->
-            <li><a id="edtQuo" class="underline-animation" href="testEdtQuoti2.php">TestEdtQuo2</a></li>
-            <li><a id="edtQuo" class="underline-animation" href="edtQuotidien.php">EDT Quotidien</a></li>
             <li><a id="edtProf" class="underline-animation" href="EDTprof.php" style="display: none">EDT Professeur</a></li>
             <li><a id="edtCours" class="underline-animation" href="EDTmatiereSelection.php" style="display: none">EDT Ressource</a></li>
             <li><a class="underline-animation" href="EDTsalleLibres.php" id="afficheSalles">Salles disponibles</a></li>
@@ -131,29 +129,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $dateActuel = $edt->incrementerSemaine($dateActuel);
     }
 }
+
 echo '
-<div class="big-container4">
-        <form id="myForm">
-            <div class="divQuoti">
-                <div class="option2">
-                    <input class="input2" type="radio" name="btn2" value="option1" checked>
-                    <div class="btn2">
-                        <span class="span2">Hebdomadaire</span>
-                    </div>
-                </div>
-                <div class="option2">
-                    <input class="input2" type="radio" name="btn2" value="option2">
-                    <div class="btn2">
-                        <span class="span2">Quotidien</span>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
-<br>';
+<div class="changerSemaine">
+<form action="edtQuotidien.php" method="post">
+    <br><br><button type="submit" class="quotidien">Vue quotidienne </button><br><br>
+</form>
+</div>
+<br><br>
+';
+
 // Affichage de la partie permettant de changer la semaine, incluant un calendrier
 echo '<div class="changerSemaine">
-    <button id="download-pdf" class="btn">Télécharger en PDF</button>
+    <button id="download-pdf" class="btn">Télécharger en PDF</button><br><br>
     <form action="EDT.php" method="post">
         <button type="submit" name="precedent" class="fleche">Précédent</button>
         

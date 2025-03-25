@@ -177,7 +177,7 @@ $heureCourante = date('H:i', strtotime('+1 hour'));
 
 <!-- Affichage de la partie permettant de changer la journée, incluant un calendrier -->
 <div class="changerSemaine">
-    <button id="download-pdf" class="btn">Télécharger en PDF</button>
+    <button id="download-pdf" class="btn">Télécharger en PDF</button><br><br>
     <form action="EDTsalleLibres.php" method="post">
         <button type="submit" name="precedent" class="fleche">Précédent</button>
 

@@ -248,7 +248,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 echo '<div class="changerSemaine">
-    <button id="download-pdf" class="btn">Télécharger en PDF</button>
+    <button id="download-pdf" class="btn">Télécharger en PDF</button><br><br>
     <form action="ValideEdt.php" method="post">
         <button type="submit" name="precedent">Précédent</button>
         

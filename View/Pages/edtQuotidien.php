@@ -24,7 +24,6 @@
         </div>
         <ul class="menu">
             <!-- Lien vers différentes sections du site, avec affichage conditionnel -->
-            <li><a id="edt" class="underline-animation" href="EDT.php">EDT Quotidien</a></li>
             <li><a id="edtProf" class="underline-animation" href="EDTprof.php" style="display: none">EDT Professeur</a></li>
             <li><a id="edtCours" class="underline-animation" href="EDTmatiereSelection.php" style="display: none">EDT Ressource</a></li>
             <li><a class="underline-animation" href="EDTsalleLibres.php" id="afficheSalles">Salles disponibles</a></li>
@@ -131,14 +130,13 @@ $dateActuel = $dateActuelle->format('Y-m-d');
 echo '
 <div class="changerSemaine">
 <form action="EDT.php" method="post">
-    <button type="submit" class="quotidien">Aller à Semaine</button>
+    <br><br><button type="submit" class="quotidien">Vue hebdomadaire</button><br><br>
 </form>
 </div>
-<br><br>
 ';
 
 echo '<div class="changerSemaine">
-    <button id="download-pdf" class="btn">Télécharger en PDF</button>
+    <button id="download-pdf" class="btn">Télécharger en PDF</button><br><br>
     <form action="edtQuotidien.php" method="post">
         <button type="submit" name="precedent" class="fleche">Précédent</button>
 
