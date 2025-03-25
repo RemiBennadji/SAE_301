@@ -126,6 +126,19 @@ nav {
     color: #f39c12;
 }
 
+.quotidien {
+    background: linear-gradient(45deg, #0026ad, #5d8bff);
+    color: white;
+    padding: 15px 30px;
+    font-size: 18px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s, box-shadow 0.2s;
+    align-items: center;
+}
+
 /* Media queries pour mobile */
 @media (min-width: 1650px) {
     .burger {

@@ -80,10 +80,7 @@ include "../../Controller/ConnectionBDD.php";
 require_once "../../Model/Classe/EdtQuotiClass.php";
 require_once "../../Model/Classe/Edt.php";
 
-session_start();
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+
 
 // Création d'un objet Edt
 $edt = new EdtQuotiClass();
@@ -132,25 +129,13 @@ $dateActuel = $dateActuelle->format('Y-m-d');
 
 // Affichage de l'interface
 echo '
-<div class="big-container4">
-        <form id="myForm">
-            <div class="divQuoti">
-                <div class="option2">
-                    <input class="input2" type="radio" name="btn2" value="option1" checked>
-                    <div class="btn2">
-                        <span class="span2">Hebdomadaire</span>
-                    </div>
-                </div>
-                <div class="option2">
-                    <input class="input2" type="radio" name="btn2" value="option2">
-                    <div class="btn2">
-                        <span class="span2">Quotidien</span>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
-<br>';
+<div class="changerSemaine">
+<form action="EDT.php" method="post">
+    <button type="submit" class="quotidien">Aller à Semaine</button>
+</form>
+</div>
+<br><br>
+';
 
 echo '<div class="changerSemaine">
     <button id="download-pdf" class="btn">Télécharger en PDF</button>
