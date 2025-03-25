@@ -75,43 +75,39 @@
 <br><br>
 
 <?php
-// Inclusion des fichiers nécessaires pour la connexion à la base de données et la gestion de l'emploi du temps
+// Inclusion des fichiers nécessaires
 include "../../Controller/ConnectionBDD.php";
+require_once "../../Model/Classe/EdtQuotiClass.php";
 require_once "../../Model/Classe/Edt.php";
 
-//ini_set('display_errors', 1);
-//ini_set('display_startup_errors', 1);
-//error_reporting(E_ALL);
 
-// Création d'un objet Edt pour gérer l'emploi du temps
-$edt = new Edt();
 
-// Démarrage de la session pour gérer les variables utilisateur
-session_start();
+// Création d'un objet Edt
+$edt = new EdtQuotiClass();
 
-// Vérification si le rôle est défini, sinon redirection vers la page de connexion
-if (isset($_SESSION['role'])) {
-    if($_COOKIE['role'] == 'professeur'){
-        header("Location: ./EDTprof.php"); // Redirection si pas de rôle
-        exit();
-    }
+// Vérification des droits d'accès
+if (isset($_SESSION['role']) && $_SESSION['role'] == 'professeur') {
+    header("Location: ./EDTprof.php");
+    exit();
 }
 
-// Vérification si le cookie 'groupe' existe
-if (isset($_COOKIE['groupe'])) {
-    $classeActuel = $_COOKIE['groupe'];
-} else {
-    header("Location: Deconnexion.php"); // Redirection si pas de rôle
+// Vérification des cookies nécessaires
+if (!isset($_COOKIE['groupe'])) {
+    header("Location: Deconnexion.php");
+    exit();
 }
 
-// Vérification si le cookie 'annee' existe
-if (isset($_COOKIE['annee'])) {
-    $anneeActuel = $_COOKIE['annee'];
-} else {
-    echo "Le cookie 'annee' n'est pas défini."; // Message d'erreur si le cookie 'annee' n'existe pas
+$classeActuel = $_COOKIE['groupe'];
+
+if (!isset($_COOKIE['annee'])) {
+    echo "Le cookie 'annee' n'est pas défini.";
+    exit();
 }
 
-$dateActuel = date('Y-m-d', strtotime('today'));
+$anneeActuel = $_COOKIE['annee'];
+
+// Vérification du cookie 'version'
+$version = isset($_COOKIE["version"]) ? $_COOKIE["version"] : "default";
 
 if (isset($_POST['dateSelection'])) {
     $dateActuelle = new DateTime($_POST['dateSelection']);
@@ -125,53 +121,46 @@ if (isset($_POST['precedent'])) {
 } elseif (isset($_POST['suivant'])) {
     $dateActuelle->modify('+1 days');
 }
+
+$dateDuJour = $dateActuelle->format('d/m/Y');
+$horaire = $dateActuelle->format('Y-m-d');
+
+$dateActuel = $dateActuelle->format('Y-m-d');
+
+// Affichage de l'interface
 echo '
-<div class="big-container4">
-        <form id="myForm">
-            <div class="divQuoti">
-                <div class="option2">
-                    <input class="input2" type="radio" name="btn2" value="option1" checked>
-                    <div class="btn2">
-                        <span class="span2">Hebdomadaire</span>
-                    </div>
-                </div>
-                <div class="option2">
-                    <input class="input2" type="radio" name="btn2" value="option2">
-                    <div class="btn2">
-                        <span class="span2">Quotidien</span>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
-<br>';
-// Affichage de la partie permettant de changer la semaine, incluant un calendrier
+<div class="changerSemaine">
+<form action="EDT.php" method="post">
+    <button type="submit" class="quotidien">Aller à Semaine</button>
+</form>
+</div>
+<br><br>
+';
+
 echo '<div class="changerSemaine">
     <button id="download-pdf" class="btn">Télécharger en PDF</button>
     <form action="edtQuotidien.php" method="post">
         <button type="submit" name="precedent" class="fleche">Précédent</button>
-        
+
         <label for="selectionnerSemaine">Semaine du</label>
-        <input type="date" id="selectionnerSemaine" name="selectedDate" onchange="this.form.submit()" 
+        <input type="date" id="selectionnerSemaine" name="dateSelection" onchange="this.form.submit()"
                value="' . htmlspecialchars($dateActuelle->format('Y-m-d'), ENT_QUOTES, 'UTF-8') . '">
-        <input type="hidden" name="role" value="' . $_SESSION["role"] . '">
-        <input type="hidden"  name="dateActuel" 
-               value="' . htmlspecialchars($dateActuelle->format('Y-m-d'), ENT_QUOTES, 'UTF-8') . '">
-        
+
         <button type="submit" name="suivant" class="fleche">Suivant</button>
     </form>
 </div>';
 
-// Affichage du groupe et de l'année choisis par l'administrateur via les cookies
-echo '<div class="big-container3"><div class="sub-container3"><label>'." Groupe : " . $_COOKIE["groupe"] . " | Année : " . $_COOKIE["annee"] .'</label></div></div>';
 
-// Affichage du footer avec les auteurs du projet
-echo ('<footer class="footer">
+// Affichage du groupe et de l'année
+echo '<div class="big-container3"><div class="sub-container3"><label>'." Groupe : " . $classeActuel . " | Année : " . $anneeActuel .'</label></div></div>';
+
+// Affichage du footer
+echo '<footer class="footer">
     <p>&copy; 2024 - SAE Emploi du temps. Rémi | Dorian | Matthéo | Bastien | Noah.</p>
-</footer>');
+</footer>';
 
-// Appel à la fonction qui affiche l'emploi du temps de la semaine
-$edt->AfficherEdtJour($dateActuel, $classeActuel, $anneeActuel,$_COOKIE["version"]);
+// Affichage de l'emploi du temps
+$edt->AfficherEdtJour($dateActuel, $classeActuel, $anneeActuel, $version);
 ?>
 
 <!-- Inclusion de scripts pour le menu, le calendrier et la génération de PDF -->
