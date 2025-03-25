@@ -387,7 +387,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 // Affichage de la partie permettant de changer la semaine, incluant un calendrier
 echo '<div class="changerSemaine">
-    <button id="download-pdf" class="btn">Télécharger en PDF</button><br><br>
+    <br><br><button id="download-pdf" class="btn">Télécharger en PDF</button><br><br>
     <form action="EDTmatiere.php" method="post">
         <button type="submit" name="precedent" class="fleche">Précédent</button>
         

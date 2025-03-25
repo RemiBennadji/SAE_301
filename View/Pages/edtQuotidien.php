@@ -136,7 +136,7 @@ echo '
 ';
 
 echo '<div class="changerSemaine">
-    <button id="download-pdf" class="btn">Télécharger en PDF</button><br><br>
+    <br><br><button id="download-pdf" class="btn">Télécharger en PDF</button><br><br>
     <form action="edtQuotidien.php" method="post">
         <button type="submit" name="precedent" class="fleche">Précédent</button>
 
