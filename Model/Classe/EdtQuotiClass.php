@@ -4,7 +4,6 @@ class EdtQuotiClass
 {
 
     function AfficherEdtJour($dateDebut, $classe, $annee, $version){
-
         $timestamp = strtotime($dateDebut);
         echo "<table class='edtresponsive'>";
         echo "<tr><th>Heure</th><th>" . date("d/m/Y", $timestamp) . "</th></tr>";
@@ -78,6 +77,8 @@ class EdtQuotiClass
                         $sallesStr = "Salle " . implode(", ", $salles);
                     }
                 }
+
+                $nomProf = "";
 
                 if(isset($cours['prenom'])){
                     // Formatage du nom des professeurs

@@ -78,12 +78,15 @@
 // Inclusion des fichiers nécessaires
 include "../../Controller/ConnectionBDD.php";
 require_once "../../Model/Classe/EdtQuotiClass.php";
+require_once "../../Model/Classe/Edt.php";
+
+session_start();
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 // Création d'un objet Edt
 $edt = new EdtQuotiClass();
-
-// Démarrage de la session
-session_start();
 
 // Vérification des droits d'accès
 if (isset($_SESSION['role']) && $_SESSION['role'] == 'professeur') {
@@ -109,23 +112,22 @@ $anneeActuel = $_COOKIE['annee'];
 // Vérification du cookie 'version'
 $version = isset($_COOKIE["version"]) ? $_COOKIE["version"] : "default";
 
-// Gestion de la date
 if (isset($_POST['dateSelection'])) {
     $dateActuelle = new DateTime($_POST['dateSelection']);
-} elseif (isset($_POST['dateActuelle'])) {
-    $dateActuelle = new DateTime($_POST['dateActuelle']);
 } else {
     $dateActuelle = new DateTime();
 }
 
-// Gestion de la navigation
+// Gestion de la navigation avec les flèches
 if (isset($_POST['precedent'])) {
-    $dateActuelle = $edt->decrementerJour($dateActuelle);
+    $dateActuelle->modify('-1 days');
 } elseif (isset($_POST['suivant'])) {
-    $dateActuelle = $edt->incrementerJour($dateActuelle);
+    $dateActuelle->modify('+1 days');
 }
 
-// Conversion pour l'affichage
+$dateDuJour = $dateActuelle->format('d/m/Y');
+$horaire = $dateActuelle->format('Y-m-d');
+
 $dateActuel = $dateActuelle->format('Y-m-d');
 
 // Affichage de l'interface
@@ -150,21 +152,19 @@ echo '
     </div>
 <br>';
 
-// Affichage de la partie permettant de changer la semaine
 echo '<div class="changerSemaine">
     <button id="download-pdf" class="btn">Télécharger en PDF</button>
-    <form action="' . $_SERVER['PHP_SELF'] . '" method="post">
-        <button type="submit" name="precedent" value="1" class="fleche">Précédent</button>
-        
+    <form action="edtQuotidien.php" method="post">
+        <button type="submit" name="precedent" class="fleche">Précédent</button>
+
         <label for="selectionnerSemaine">Semaine du</label>
-        <input type="date" id="selectionnerSemaine" name="dateSelection" onchange="this.form.submit()" 
+        <input type="date" id="selectionnerSemaine" name="dateSelection" onchange="this.form.submit()"
                value="' . htmlspecialchars($dateActuelle->format('Y-m-d'), ENT_QUOTES, 'UTF-8') . '">
-        <input type="hidden" name="dateActuelle" 
-               value="' . htmlspecialchars($dateActuelle->format('Y-m-d'), ENT_QUOTES, 'UTF-8') . '">
-        
-        <button type="submit" name="suivant" value="1" class="fleche">Suivant</button>
+
+        <button type="submit" name="suivant" class="fleche">Suivant</button>
     </form>
 </div>';
+
 
 // Affichage du groupe et de l'année
 echo '<div class="big-container3"><div class="sub-container3"><label>'." Groupe : " . $classeActuel . " | Année : " . $anneeActuel .'</label></div></div>';
