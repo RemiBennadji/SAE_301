@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function () {
         event.preventDefault();
 
         const formData = new FormData(form); // Crée un objet FormData à partir du formulaire
-
+        console.log('test1')
         // Création d'une requête AJAX pour soumettre le fichier CSV
         fetch('../../Controller/creationCompte.php', {
             method: 'POST',
@@ -117,6 +117,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(response => response.json()) // Attend la réponse en JSON
             .then(data => {
                 const feedbackElement = document.getElementById('feedback');
+                console.log('test2')
                 // Affiche le feedback utilisateur en fonction de la réponse
                 if (data.success) {
                     feedbackElement.style.display = 'block';
