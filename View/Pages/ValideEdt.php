@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <title>EDTValidation</title>
@@ -214,6 +215,7 @@ function viderValidation()
 }
 
 function genererTableau($data, $titre) {
+    echo "<div id='tableau'>";
     echo "<h2>$titre</h2>";
     echo "<table>
         <thead>
@@ -231,6 +233,7 @@ function genererTableau($data, $titre) {
     }
     echo "</tbody>
     </table>";
+    echo "</div>";
 }
 
 
@@ -255,23 +258,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
+// Affichage de la partie permettant de changer la semaine, incluant un calendrier
 echo '<div class="changerSemaine">
     <button id="download-pdf" class="btn">Télécharger en PDF</button>
-    <form action="ValideEdt.php" method="post">
-        <button type="submit" name="precedent">Précédent</button>
+    <form method="post">
+        <button type="button" id ="precedent" name="precedent" class="fleche">Précédent</button>
         
         <label for="selectionnerSemaine">Semaine du</label>
-        <input type="date" id="selectionnerSemaine" name="selectedDate" onchange="this.form.submit()" 
+        <input type="date" id="selectionnerSemaine" name="selectedDate" 
                value="' . htmlspecialchars($dateActuel, ENT_QUOTES, 'UTF-8') . '">
         <input type="hidden" name="role" value="' . $_SESSION["role"] . '">
         <input type="hidden"  name="dateActuel" 
                value="' . htmlspecialchars($dateActuel, ENT_QUOTES, 'UTF-8') . '">
         
-        <button type="submit" name="suivant">Suivant</button>
+        <button type="button" id="suivant" name="suivant" class="fleche">Suivant</button>
     </form>
+</div>
+
 </div><br><br><br>';
 
-echo "<div class='container-edt'>
+echo "<div class='container-edt' id='edtContainer'>
         <div class='edt-table'>
             <label>Version actuelle</label><br>
             <label>Version : ". $_COOKIE["version"] ."</label>";
@@ -378,7 +384,7 @@ echo "</tbody>
 <footer class="footer"><p>&copy; 2024 - SAE Emploi du temps. Rémi | Dorian | Matthéo | Bastien | Noah.</p></footer>
 
 <script src="../../Model/JavaScript/ValideEdt.js"></script>
-<script src="../../Model/JavaScript/MenuPrincipal.js"></script>
+<!--<script src="../../Model/JavaScript/MenuPrincipal.js"></script>-->
 <script>afficherElement("<?php echo $_SESSION['role']; ?>");</script>
 <script src="../../Model/JavaScript/CalendrierEDT.js"></script>
 <script src="../../Model/JavaScript/GenererPDF.js"></script>
