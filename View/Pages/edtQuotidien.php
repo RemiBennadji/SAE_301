@@ -163,6 +163,7 @@ $edt->AfficherEdtJour($dateActuel, $classeActuel, $anneeActuel, $version);
 
 <!-- Inclusion de scripts pour le menu, le calendrier et la génération de PDF -->
 <script src="../../Model/JavaScript/MenuPrincipal.js"></script>
+<script src="../../Model/JavaScript/menuHamburger.js"></script>
 <script>afficherElement("<?php echo $_SESSION['role']; ?>");</script>
 <script src="../../Model/JavaScript/CalendrierEDT.js"></script>
 <script src="../../Model/JavaScript/GenererPDF.js"></script>

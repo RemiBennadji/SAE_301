@@ -87,7 +87,7 @@ if (isset($_SESSION['role'])) {
     <p>&copy; 2024 - SAE Emploi du temps. Rémi | Dorian | Matthéo | Bastien | Noah.</p>
 </footer>
 <script src="../../Model/JavaScript/MenuPrincipal.js"></script>
-<script defer src="../../Model/JavaScript/menuHamburger.js"></script>
+<script src="../../Model/JavaScript/menuHamburger.js"></script>
 <script>afficherElement("<?php echo $_SESSION['role']; ?>");</script>
 </body>
 </html>

@@ -134,7 +134,7 @@ $edt->AfficherEdtSemaineProf($dateActuel, $nomProf);
 <!-- la génération de PDF -->
 <script src="../../Model/JavaScript/GenererPDF.js"></script>
 <script src="../../Model/JavaScript/MenuPrincipal.js"></script>
-<script defer src="../../Model/JavaScript/menuHamburger.js"></script>
-<script>afficherElement("<?php echo $_COOKIE['role']; ?>");</script>
+<script src="../../Model/JavaScript/menuHamburger.js"></script>
+<script>afficherElement("<?php echo $_SESSION['role']; ?>");</script>
 <script src="../../Model/JavaScript/EdtProf.js"></script>
 </body>

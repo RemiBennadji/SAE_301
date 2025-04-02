@@ -106,7 +106,7 @@ echo $listeReport['prenom'];
 
 <script src="../../Model/JavaScript/DemandePage.js"></script>
 <script src="../../Model/JavaScript/MenuPrincipal.js"></script>
-<script defer src="../../Model/JavaScript/menuHamburger.js"></script>
+<script src="../../Model/JavaScript/menuHamburger.js"></script>
 <script>afficherElement("<?php echo $_SESSION['role']; ?>");</script>
 </body>
 </html>

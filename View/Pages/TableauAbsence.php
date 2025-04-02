@@ -180,9 +180,9 @@ genererTableau($listeAbsences, "Liste des absences");
 
 <script src="../../Model/JavaScript/ValideEdt.js"></script>
 <script src="../../Model/JavaScript/MenuPrincipal.js"></script>
-<script>afficherElement("<?php echo $_SESSION['role'] ?>")</script>
+<script src="../../Model/JavaScript/menuHamburger.js"></script>
+<script>afficherElement("<?php echo $_SESSION['role']; ?>");</script>
 <script src="../../Model/JavaScript/CalendrierEDT.js"></script>
 <script src="../../Model/JavaScript/GenererPDF.js"></script>
-<script defer src="../../Model/JavaScript/menuHamburger.js"></script>
 </body>
 </html>
