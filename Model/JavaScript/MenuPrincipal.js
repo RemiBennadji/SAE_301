@@ -1,58 +1,61 @@
-function admin() {
-    document.getElementById("edtCours").style.display = "block";
-    document.getElementById("afficheSalles").style.display = "block";
-    document.getElementById("tableauEtudiant").style.display = "block";
-    document.getElementById("tableauAbsence").style.display = "block";
-    document.getElementById("creationCompte").style.display = "block";
-    document.getElementById("tableauAbsence").style.display = "block";
-    document.getElementById("tableauReport").style.display = "block";
-    document.getElementById("valideEDT").style.display = "block";
-    document.getElementById("choixClasse").style.display = "block";
-}
-
-function etudiant() {
-}
-
-function professeur() {
-    document.getElementById("edtCours").style.display = "block";
-    document.getElementById("edtProf").style.display = "block";
-    document.getElementById("afficheSalles").style.display = "block";
-    document.getElementById("valideEDT").style.display = "block";
-    document.getElementById("demande").style.display = "block";
-    if(document.getElementById("edt")){
-        document.getElementById("edt").style.display = "none";
-    }
-    let element = document.getElementById('menu');
-    if(element){
-        element.classList.remove('menu');
-        element.classList.add('menuProf');
-    }
-}
-
-function secretariat() {
-    document.getElementById("edtCours").style.display = "block";
-    document.getElementById("afficheSalles").style.display = "block";
-    document.getElementById("tableauEtudiant").style.display = "block";
-    document.getElementById("tableauAbsence").style.display = "block";
-    document.getElementById("choixClasse").style.display = "block";
-}
-
-//Fonction qui verifie le rôle de l'utilisateur car suivant le rôle, nous affichons ou cachons des informations
-function afficherElement(role) {
-    if (role === "administrateur") {
-        admin();
-    } else if (role === "secretariat") {
-        secretariat();
-    } else if (role === "etudiant") {
-        etudiant();
-    } else if (role === "professeur") {
-        professeur();
-    }
-    console.log(role);
-}
 
 //sert à afficher le bon emploi du temps choisit par l'administrateur
 document.addEventListener('DOMContentLoaded', function () {
+    const boutonPrecedent = document.getElementById('precedent')
+    const boutonSuivant = document.getElementById('suivant')
+    const selectionnerSemaine = document.getElementById('selectionnerSemaine')
+
+    // Permet de recharger l'EDT sans recharger toute la page @Noah
+    function chargerEdt(selectedDate) {
+
+        const data = new URLSearchParams();
+        data.append('selectedDate', selectedDate);
+
+        fetch('../../View/Pages/EDT.php', {
+            method: 'POST',
+            body: data,
+        })
+            .then(response => response.text())
+            .then(responseText => {
+                // Utiliser DOMParser pour trier la réponse HTML
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(responseText, 'text/html');
+
+                // Prendre seulement la div edtContainer de la réponse
+                const newEdt = doc.querySelector('#edtContainer');
+
+                // Mettre à jour uniquement la div edtContainer dans la page actuelle
+                document.getElementById('edtContainer').innerHTML = newEdt.innerHTML;
+            })
+            .catch(error => console.error('Erreur:', error));
+    }
+
+    // Change la valeur de l'EDT en fonction du bouton calendrier @Noah
+    selectionnerSemaine.addEventListener('change', function(){
+        chargerEdt(selectionnerSemaine.value)
+    })
+
+    // Décrémente l'EDT lors d'un click sur la flèche précédent @Noah
+    boutonPrecedent.addEventListener('click', function(e){
+        e.preventDefault()
+        const currentDate = new Date(selectionnerSemaine.value);
+        currentDate.setDate(currentDate.getDate() - 7);
+        selectionnerSemaine.value = currentDate.toISOString().split('T')[0];
+        chargerEdt(selectionnerSemaine.value);
+
+    })
+
+    // Incrémente l'EDT lors d'un click sur la flèche précédent @Noah
+    boutonSuivant.addEventListener('click', function (e) {
+        e.preventDefault();
+        const currentDate = new Date(selectionnerSemaine.value);
+        currentDate.setDate(currentDate.getDate() + 7);
+        selectionnerSemaine.value = currentDate.toISOString().split('T')[0];
+        chargerEdt(selectionnerSemaine.value);
+    });
+
+
+
     const edtAdmin = document.getElementById('edtAdmin');
     if (edtAdmin) {
         edtAdmin.addEventListener('change', function () {
@@ -95,7 +98,13 @@ document.addEventListener('DOMContentLoaded', function () {
             else {
                 document.cookie = "groupe=" + edtAdmin.value + "; expires=" + expirationDate + "; path=/";
             }
+            rechargement();
         });
+
+        function rechargement(){
+            chargerEdt(selectionnerSemaine.value);
+        }
+
     } else {
         console.error("L'élément edtAdmin n'a pas été trouvé.");
     }

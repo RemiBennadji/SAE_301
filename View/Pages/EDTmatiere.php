@@ -111,17 +111,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 echo '<div class="changerSemaine">
     <br><br><button id="download-pdf" class="btn">Télécharger en PDF</button><br><br>
     <form action="EDTmatiere.php" method="post">
-        <button type="submit" name="precedent" class="fleche">Précédent</button>
+        <button type="submit" id="precedent" name="precedent" class="fleche">Précédent</button>
         
         <label for="selectionnerSemaine">Semaine du</label>
-        <input type="date" id="selectionnerSemaine" name="selectedDate" onchange="this.form.submit()" 
+        <input type="date" id="selectionnerSemaine" name="selectedDate" onchange="this.form.submit()"
                value="' . htmlspecialchars($dateActuel, ENT_QUOTES, 'UTF-8') . '">
         
         <input type="hidden" name="codeRessource" value="' . $_POST["codeRessource"] . '">
         <input type="hidden"  name="dateActuel" 
                value="' . htmlspecialchars($dateActuel, ENT_QUOTES, 'UTF-8') . '">
         
-        <button type="submit" name="suivant" class="fleche">Suivant</button>
+        <button type="submit" id="precedent" name="suivant" class="fleche">Suivant</button>
     </form>
 </div>';
 
@@ -130,15 +130,15 @@ echo ('<footer class="footer">
     <p>&copy; 2024 - SAE Emploi du temps. Rémi | Dorian | Matthéo | Bastien | Noah.</p>
 </footer>');
 
-// Appel à la fonction qui affiche l'emploi du temps de la ressource choisie et pour de la semaine
-$edt->AfficherEdtSemaineMatiere($dateActuel, $nomProf);
 ?>
+
+<div id="edtContainer"><?php $edt->AfficherEdtSemaineMatiere($dateActuel, $nomProf)?></div>
+
 
 <!-- Inclusion de scripts pour le calendrier et la génération de PDF -->
 <script src="../../Model/JavaScript/GenererPDF.js"></script>
 <script src="../../Model/JavaScript/CalendrierEDT.js"></script>
-<script src="../../Model/JavaScript/MenuPrincipal.js"></script>
-<script defer src="../../Model/JavaScript/menuHamburger.js"></script>
+<script src="../../Model/JavaScript/menuHamburger.js"></script>
 <script>afficherElement("<?php echo $_SESSION['role']; ?>");</script>
 </body>
 </html>

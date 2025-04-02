@@ -1,7 +1,4 @@
 <html lang="fr">
-<?php
-
-?>
 <head>
     <!-- Titre de la page -->
     <title>EDT</title>
@@ -27,6 +24,7 @@
         </div>
         <ul class="menu">
             <!-- Lien vers différentes sections du site, avec affichage conditionnel -->
+            <li><a id="edtQuo" class="underline-animation" href="edtQuotidien.php">EDT Quotidien</a></li>
             <li><a id="edtProf" class="underline-animation" href="EDTprof.php" style="display: none">EDT Professeur</a></li>
             <li><a id="edtCours" class="underline-animation" href="EDTmatiereSelection.php" style="display: none">EDT Ressource</a></li>
             <li><a class="underline-animation" href="EDTsalleLibres.php" id="afficheSalles">Salles disponibles</a></li>
@@ -119,15 +117,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $dateActuel = $_POST["dateActuel"] ?? $dateActuel; // Utilisation de la date actuelle si aucune date n'est sélectionnée
     }
-
-    // Gestion des boutons pour naviguer entre les semaines
-    if (isset($_POST["precedent"])) {
-        $dateActuel = $edt->decrementerSemaine($dateActuel);
-    }
-
-    if (isset($_POST["suivant"])) {
-        $dateActuel = $edt->incrementerSemaine($dateActuel);
-    }
 }
 
 echo '
@@ -141,18 +130,18 @@ echo '
 
 // Affichage de la partie permettant de changer la semaine, incluant un calendrier
 echo '<div class="changerSemaine">
-    <br><br><button id="download-pdf" class="btn">Télécharger en PDF</button><br><br>
-    <form action="EDT.php" method="post">
-        <button type="submit" name="precedent" class="fleche">Précédent</button>
+    <button id="download-pdf" class="btn">Télécharger en PDF</button>
+    <form method="post">
+        <button type="button" id ="precedent" name="precedent" class="fleche">Précédent</button>
         
         <label for="selectionnerSemaine">Semaine du</label>
-        <input type="date" id="selectionnerSemaine" name="selectedDate" onchange="this.form.submit()" 
+        <input type="date" id="selectionnerSemaine" name="selectedDate" 
                value="' . htmlspecialchars($dateActuel, ENT_QUOTES, 'UTF-8') . '">
         <input type="hidden" name="role" value="' . $_SESSION["role"] . '">
         <input type="hidden"  name="dateActuel" 
                value="' . htmlspecialchars($dateActuel, ENT_QUOTES, 'UTF-8') . '">
         
-        <button type="submit" name="suivant" class="fleche">Suivant</button>
+        <button type="button" id="suivant" name="suivant" class="fleche">Suivant</button>
     </form>
 </div>';
 
@@ -164,15 +153,17 @@ echo ('<footer class="footer">
     <p>&copy; 2024 - SAE Emploi du temps. Rémi | Dorian | Matthéo | Bastien | Noah.</p>
 </footer>');
 
-// Appel à la fonction qui affiche l'emploi du temps de la semaine
-$edt->AfficherEdtSemaine($dateActuel, $classeActuel, $anneeActuel,$_COOKIE["version"]);
 ?>
+
+<div id="edtContainer"> <?php $edt->AfficherEdtSemaine($dateActuel, $classeActuel, $anneeActuel,$_COOKIE["version"]) ?></div>
+
+
 
 <!-- Inclusion de scripts pour le menu, le calendrier et la génération de PDF -->
 <script src="../../Model/JavaScript/MenuPrincipal.js"></script>
+<script src="../../Model/JavaScript/menuHamburger.js"></script>
 <script>afficherElement("<?php echo $_SESSION['role']; ?>");</script>
 <script src="../../Model/JavaScript/CalendrierEDT.js"></script>
 <script src="../../Model/JavaScript/GenererPDF.js"></script>
-<script defer src="../../Model/JavaScript/menuHamburger.js"></script>
 </body>
 </html>
