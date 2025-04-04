@@ -60,6 +60,7 @@ function choisirVersion(){
     let valeur = menuVersion.value;
     let expirationDate = new Date(new Date().getTime() + 15 * 60 * 1000).toUTCString();
     document.cookie = "version=" + valeur + "; expires=" + expirationDate + "; path=/";
+    location.reload()
 }
 
 function chargerEdt(selectedDate) {
