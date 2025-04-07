@@ -349,7 +349,6 @@ class Edt
     //requête permettant de récupérer toutes les informations à utiliser dans la méthode AfficherEdtSemaineMatiere pour faire l'affichage dans les cases de l'emploi du temps
 
     function AfficherEdtSemaineMatiere($dateDebut, $nomProf) {
-        global $edt;
         $timestamp = strtotime($dateDebut);
         $lundi = date("Y-m-d", $timestamp);
 
@@ -402,7 +401,7 @@ class Edt
 
                     $nombreCreneaux = ceil($dureeMinutes / 90);
 
-                    $discipline = strtolower($edt->supprimerAccents($cours['discipline']));
+                    $discipline = strtolower($this->supprimerAccents($cours['discipline']));
                     $discipline = preg_replace('/[^a-z0-9]+/', '-', $discipline);
                     $discipline = trim($discipline, '-');
 

@@ -1155,6 +1155,12 @@ td, th {
 }
 
 @media (max-width: 800px) {
+    .menuVersionSelect{
+        display: flex;
+        margin-top: -210px;
+        align-items: flex-start;
+    }
+
     div{
         display: block;
         width: 100%;
