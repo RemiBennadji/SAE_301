@@ -144,13 +144,13 @@ echo '<div class="changerSemaine">
         </div>
         <br><br>
         <form action="edtQuotidien.php" method="post">
-        <button type="submit" name="precedent" class="fleche">Précédent</button>
+        <button type="submit" id="jourPrecedent" name="precedent" class="fleche">Précédent</button>
 
         <label for="selectionnerSemaine">Semaine du</label>
         <input type="date" id="selectionnerSemaine" name="dateSelection" onchange="this.form.submit()"
                value="' . htmlspecialchars($dateActuelle->format('Y-m-d'), ENT_QUOTES, 'UTF-8') . '">
 
-        <button type="submit" name="suivant" class="fleche">Suivant</button>
+        <button type="submit" id="jourSuivant" name="suivant" class="fleche">Suivant</button>
     </form>
 </div>';
 
@@ -163,12 +163,12 @@ echo '<footer class="footer">
     <p>&copy; 2024 - SAE Emploi du temps. Rémi | Dorian | Matthéo | Bastien | Noah.</p>
 </footer>';
 
-// Affichage de l'emploi du temps
-$edt->AfficherEdtJour($dateActuel, $classeActuel, $anneeActuel, $version);
 ?>
+<div id="edtContainer"> <?php $edt->AfficherEdtJour($dateActuel, $classeActuel, $anneeActuel, $version) ?></div>
 
 <!-- Inclusion de scripts pour le menu, le calendrier et la génération de PDF -->
 <script src="../../Model/JavaScript/MenuPrincipal.js"></script>
+<script src="../../Model/JavaScript/edtQuotidien.js"></script>
 <script src="../../Model/JavaScript/menuHamburger.js"></script>
 <script>afficherElement("<?php echo $_SESSION['role']; ?>");</script>
 <script src="../../Model/JavaScript/CalendrierEDT.js"></script>

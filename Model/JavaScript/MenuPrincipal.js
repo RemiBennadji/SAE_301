@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     })
 
-    // Incrémente l'EDT lors d'un click sur la flèche précédent @Noah
+    // Incrémente l'EDT lors d'un click sur la flèche suivant @Noah
     boutonSuivant.addEventListener('click', function (e) {
         e.preventDefault();
         const currentDate = new Date(selectionnerSemaine.value);
