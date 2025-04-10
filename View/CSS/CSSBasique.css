@@ -149,7 +149,7 @@ nav {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     transition: transform 0.2s, box-shadow 0.2s;
     height: 53px;
-    margin-top: 37px;
+    margin-top: 42px;
 }
 .divBouton{
     display: flex;
@@ -345,6 +345,7 @@ input[type="password"], input[type="text"] {
     justify-content: center;
     align-items: center;
     text-align: center;
+    margin-top: 20px;
 }
 
 .buttonMDRForgotten{
@@ -427,6 +428,7 @@ input:focus ~ label {
 .textErreur{
     font-weight: bold;
     color: #df0a0a;
+    margin-top: -20px;
 }
 /* Fin Identification */
 
