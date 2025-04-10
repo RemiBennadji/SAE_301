@@ -250,7 +250,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 echo '<div class="changerSemaine">
     <br><br><button id="download-pdf" class="btn">Télécharger en PDF</button><br><br>
     <form action="ValideEdt.php" method="post">
-        <button type="submit" name="precedent">Précédent</button>
+        <button type="submit" class="fleche" name="precedent">Précédent</button>
         
         <label for="selectionnerSemaine">Semaine du</label>
         <input type="date" id="selectionnerSemaine" name="selectedDate" onchange="this.form.submit()" 
@@ -259,16 +259,16 @@ echo '<div class="changerSemaine">
         <input type="hidden"  name="dateActuel" 
                value="' . htmlspecialchars($dateActuel, ENT_QUOTES, 'UTF-8') . '">
         
-        <button type="submit" name="suivant">Suivant</button>
+        <button type="submit" name="suivant" class="fleche">Suivant</button>
     </form>
-</div><br><br><br>';
+</div>';
 
 echo "<form id='validation' action='ValideEdt.php' method='post'>
         <div class='DivValider'>
             <input type='hidden' name='action' value='valider'>
             <button type='button' class='ValiderVersion' id='ValiderVersion' onclick='confirmerAction()'>Valider Version Actuelle</button>
             <button type='button' class='AnnulerValidation' id='AnnulerValidation' onclick='annulerValidation()'>Annuler la validation</button>
-            <button type='button' id='Vider' onclick='vider()'>Vider les validations</button>
+            <button type='button' class='viderValidation' id='Vider' onclick='vider()'>Vider les validations</button>
         </div>
         <label id='validationMessage' style='display: none; color: green;'></label>
     </form><br><br><br>

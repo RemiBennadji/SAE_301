@@ -60,6 +60,7 @@
 // Inclusion des fichiers nécessaires pour la connexion à la base de données et la gestion de l'emploi du temps
 include "../../Controller/ConnectionBDD.php";
 require_once "../../Model/Classe/Edt.php";
+session_start();
 
 // Création d'un objet Edt pour gérer l'emploi du temps
 $edt = new Edt();
