@@ -126,7 +126,7 @@ nav {
 }
 
 .quotidien {
-    background: linear-gradient(45deg, #87a9ff, #011767);
+    background: linear-gradient(45deg, #4a5caf, rgb(27, 133, 165));
     color: white;
     padding: 15px 30px;
     font-size: 18px;
@@ -139,16 +139,22 @@ nav {
 }
 
 .btn{
-    background: linear-gradient(45deg, #011767, #87a9ff);
+    background: linear-gradient(45deg, #4a5caf, rgb(27, 133, 165));
     color: white;
-    padding: 15px 30px;
+    /*padding: 15px 30px;*/
     font-size: 18px;
     border: none;
     border-radius: 10px;
     cursor: pointer;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     transition: transform 0.2s, box-shadow 0.2s;
-    align-items: center;
+    height: 53px;
+    margin-top: 37px;
+}
+.divBouton{
+    display: flex;
+    gap: 10px;
+    justify-content: center;
 }
 
 /* Media queries pour mobile */
@@ -1228,6 +1234,7 @@ div{
 .fleche:hover {
     background-color: #3654ff;
     cursor: pointer;
+    color: white;
 }
 
 .fleche svg {

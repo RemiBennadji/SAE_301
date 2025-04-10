@@ -126,18 +126,24 @@ $horaire = $dateActuelle->format('Y-m-d');
 
 $dateActuel = $dateActuelle->format('Y-m-d');
 
-// Affichage de l'interface
-echo '
-<div class="changerSemaine">
-<form action="EDT.php" method="post">
-    <br><br><button type="submit" class="quotidien">Vue hebdomadaire</button><br><br>
-</form>
-</div>
-';
+//// Affichage de l'interface
+//echo '
+//<div class="changerSemaine">
+//<form action="EDT.php" method="post">
+//    <br><br><button type="submit" class="quotidien">Vue hebdomadaire</button><br><br>
+//</form>
+//</div>
+//';
 
 echo '<div class="changerSemaine">
-    <br><br><button id="download-pdf" class="btn">Télécharger en PDF</button><br><br>
-    <form action="edtQuotidien.php" method="post">
+      <div class="divBouton">
+                <form action="EDT.php" method="post">
+                    <br><br><button type="submit" class="quotidien">Vue hebdomadaire </button>
+                </form>
+                <button id="download-pdf" class="btn">Télécharger en PDF</button>
+        </div>
+        <br><br>
+        <form action="edtQuotidien.php" method="post">
         <button type="submit" name="precedent" class="fleche">Précédent</button>
 
         <label for="selectionnerSemaine">Semaine du</label>

@@ -118,18 +118,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-echo '
-<div class="changerSemaine">
-<form action="edtQuotidien.php" method="post">
-    <br><br><button type="submit" class="quotidien">Vue quotidienne </button><br><br>
-</form>
-</div>
-<br><br>
-';
+//echo '
+//<div class="changerSemaine">
+//<form action="edtQuotidien.php" method="post">
+//    <br><br><button type="submit" class="quotidien">Vue quotidienne </button>
+//</form>
+//</div>
+//<br><br>
+//';
 
 // Affichage de la partie permettant de changer la semaine, incluant un calendrier
 echo '<div class="changerSemaine">
-    <button id="download-pdf" class="btn">Télécharger en PDF</button>
+    <br>
+    <div class="divBouton">
+        <form action="edtQuotidien.php" method="post">
+            <br><br><button type="submit" class="quotidien">Vue quotidienne </button>
+        </form>
+        <button id="download-pdf" class="btn">Télécharger en PDF</button>
+    </div>
     <br><br><form method="post">
         <button type="button" id ="precedent" name="precedent" class="fleche">Précédent</button>
         
